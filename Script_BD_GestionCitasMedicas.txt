@@ -1,0 +1,62 @@
+-- Script para la creación de la base de datos. Proyecto sistema de gestión de citas médicas.
+
+CREATE DATABASE SistemaCitasMedicas;
+
+USE SistemaCitasMedicas;
+
+-- Creamos la tabla Usuarios --
+CREATE TABLE Usuarios (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    rol ENUM('PACIENTE', 'MEDICO', 'ADMIN') NOT NULL,
+    activo BOOLEAN DEFAULT TRUE
+);
+
+-- Creamos la tabla Paciente, la cual tendrá una llave foránea que referencia a Usuarios(id) -- 
+CREATE TABLE Paciente (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    usuario_id BIGINT UNIQUE NOT NULL,
+    fechaNacimiento DATE NOT NULL,
+    telefono VARCHAR(20),
+    direccion VARCHAR(255),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
+);
+
+-- Creamos la tabla Médico, la cual tiene una llave foránea que referencia a Usuarios(id) --
+CREATE TABLE Medico (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    usuario_id BIGINT UNIQUE NOT NULL,
+    especialidad VARCHAR(100) NOT NULL,
+    costoConsulta DOUBLE NOT NULL,
+    localidad VARCHAR(100) NOT NULL,
+    resena TEXT,
+    estadoAprobacion ENUM('PENDIENTE', 'APROBADO', 'RECHAZADO') DEFAULT 'PENDIENTE',
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
+);
+
+-- La clave foránea en Paciente y Medico hacia Usuarios garantiza que un usuario solo tenga un perfil asociado (o como médico o como paciente) --
+
+-- Creación de la tabla HorarioMedico, la cual tiene una llave foránea que referencia a Medico(id) --
+CREATE TABLE HorarioMedico (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    medico_id BIGINT NOT NULL,
+    diaSemana ENUM('LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO') NOT NULL,
+    horaInicio TIME NOT NULL,
+    horaFin TIME NOT NULL,
+    tiempoCita INT NOT NULL, -- En minutos
+    FOREIGN KEY (medico_id) REFERENCES Medico(id) ON DELETE CASCADE
+);
+
+-- Creación de la tabla de Cita, la cual tiene dos llaves foráneas, que referencian a Medico(id) y Paciente(id) --
+CREATE TABLE Cita (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    medico_id BIGINT NOT NULL,
+    paciente_id BIGINT NOT NULL,
+    fechaHora DATETIME NOT NULL,
+    estado ENUM('PENDIENTE', 'CONFIRMADA', 'CANCELADA', 'COMPLETADA') DEFAULT 'PENDIENTE',
+    notas TEXT,
+    FOREIGN KEY (medico_id) REFERENCES Medico(id) ON DELETE CASCADE,
+    FOREIGN KEY (paciente_id) REFERENCES Paciente(id) ON DELETE CASCADE
+);
