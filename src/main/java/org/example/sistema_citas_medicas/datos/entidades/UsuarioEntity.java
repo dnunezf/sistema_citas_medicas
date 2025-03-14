@@ -9,8 +9,6 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public UsuarioEntity() {
-    }
 
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -24,6 +22,9 @@ public class UsuarioEntity {
 
     public enum Rol {
         PACIENTE, MEDICO, ADMINISTRADOR
+    }
+
+    public UsuarioEntity() {
     }
 
     public UsuarioEntity(Long id, String nombre, String clave, Rol rol) {

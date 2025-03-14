@@ -1,7 +1,6 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
-import org.example.sistema_citas_medicas.logica.dto.RegistroMedicoDto;
 import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,7 @@ public class MedicoController {
     private MedicoService medicoService;
 
     @PostMapping("/registro")
-    public MedicoDto registrarMedico(@RequestBody RegistroMedicoDto medicoDTO) {
+    public MedicoDto registrarMedico(@RequestBody MedicoDto medicoDTO) {
         return medicoService.registrarMedico(medicoDTO);
     }
 }
