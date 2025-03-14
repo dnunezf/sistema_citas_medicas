@@ -10,14 +10,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
+    private final MedicoRepository medicoRepository;
 
-    @Autowired
-    private MedicoRepository medicoRepository;
+    // Inyección de dependencia por constructor
+    public MedicoServiceImpl(MedicoRepository medicoRepository) {
+        this.medicoRepository = medicoRepository;
+    }
 
     @Override
     public MedicoDto registrarMedico(MedicoDto medicoDTO) {
-        MedicoEntity medico = MedicoMapper.toEntity(medicoDTO);
-        medico = medicoRepository.save(medico);
+
+        MedicoEntity medico = medicoRepository.findById(medicoDTO.getId()).orElse(null);
+
+        if (medico == null) {
+            medico = MedicoMapper.toEntity(medicoDTO);
+        } else {
+            throw new IllegalArgumentException("El médico con ID " + medicoDTO.getId() + " ya está registrado.");
+        }
+
+        medico = medicoRepository.save(medico); // Ahora Hibernate lo manejará bien
         return MedicoMapper.toDTO(medico);
     }
 }
