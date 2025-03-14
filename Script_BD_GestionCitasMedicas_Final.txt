@@ -55,6 +55,6 @@ CREATE TABLE cita(
     notas TEXT NULL,
     
     CONSTRAINT pk_cita PRIMARY KEY(codigo_cita),
-    CONSTRAINT fk1_cita FOREIGN KEY(paciente) REFERENCES pacientes(id),
+    CONSTRAINT fk1_cita FOREIGN KEY(paciente) REFERENCES paciente(id),
 	CONSTRAINT fk2_cita FOREIGN KEY(medico) REFERENCES medicos(id)
 )
