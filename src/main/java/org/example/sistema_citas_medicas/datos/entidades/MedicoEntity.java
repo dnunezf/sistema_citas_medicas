@@ -3,17 +3,10 @@ package org.example.sistema_citas_medicas.datos.entidades;
 import jakarta.persistence.*;
 
 @Entity
+
 @Table(name = "medicos")
-public class MedicoEntity
+public class MedicoEntity extends UsuarioEntity
 {
-    @Id
-    private Long id;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private UsuarioEntity usuarioEntity;
-
     @Column(nullable = false, length = 100)
     private String especialidad;
 
@@ -40,9 +33,8 @@ public class MedicoEntity
     public MedicoEntity() {
     }
 
-    public MedicoEntity(Long id, UsuarioEntity usuarioEntity, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
-        this.id = id;
-        this.usuarioEntity = usuarioEntity;
+    public MedicoEntity(Long id, String nombre, String clave, Rol rol, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
+        super(id, nombre, clave, rol);
         this.especialidad = especialidad;
         this.costoConsulta = costoConsulta;
         this.localidad = localidad;
@@ -51,20 +43,8 @@ public class MedicoEntity
         this.estadoAprobacion = estadoAprobacion;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UsuarioEntity getUsuarioEntity() {
-        return usuarioEntity;
-    }
-
-    public void setUsuarioEntity(UsuarioEntity usuarioEntity) {
-        this.usuarioEntity = usuarioEntity;
+    public MedicoEntity(Long id, String nombre, String clave, Rol rol) {
+        super(id, nombre, clave, rol);
     }
 
     public String getEspecialidad() {

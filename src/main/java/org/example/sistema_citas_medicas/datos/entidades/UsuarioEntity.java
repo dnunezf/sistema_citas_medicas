@@ -3,10 +3,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public UsuarioEntity() {
+    }
 
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -16,20 +20,17 @@ public class UsuarioEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RolUsuario rol;
+    private Rol rol;
 
-    public UsuarioEntity() {
+    public enum Rol {
+        PACIENTE, MEDICO, ADMINISTRADOR
     }
 
-    public UsuarioEntity(Long id, String nombre, String clave, RolUsuario rol) {
+    public UsuarioEntity(Long id, String nombre, String clave, Rol rol) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
         this.rol = rol;
-    }
-
-    public enum RolUsuario {
-        PACIENTE, MEDICO, ADMINISTRADOR
     }
 
     public Long getId() {
@@ -56,11 +57,11 @@ public class UsuarioEntity {
         this.clave = clave;
     }
 
-    public RolUsuario getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(RolUsuario rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 }

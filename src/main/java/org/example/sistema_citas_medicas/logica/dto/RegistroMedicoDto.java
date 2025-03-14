@@ -1,35 +1,25 @@
 package org.example.sistema_citas_medicas.logica.dto;
 
-public class MedicoDto {
-    private Long id;
+public class RegistroMedicoDto {
     private String nombre;
+    private String clave;
     private String especialidad;
     private Double costoConsulta;
     private String localidad;
     private int frecuenciaCitas;
     private String presentacion;
-    private String estadoAprobacion;
 
-    public MedicoDto() {
+    public RegistroMedicoDto() {
     }
 
-    public MedicoDto(Long id, String nombre, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion, String estadoAprobacion) {
-        this.id = id;
+    public RegistroMedicoDto(String nombre, String clave, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion) {
         this.nombre = nombre;
+        this.clave = clave;
         this.especialidad = especialidad;
         this.costoConsulta = costoConsulta;
         this.localidad = localidad;
         this.frecuenciaCitas = frecuenciaCitas;
         this.presentacion = presentacion;
-        this.estadoAprobacion = estadoAprobacion;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -38,6 +28,14 @@ public class MedicoDto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public String getEspecialidad() {
@@ -80,11 +78,4 @@ public class MedicoDto {
         this.presentacion = presentacion;
     }
 
-    public String getEstadoAprobacion() {
-        return estadoAprobacion;
-    }
-
-    public void setEstadoAprobacion(String estadoAprobacion) {
-        this.estadoAprobacion = estadoAprobacion;
-    }
 }

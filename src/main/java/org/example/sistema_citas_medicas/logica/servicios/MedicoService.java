@@ -1,8 +1,8 @@
 package org.example.sistema_citas_medicas.logica.servicios;
 
-import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
+import org.example.sistema_citas_medicas.logica.dto.RegistroMedicoDto;
 
 public interface MedicoService {
-    MedicoEntity registrarMedico(MedicoDto medicoDTO);
+    MedicoDto registrarMedico(RegistroMedicoDto medicoDTO);
 }

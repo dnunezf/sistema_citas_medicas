@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Sistema de Citas Médicas</title>
+    <title>Gestión de Citas Médicas</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
@@ -16,7 +16,9 @@
 </header>
 
 <main>
-    <div th:insert="~{::content}"></div>
+    <div th:fragment="contenido">
+        <!-- Aquí se insertarán las vistas específicas -->
+    </div>
 </main>
 
 <footer>
