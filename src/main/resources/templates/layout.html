@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sistema de Citas Médicas</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <h1>Sistema de Gestión de Citas Médicas</h1>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li><a th:href="@{/medico/registro}">Registrar Médico</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div th:insert="~{::content}"></div>
+</main>
+
+<footer>
+    <p>© 2024 Sistema de Citas Médicas</p>
+</footer>
+</body>
+</html>

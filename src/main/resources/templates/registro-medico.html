@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro de Médico</title>
+</head>
+<body>
+<div th:replace="layout :: content">
+    <h2>Registro de Médico</h2>
+    <form th:action="@{/medico/registro}" method="post" th:object="${medicoDTO}">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required />
+
+        <label>Clave:</label>
+        <input type="password" th:field="*{clave}" required />
+
+        <label>Especialidad:</label>
+        <input type="text" th:field="*{especialidad}" required />
+
+        <label>Costo Consulta:</label>
+        <input type="number" th:field="*{costoConsulta}" required />
+
+        <label>Localidad:</label>
+        <input type="text" th:field="*{localidad}" required />
+
+        <label>Frecuencia de Citas (minutos):</label>
+        <input type="number" th:field="*{frecuenciaCitas}" required />
+
+        <label>Presentación:</label>
+        <textarea th:field="*{presentacion}" required></textarea>
+
+        <button type="submit">Registrarse</button>
+    </form>
+</div>
+</body>
+</html>
