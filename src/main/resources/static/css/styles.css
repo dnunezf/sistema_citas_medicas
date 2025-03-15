@@ -1,76 +1,129 @@
+/* ----- General ----- */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-header {
-    background-color: #007bff;
-    color: white;
+/* ----- Contenedor Principal ----- */
+.container {
+    width: 45%;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.container:hover {
+    box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ----- Título ----- */
+.title {
     text-align: center;
-    padding: 10px;
+    font-size: 26px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-transform: uppercase;
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
+/* ----- Mensajes de éxito o error ----- */
+.message {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
     text-align: center;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 15px;
+.success {
+    background-color: #e3fcef;
+    color: #28a745;
+    border: 1px solid #28a745;
 }
 
-nav ul li a {
-    color: white;
-    text-decoration: none;
+.error {
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #dc3545;
 }
 
-main {
-    padding: 20px;
-    background: white;
-    width: 50%;
-    margin: auto;
-    box-shadow: 0px 0px 10px gray;
-}
-
-h2 {
-    text-align: center;
-}
-
-form {
+/* ----- Formulario ----- */
+.form-container {
     display: flex;
     flex-direction: column;
 }
 
-form label {
-    margin-top: 10px;
+/* ----- Grupos de formulario ----- */
+.form-group {
+    margin-bottom: 18px;
 }
 
-form input, form textarea {
-    padding: 8px;
-    font-size: 16px;
+/* ----- Etiquetas ----- */
+label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 15px;
+    color: #34495e;
 }
 
-button {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #007bff;
+/* ----- Inputs y textarea ----- */
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dfe6e9;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+}
+
+/* ----- Botón de Envío ----- */
+.submit-button {
+    background: #3498db;
     color: white;
+    padding: 14px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background 0.3s ease-in-out;
 }
 
-button:hover {
-    background-color: #0056b3;
+.submit-button:hover {
+    background: #217dbb;
 }
 
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    margin-top: 20px;
+/* ----- Efectos Responsivos ----- */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
 }

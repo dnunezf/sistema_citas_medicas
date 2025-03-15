@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro de Médico</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2 class="title">Registro de Médico</h2>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+    <form th:action="@{/medicos/registro}" th:object="${medico}" method="post" class="form-container">
+
+        <div class="form-group">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="especialidad">Especialidad</label>
+            <input type="text" id="especialidad" th:field="*{especialidad}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="costoConsulta">Costo de Consulta</label>
+            <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="localidad">Localidad</label>
+            <input type="text" id="localidad" th:field="*{localidad}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>
+            <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="presentacion">Presentación</label>
+            <textarea id="presentacion" th:field="*{presentacion}" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="estadoAprobacion">Estado de Aprobación</label>
+            <select id="estadoAprobacion" th:field="*{estadoAprobacion}">
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="APROBADO">Aprobado</option>
+                <option value="RECHAZADO">Rechazado</option>
+            </select>
+        </div>
+
+        <button type="submit" class="submit-button">Registrar Médico</button>
+    </form>
+</div>
+
+</body>
+</html>
