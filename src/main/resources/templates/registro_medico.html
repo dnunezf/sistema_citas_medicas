@@ -19,45 +19,54 @@
 
         <div class="form-group">
             <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" th:field="*{nombre}" required>
+            <input type="text" id="nombre" th:field="*{nombre}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" title="Solo letras y espacios">
+            <p class="error-text" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
         </div>
 
         <div class="form-group">
             <label for="especialidad">Especialidad</label>
-            <input type="text" id="especialidad" th:field="*{especialidad}" required>
+            <input type="text" id="especialidad" th:field="*{especialidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" title="Solo letras y espacios">
+            <p class="error-text" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></p>
         </div>
 
         <div class="form-group">
             <label for="costoConsulta">Costo de Consulta</label>
-            <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required>
+            <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required min="1" max="1000" title="Debe ser entre 1 y 1000">
+            <p class="error-text" th:if="${#fields.hasErrors('costoConsulta')}" th:errors="*{costoConsulta}"></p>
         </div>
 
         <div class="form-group">
             <label for="localidad">Localidad</label>
-            <input type="text" id="localidad" th:field="*{localidad}" required>
+            <input type="text" id="localidad" th:field="*{localidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" title="Solo letras y espacios">
+            <p class="error-text" th:if="${#fields.hasErrors('localidad')}" th:errors="*{localidad}"></p>
         </div>
 
         <div class="form-group">
             <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>
-            <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required>
+            <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required min="10" max="120" title="Debe ser entre 10 y 120 minutos">
+            <p class="error-text" th:if="${#fields.hasErrors('frecuenciaCitas')}" th:errors="*{frecuenciaCitas}"></p>
         </div>
 
         <div class="form-group">
             <label for="presentacion">Presentación</label>
-            <textarea id="presentacion" th:field="*{presentacion}" required></textarea>
+            <textarea id="presentacion" th:field="*{presentacion}" required minlength="10" maxlength="500" title="Debe tener entre 10 y 500 caracteres"></textarea>
+            <p class="error-text" th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}"></p>
         </div>
 
         <div class="form-group">
             <label for="estadoAprobacion">Estado de Aprobación</label>
-            <select id="estadoAprobacion" th:field="*{estadoAprobacion}">
+            <select id="estadoAprobacion" th:field="*{estadoAprobacion}" required>
+                <option value="">Seleccione una opción</option>
                 <option value="PENDIENTE">Pendiente</option>
                 <option value="APROBADO">Aprobado</option>
                 <option value="RECHAZADO">Rechazado</option>
             </select>
+            <p class="error-text" th:if="${#fields.hasErrors('estadoAprobacion')}" th:errors="*{estadoAprobacion}"></p>
         </div>
 
         <button type="submit" class="submit-button">Registrar Médico</button>
     </form>
+
 </div>
 
 </body>

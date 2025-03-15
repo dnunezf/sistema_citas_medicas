@@ -127,3 +127,9 @@ input:focus, select:focus, textarea:focus {
         font-size: 22px;
     }
 }
+
+.error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
