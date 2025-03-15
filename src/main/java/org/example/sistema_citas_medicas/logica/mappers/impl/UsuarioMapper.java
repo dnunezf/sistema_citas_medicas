@@ -1,4 +1,4 @@
-package org.example.sistema_citas_medicas.logica.mappers;
+package org.example.sistema_citas_medicas.logica.mappers.impl;
 
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.logica.dto.UsuarioDto;
