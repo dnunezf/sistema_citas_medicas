@@ -1,4 +1,10 @@
-<link rel="stylesheet" href="../../static/css/styles.css">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
 <footer th:fragment="footer" class="footer">
     <div class="footer"> <!-- div FOOTER -->
         <div id="footerInfo"> <!-- div de la info del footer -->
@@ -16,3 +22,5 @@
         </div>
     </div>
 </footer>
+
+</html>

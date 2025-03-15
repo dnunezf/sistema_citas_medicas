@@ -61,8 +61,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     // MÉTODO PARA LOGIN
+    @Override
     public Optional<Usuarios> login(Long id, String clave) {
-        return usuarioRepository.findById(id)
-                .filter(usuario -> usuario.getClave().equals(clave));
+        Optional<Usuarios> usuario = usuarioRepository.findByIdAndClave(id, clave);
+
+        if (usuario.isEmpty()) { // 🔥 Verifica si está vacío antes de hacer get()
+            return Optional.empty(); // 🚀 Devuelve vacío en lugar de lanzar error
+        }
+
+        return usuario;
     }
 }

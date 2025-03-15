@@ -102,6 +102,7 @@ header {
 
 
 /*-------------------------------------------------Login------------------------------------------------------------*/
+/* 🔹 Estilos Generales */
 #login {
     position: absolute;
     top: 50%;
@@ -109,11 +110,110 @@ header {
     transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 300px;
+    width: 320px;
     text-align: center;
-    color: aqua;
+    font-family: Calibri, sans-serif;
+    border: 1px solid lightgray;
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* 🔹 Título Login */
+#tituloLogin {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* 🔹 Imagen de Perfil */
+.icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.profile-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/* 🔹 Inputs */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.icon {
+    background: #e9ecef;
+    padding: 8px;
+    border-right: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 14px;
+    background: transparent;
+}
+
+/* 🔹 Botón Login */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #138496;
+}
+
+/* 🔹 Contenedor de Registro */
+.register-container {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.btn-register {
+    color: #dc3545;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.btn-register:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red; /* 🔴 Color del mensaje de error */
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-family: Calibri;
 }
 
 

@@ -12,8 +12,8 @@ public interface UsuarioRepository extends JpaRepository<Usuarios, Long> {
     // Buscar usuario por ID (el ID es ingresado por el usuario en el login)
     Optional<Usuarios> findById(Long id);
 
-    // Buscar usuario por ID y Clave (para autenticación en el login)
-    Optional<Usuarios> findByIdAndClave(Long id, String clave);
+    @Query("SELECT u FROM Usuarios u WHERE u.id = :id AND u.clave = :clave")
+    Optional<Usuarios> findByIdAndClave(@Param("id") Long id, @Param("clave") String clave);
 
     // Buscar todos los usuarios de un rol específico
     @Query("SELECT u FROM Usuarios u WHERE u.rol = :rol")
