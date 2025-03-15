@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<link rel="stylesheet" href="/css/styles.css">
+
+<head th:replace="~{fragments/head :: head}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body style="background-color: white">
+
+<header th:replace="~{fragments/header :: header}"></header>  <!-- Incluir HEADER -->
+
+<!-- Contenedor Principal -->
+<div class="cuerpo">
+    <form th:action="@{/presentation/login/login}" method="post" th:object="${login}">
+        <div id="login"> <!-- div del login en general -->
+            <div id="tituloLogin"> <!-- título login -->
+                <h2>Login</h2>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer::footer}"></div> <!-- Incluir FOOTER -->
+
+</body>
+</html>
+
+
