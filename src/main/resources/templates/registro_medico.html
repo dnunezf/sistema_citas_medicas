@@ -17,6 +17,13 @@
 
     <form th:action="@{/medicos/registro}" th:object="${medico}" method="post" class="form-container">
 
+        <!-- Campo ID (Editable) -->
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" id="id" th:field="*{id}" required min="1" title="El ID debe ser un número positivo">
+            <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+        </div>
+
         <div class="form-group">
             <label for="nombre">Nombre Completo</label>
             <input type="text" id="nombre" th:field="*{nombre}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" title="Solo letras y espacios">

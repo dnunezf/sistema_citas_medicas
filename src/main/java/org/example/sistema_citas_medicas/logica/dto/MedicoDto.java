@@ -1,6 +1,7 @@
 package org.example.sistema_citas_medicas.logica.dto;
 
 public class MedicoDto extends UsuarioDto{
+    private Long id;
     private String especialidad;
     private Double costoConsulta;
     private String localidad;
@@ -20,6 +21,16 @@ public class MedicoDto extends UsuarioDto{
         this.frecuenciaCitas = frecuenciaCitas;
         this.presentacion = presentacion;
         this.estadoAprobacion = estadoAprobacion;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     // Getters y Setters

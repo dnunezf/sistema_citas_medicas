@@ -7,6 +7,10 @@ import jakarta.persistence.*;
 @Table(name = "medicos")
 public class MedicoEntity extends UsuarioEntity
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(nullable = false, length = 100)
     private String especialidad;
 
@@ -31,6 +35,16 @@ public class MedicoEntity extends UsuarioEntity
     }
 
     public MedicoEntity() {
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public MedicoEntity(Long id, String nombre, String clave, Rol rol, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
