@@ -18,7 +18,8 @@
     <!-- Campo ID -->
     <div class="input-container">
       <i class="fas fa-user"></i>
-      <input type="number" id="id" th:field="*{id}" placeholder="User ID" required>
+      <input type="number" id="id" th:field="*{id}" required>
+      <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
     </div>
 
     <!-- Campo Nombre -->

@@ -26,7 +26,8 @@
                     <span class="icon">
                          <img th:src="@{/images/user.jpg}" alt="User Icon">
                     </span>
-                    <input type="text" th:field="*{id}" placeholder="User id" required>
+                    <input type="number" id="id" th:field="*{id}" required>
+                    <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
                 </div>
 
                 <div class="input-group"> <!-- div del password-->
