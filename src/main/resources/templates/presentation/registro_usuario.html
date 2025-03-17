@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
+  <link rel="stylesheet" type="text/css" href="/css/registro_usuario.css">
+</head>
+
+
+<body>
+
+<div class="form-container">
+  <img src="/images/user.jpg" alt="User Icon" class="user-icon">
+  <h2>Registro</h2>
+
+  <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
+
+    <!-- Campo ID -->
+    <div class="input-container">
+      <i class="fas fa-user"></i>
+      <input type="number" id="id" th:field="*{id}" placeholder="User ID" required>
+    </div>
+
+    <!-- Campo Nombre -->
+    <div class="input-container">
+      <i class="fas fa-user-edit"></i>
+      <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre" required maxlength="100">
+    </div>
+
+    <!-- Campo Clave -->
+    <div class="input-container">
+      <i class="fas fa-key"></i>
+      <input type="password" id="clave" th:field="*{clave}" placeholder="Password" required maxlength="100">
+    </div>
+
+    <!-- Selección de Rol -->
+    <div class="input-container">
+      <i class="fas fa-user-tag"></i>
+      <select id="rol" th:field="*{rol}" required>
+        <option value="">Seleccione un rol</option>
+        <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
+      </select>
+    </div>
+
+    <button type="submit">Registrar</button>
+  </form>
+</div>
+
+<div class="footer">
+  Total Soft Inc. &copy; 2024
+</div>
+
+</body>
+</html>

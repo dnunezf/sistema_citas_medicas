@@ -1,0 +1,105 @@
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Contenedor principal del formulario */
+.form-container {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+/* Imagen del usuario */
+.user-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Estilos del título */
+h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Contenedor de los campos */
+.input-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+/* Iconos dentro de los inputs */
+.input-container i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* Campos de entrada */
+input, select {
+    width: 100%;
+    padding: 10px;
+    padding-left: 35px; /* Espacio para el icono */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Botón de envío */
+button {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #138496;
+}
+
+/* Mensaje de error */
+span {
+    display: block;
+    font-size: 12px;
+    color: red;
+    margin-top: 5px;
+}
+
+/* Estilo del pie de página */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #666;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}

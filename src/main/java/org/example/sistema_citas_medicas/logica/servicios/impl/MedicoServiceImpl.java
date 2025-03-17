@@ -8,6 +8,8 @@ import org.example.sistema_citas_medicas.logica.mappers.impl.MedicoMapper;
 import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MedicoServiceImpl implements MedicoService {
     private final MedicoRepository medicoRepository;
@@ -18,21 +20,23 @@ public class MedicoServiceImpl implements MedicoService {
         this.medicoMapper = medicoMapper;
     }
 
-    @Override
-    @Transactional
-    public MedicoDto registrarMedico(MedicoDto medicoDTO) {
-        // Verifica si el médico ya existe en la BD
-        if (medicoRepository.existsById(medicoDTO.getId())) {
-            throw new IllegalArgumentException("El médico con ID " + medicoDTO.getId() + " ya está registrado.");
-        }
-
-        // Mapea DTO -> Entidad
-        MedicoEntity medico = medicoMapper.mapFrom(medicoDTO);
-
-        // Guarda el médico en la BD
-        medico = medicoRepository.save(medico);
-
-        // Mapea Entidad -> DTO
-        return medicoMapper.mapTo(medico);
+    public Optional<MedicoEntity> obtenerPorId(Long id) {
+        return medicoRepository.findById(id);
     }
+
+
+    @Transactional
+    public MedicoEntity actualizarMedico(MedicoEntity medico) {
+        return medicoRepository.findById(medico.getId()).map(medicoExistente -> {
+            medicoExistente.setNombre(medico.getNombre());
+            medicoExistente.setEspecialidad(medico.getEspecialidad());
+            medicoExistente.setCostoConsulta(medico.getCostoConsulta());
+            medicoExistente.setLocalidad(medico.getLocalidad());
+            medicoExistente.setFrecuenciaCitas(medico.getFrecuenciaCitas());
+            medicoExistente.setPresentacion(medico.getPresentacion());
+            medicoExistente.setEstadoAprobacion(medico.getEstadoAprobacion());
+            return medicoRepository.save(medicoExistente);
+        }).orElse(null);
+    }
+
 }

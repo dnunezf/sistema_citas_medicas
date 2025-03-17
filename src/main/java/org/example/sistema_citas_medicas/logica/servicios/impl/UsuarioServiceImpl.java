@@ -1,6 +1,10 @@
 package org.example.sistema_citas_medicas.logica.servicios.impl;
 
+import jakarta.transaction.Transactional;
+import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
+import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
+import org.example.sistema_citas_medicas.datos.repositorios.MedicoRepository;
 import org.example.sistema_citas_medicas.datos.repositorios.UsuarioRepository;
 import org.example.sistema_citas_medicas.logica.servicios.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -13,16 +17,25 @@ import java.util.stream.StreamSupport;
 @Service
 public class UsuarioServiceImpl implements UsuarioService{
     private final UsuarioRepository usuarioRepository;
+    private MedicoRepository medicoRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, MedicoRepository medicoRepository) {
+
         this.usuarioRepository = usuarioRepository;
+        this.medicoRepository = medicoRepository;
     }
 
     // REGISTRAR USUARIO
     @Override
+    @Transactional
     public UsuarioEntity save(UsuarioEntity usuario) {
+        if (usuario instanceof MedicoEntity) {
+            return medicoRepository.save((MedicoEntity) usuario); // ✅ Guardar como MedicoEntity directamente
+        }
         return usuarioRepository.save(usuario);
     }
+
+
 
     // OBTENER TODOS LOS USUARIOS
     @Override

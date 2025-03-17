@@ -1,11 +1,14 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
+import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
 import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/medicos")
@@ -17,21 +20,39 @@ public class MedicoController {
         this.medicoService = medicoService;
     }
 
-    @GetMapping("/registro")
+    @GetMapping("/perfil")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("medico", new MedicoDto());
         return "presentation/registro_medico";
     }
 
-    @PostMapping("/registro")
-    public String registrarMedico(@ModelAttribute MedicoDto medicoDTO, Model model) {
-        try {
-            medicoService.registrarMedico(medicoDTO);
-            model.addAttribute("mensaje", "Médico registrado exitosamente.");
-        } catch (Exception e) {
-            model.addAttribute("error", "Error al registrar el médico: " + e.getMessage());
+    @PostMapping("/actualizar")
+    public String actualizarMedico(@ModelAttribute("medico") MedicoEntity medico, Model model) {
+        Optional<MedicoEntity> medicoExistente = medicoService.obtenerPorId(medico.getId());
+
+        if (medicoExistente.isPresent()) {
+            medicoService.actualizarMedico(medico);
+            model.addAttribute("mensaje", "Información actualizada correctamente.");
+        } else {
+            model.addAttribute("error", "El médico no existe.");
         }
-        model.addAttribute("medico", new MedicoDto());
-        return "presentation/registro_medico";
+
+        return "presentation/registro_medico"; // Retornar la misma página con el mensaje
     }
+
+
+    @GetMapping("/cargar")
+    public String cargarMedico(@RequestParam("id") Long id, Model model) {
+        Optional<MedicoEntity> medico = medicoService.obtenerPorId(id);
+
+        if (medico.isPresent()) {
+            model.addAttribute("medico", medico.get());
+        } else {
+            model.addAttribute("error", "No se encontró un médico con el ID ingresado.");
+        }
+
+        return "editar_medico"; // Retorna al formulario
+    }
+
+
 }
