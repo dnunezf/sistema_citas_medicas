@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "medicos")
-@PrimaryKeyJoinColumn(name = "id") // Usa el mismo ID que la tabla 'usuarios'
+@PrimaryKeyJoinColumn(name = "id")
 public class MedicoEntity extends UsuarioEntity {
 
     @Column(nullable = false, length = 100)
@@ -32,10 +32,9 @@ public class MedicoEntity extends UsuarioEntity {
 
     public MedicoEntity() {}
 
-    public MedicoEntity(Long id, String nombre, String clave, RolUsuario rol,
-                        String especialidad, Double costoConsulta, String localidad,
-                        int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
-        super(id, nombre, clave, rol);
+    public MedicoEntity(Long id, String nombre, String clave, String especialidad, Double costoConsulta,
+                        String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
+        super(id, nombre, clave, RolUsuario.MEDICO);
         this.especialidad = especialidad;
         this.costoConsulta = costoConsulta;
         this.localidad = localidad;

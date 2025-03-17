@@ -5,7 +5,7 @@ import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
 
 public class MedicoDto extends UsuarioDto {
 
-    private Long id; // Se agrega el campo ID en el DTO
+    private Long id;
     private String especialidad;
     private Double costoConsulta;
     private String localidad;
@@ -13,14 +13,11 @@ public class MedicoDto extends UsuarioDto {
     private String presentacion;
     private String estadoAprobacion;
 
-    // Constructor vacío
-    public MedicoDto() {
-    }
+    public MedicoDto() {}
 
-    // Constructor con parámetros
-    public MedicoDto(Long id, String nombre, String rol, String especialidad, Double costoConsulta,
+    public MedicoDto(Long id, String nombre, String clave, String especialidad, Double costoConsulta,
                      String localidad, int frecuenciaCitas, String presentacion, String estadoAprobacion) {
-        super(id, nombre, rol);
+        super(id, nombre, clave, "MEDICO");
         this.id = id;
         this.especialidad = especialidad;
         this.costoConsulta = costoConsulta;
