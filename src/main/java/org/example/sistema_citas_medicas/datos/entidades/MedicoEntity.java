@@ -3,13 +3,9 @@ package org.example.sistema_citas_medicas.datos.entidades;
 import jakarta.persistence.*;
 
 @Entity
-
 @Table(name = "medicos")
-public class MedicoEntity extends UsuarioEntity
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@PrimaryKeyJoinColumn(name = "id") // Usa el mismo ID que la tabla 'usuarios'
+public class MedicoEntity extends UsuarioEntity {
 
     @Column(nullable = false, length = 100)
     private String especialidad;
@@ -34,20 +30,11 @@ public class MedicoEntity extends UsuarioEntity
         PENDIENTE, APROBADO, RECHAZADO
     }
 
-    public MedicoEntity() {
-    }
+    public MedicoEntity() {}
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public MedicoEntity(Long id, String nombre, String clave, Rol rol, String especialidad, Double costoConsulta, String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
+    public MedicoEntity(Long id, String nombre, String clave, RolUsuario rol,
+                        String especialidad, Double costoConsulta, String localidad,
+                        int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion) {
         super(id, nombre, clave, rol);
         this.especialidad = especialidad;
         this.costoConsulta = costoConsulta;
@@ -57,55 +44,22 @@ public class MedicoEntity extends UsuarioEntity
         this.estadoAprobacion = estadoAprobacion;
     }
 
-    public MedicoEntity(Long id, String nombre, String clave, Rol rol) {
-        super(id, nombre, clave, rol);
-    }
+    // Getters y Setters
+    public String getEspecialidad() { return especialidad; }
+    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
 
-    public String getEspecialidad() {
-        return especialidad;
-    }
+    public Double getCostoConsulta() { return costoConsulta; }
+    public void setCostoConsulta(Double costoConsulta) { this.costoConsulta = costoConsulta; }
 
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
+    public String getLocalidad() { return localidad; }
+    public void setLocalidad(String localidad) { this.localidad = localidad; }
 
-    public Double getCostoConsulta() {
-        return costoConsulta;
-    }
+    public int getFrecuenciaCitas() { return frecuenciaCitas; }
+    public void setFrecuenciaCitas(int frecuenciaCitas) { this.frecuenciaCitas = frecuenciaCitas; }
 
-    public void setCostoConsulta(Double costoConsulta) {
-        this.costoConsulta = costoConsulta;
-    }
+    public String getPresentacion() { return presentacion; }
+    public void setPresentacion(String presentacion) { this.presentacion = presentacion; }
 
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(String localidad) {
-        this.localidad = localidad;
-    }
-
-    public int getFrecuenciaCitas() {
-        return frecuenciaCitas;
-    }
-
-    public void setFrecuenciaCitas(int frecuenciaCitas) {
-        this.frecuenciaCitas = frecuenciaCitas;
-    }
-
-    public String getPresentacion() {
-        return presentacion;
-    }
-
-    public void setPresentacion(String presentacion) {
-        this.presentacion = presentacion;
-    }
-
-    public EstadoAprobacion getEstadoAprobacion() {
-        return estadoAprobacion;
-    }
-
-    public void setEstadoAprobacion(EstadoAprobacion estadoAprobacion) {
-        this.estadoAprobacion = estadoAprobacion;
-    }
+    public EstadoAprobacion getEstadoAprobacion() { return estadoAprobacion; }
+    public void setEstadoAprobacion(EstadoAprobacion estadoAprobacion) { this.estadoAprobacion = estadoAprobacion; }
 }

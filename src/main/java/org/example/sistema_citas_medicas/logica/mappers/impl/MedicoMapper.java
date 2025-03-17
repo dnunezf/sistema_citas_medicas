@@ -1,7 +1,6 @@
 package org.example.sistema_citas_medicas.logica.mappers.impl;
 
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
-import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
 import org.example.sistema_citas_medicas.logica.mappers.Mapper;
 import org.modelmapper.ModelMapper;

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<header th:fragment="header" class="header">
+    <!-- Logo + Título -->
+    <div class="header-left">
+        <img class="logo" th:src="@{/images/logo.jpg}" alt="Logo">
+        <h1 id="tituloPagina">Medical Appointments</h1>
+    </div>
+
+    <!-- Teléfono centrado -->
+    <div class="header-center">
+        <img class="telefono-icono" th:src="@{/images/telefono.jpg}" alt="Teléfono">
+        <p class="telefono-numero">+506 5467 0937</p>
+    </div>
+</header>
+
+</html>

@@ -1,39 +1,38 @@
 package org.example.sistema_citas_medicas.datos.entidades;
+
 import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED) // Ahora usa JOINED en vez de SINGLE_TABLE
 @Table(name = "usuarios")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class UsuarioEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false) // ID ingresado por el usuario
     private Long id;
 
-
-    @Column(nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "clave", nullable = false, length = 100)
     private String clave;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Rol rol;
+    @Column(name = "rol", nullable = false)
+    private RolUsuario rol;
 
-    public enum Rol {
-        PACIENTE, MEDICO, ADMINISTRADOR
-    }
+    // Constructor vacío (necesario para JPA)
+    public UsuarioEntity() {}
 
-    public UsuarioEntity() {
-    }
-
-    public UsuarioEntity(Long id, String nombre, String clave, Rol rol) {
+    // Constructor con parámetros
+    public UsuarioEntity(Long id, String nombre, String clave, RolUsuario rol) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
         this.rol = rol;
     }
 
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -58,11 +57,45 @@ public class UsuarioEntity {
         this.clave = clave;
     }
 
-    public Rol getRol() {
+    public RolUsuario getRol() {
         return rol;
     }
 
-    public void setRol(Rol rol) {
+    public void setRol(RolUsuario rol) {
         this.rol = rol;
+    }
+
+    // Método toString() para depuración
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", clave='" + clave + '\'' +
+                ", rol=" + rol +
+                '}';
+    }
+
+    // Equals y HashCode (para comparación en colecciones)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UsuarioEntity usuario = (UsuarioEntity) o;
+
+        if (!id.equals(usuario.id)) return false;
+        if (!nombre.equals(usuario.nombre)) return false;
+        if (!clave.equals(usuario.clave)) return false;
+        return rol == usuario.rol;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + nombre.hashCode();
+        result = 31 * result + clave.hashCode();
+        result = 31 * result + rol.hashCode();
+        return result;
     }
 }

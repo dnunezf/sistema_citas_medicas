@@ -20,7 +20,7 @@ public class MedicoController {
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("medico", new MedicoDto());
-        return "registro_medico";
+        return "presentation/registro_medico";
     }
 
     @PostMapping("/registro")
@@ -32,6 +32,6 @@ public class MedicoController {
             model.addAttribute("error", "Error al registrar el médico: " + e.getMessage());
         }
         model.addAttribute("medico", new MedicoDto());
-        return "registro_medico";
+        return "presentation/registro_medico";
     }
 }

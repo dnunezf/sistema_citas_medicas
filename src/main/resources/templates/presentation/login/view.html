@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body style="background-color: white">
+
+<header th:replace="~{fragments/header :: header}"></header>  <!-- Incluir HEADER -->
+
+<!-- Contenedor Principal -->
+<div class="cuerpo">
+    <form th:action="@{/usuarios/login}" method="post" th:object="${login}">
+        <div id="login"> <!-- div del login en general -->
+            <div id="tituloLogin"> <!-- título login -->
+                <h2>Login</h2>
+            </div>
+
+            <div id="datosLogin">  <!-- div del la imagen, id, password y boton de login -->
+                <div> <!-- div del la imagen-->
+                    <img class="login-icono" th:src="@{/images/login.jpg}" alt="Login">
+                </div>
+
+                <div class="input-group"> <!-- div del id-->
+                    <span class="icon">
+                         <img th:src="@{/images/user.jpg}" alt="User Icon">
+                    </span>
+                    <input type="text" th:field="*{id}" placeholder="User id" required>
+                </div>
+
+                <div class="input-group"> <!-- div del password-->
+                    <span class="icon">
+                         <img th:src="@{/images/llave.jpg}" alt="Password Icon">
+                    </span>
+                    <input type="password" th:field="*{clave}" placeholder="Password" required>
+                </div>
+
+                <div class="button-container"> <!-- div del botón de login-->
+                    <button type="submit" class="btn-login">Log in</button>
+                </div>
+            </div>
+
+            <!-- REGISTRARSE -->
+            <div class="register-container">
+                <span>Don't have an account?</span>
+                <a href="/register" class="btn-register">Register here</a>
+            </div>
+
+        </div>
+
+        <!-- Mensaje de error si las credenciales son incorrectas -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div> <!-- Incluir FOOTER -->
+
+</body>
+</html>
+
+
