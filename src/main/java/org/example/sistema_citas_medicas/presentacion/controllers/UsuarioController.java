@@ -9,10 +9,7 @@ import org.example.sistema_citas_medicas.logica.servicios.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,42 +55,52 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrar")
-    public String registrarUsuario(@ModelAttribute("usuario") UsuarioEntity usuario, Model model) {
+    public String registrarUsuario(
+            @ModelAttribute("usuario") UsuarioEntity usuario,
+            @RequestParam("confirmarClave") String confirmarClave,
+            Model model) {
         try {
-            // Verificar que el nombre no sea nulo o vacío
+            // Asegurar que la lista de roles siempre esté presente en el modelo
+            model.addAttribute("roles", getRolesDisponibles());
+
+            // Validación: El nombre no puede estar vacío
             if (usuario.getNombre() == null || usuario.getNombre().trim().isEmpty()) {
                 model.addAttribute("error", "El nombre no puede estar vacío.");
-                return "presentation/registro_usuario"; // Retorna la vista con el mensaje de error
+                return "presentation/registro_usuario";
             }
 
+            // Validación: La contraseña y la confirmación deben coincidir
+            if (!usuario.getClave().equals(confirmarClave)) {
+                model.addAttribute("errorClave", "Las contraseñas no coinciden.");
+                return "presentation/registro_usuario";
+            }
+
+            // Si el usuario es médico, crear su entidad correspondiente
             if (usuario.getRol() == RolUsuario.MEDICO) {
-                // Crear MedicoEntity asegurando valores válidos
                 MedicoEntity medico = new MedicoEntity(
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getClave(),
-                        "Especialidad no definida",  // Mejor descripción
-                        0.0,                         // Asegurar que la calificación no sea nula
+                        "Especialidad no definida",
+                        0.0,
                         "Localidad no especificada",
-                        30,                          // Edad por defecto
+                        30,
                         "Presentación no disponible",
                         MedicoEntity.EstadoAprobacion.pendiente
                 );
-                usuarioService.save(medico); // Guardar como Médico
+                usuarioService.save(medico);
             } else {
-                usuarioService.save(usuario); // Guardar como usuario común
+                usuarioService.save(usuario);
             }
 
             model.addAttribute("mensaje", "Usuario registrado exitosamente.");
-            return "redirect:/login"; // Redirigir tras registro exitoso
+            return "redirect:/login";
 
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar usuario: " + e.getMessage());
-            return "presentation/registro_usuario"; // Volver al formulario en caso de error
+            return "presentation/registro_usuario";
         }
     }
-
-
 
     public RolUsuario[] getRolesDisponibles() {
         return RolUsuario.values(); // 🔥 Devuelve todos los valores del enum

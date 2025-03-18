@@ -103,3 +103,24 @@ span {
     padding: 10px;
     font-size: 14px;
 }
+
+/* Caja de error */
+.error-box {
+    background-color: #ffdddd;
+    border: 1px solid #ff4d4d;
+    color: #cc0000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Mensaje de error de cada campo */
+.error-text {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+

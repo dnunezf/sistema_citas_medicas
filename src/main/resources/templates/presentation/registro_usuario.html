@@ -13,6 +13,11 @@
   <img src="/images/user.jpg" alt="User Icon" class="user-icon">
   <h2>Registro</h2>
 
+  <!-- Mensaje de error general -->
+  <div th:if="${error}" class="error-box">
+    <p th:text="${error}"></p>
+  </div>
+
   <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
 
     <!-- Campo ID -->
@@ -34,6 +39,13 @@
       <input type="password" id="clave" th:field="*{clave}" placeholder="password" required maxlength="100">
     </div>
 
+    <!-- Campo Confirmar Clave -->
+    <div class="input-container">
+      <i class="fas fa-key"></i>
+      <input type="password" id="confirmarClave" name="confirmarClave" placeholder="confirmar password" required maxlength="100">
+      <p class="error-text" th:if="${errorClave}" th:text="${errorClave}"></p>
+    </div>
+
     <!-- Selección de Rol -->
     <div class="input-container">
       <i class="fas fa-user-tag"></i>
@@ -46,6 +58,7 @@
     <button type="submit">Registrar</button>
   </form>
 </div>
+
 
 <div class="footer">
   Total Soft Inc. &copy; 2024
