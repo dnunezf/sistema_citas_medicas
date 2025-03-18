@@ -26,7 +26,7 @@
                     <span class="icon">
                          <img th:src="@{/images/user.jpg}" alt="User Icon">
                     </span>
-                    <input type="number" id="id" th:field="*{id}" required>
+                    <input type="number" id="id" th:field="*{id}" min="1" required>
                     <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
                 </div>
 
