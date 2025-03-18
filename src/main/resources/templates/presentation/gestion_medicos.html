@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gestión de Médicos</title>
-    <link rel="stylesheet" th:href="@{css/gestion_medicos.css}">
+    <link rel="stylesheet" th:href="@{/css/gestion_medicos.css}">
 </head>
 <body>
 
@@ -38,9 +38,18 @@
                 <form th:action="@{/admin/actualizarEstado}" method="post">
                     <input type="hidden" name="id" th:value="${medico.id}">
                     <select name="estadoAprobacion">
-                        <option value="pendiente" th:selected="${medico.estadoAprobacion == 'pendiente'}">Pendiente</option>
-                        <option value="aprobado" th:selected="${medico.estadoAprobacion == 'aprobado'}">Aprobado</option>
-                        <option value="rechazado" th:selected="${medico.estadoAprobacion == 'rechazado'}">Rechazado</option>
+                        <option value="pendiente"
+                                th:selected="${medico.estadoAprobacion == T(org.example.sistema_citas_medicas.datos.entidades.MedicoEntity.EstadoAprobacion).pendiente}">
+                            Pendiente
+                        </option>
+                        <option value="aprobado"
+                                th:selected="${medico.estadoAprobacion == T(org.example.sistema_citas_medicas.datos.entidades.MedicoEntity.EstadoAprobacion).aprobado}">
+                            Aprobado
+                        </option>
+                        <option value="rechazado"
+                                th:selected="${medico.estadoAprobacion == T(org.example.sistema_citas_medicas.datos.entidades.MedicoEntity.EstadoAprobacion).rechazado}">
+                            Rechazado
+                        </option>
                     </select>
                     <button type="submit">Actualizar</button>
                 </form>
