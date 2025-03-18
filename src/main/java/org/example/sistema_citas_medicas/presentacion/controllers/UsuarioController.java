@@ -1,6 +1,7 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
+import org.example.sistema_citas_medicas.datos.entidades.PacienteEntity;
 import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.logica.dto.UsuarioDto;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -72,14 +74,27 @@ public class UsuarioController {
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getClave(),
-                        "Especialidad no definida",  // Mejor descripción
-                        0.0,                         // Asegurar que la calificación no sea nula
-                        "Localidad no especificada",
-                        30,                          // Edad por defecto
-                        "Presentación no disponible",
-                        MedicoEntity.EstadoAprobacion.pendiente
+                        "Especialidad no definida",  // Especialidad por defecto
+                        0.0,                         // Costo consulta predeterminado
+                        "Localidad no especificada", // Localidad por defecto
+                        30,                          // Frecuencia de citas por defecto
+                        "Presentación no disponible",// Presentación por defecto
+                        MedicoEntity.EstadoAprobacion.pendiente // Estado inicial
                 );
                 usuarioService.save(medico); // Guardar como Médico
+
+            } else if (usuario.getRol() == RolUsuario.PACIENTE) {
+                // Crear PacienteEntity con valores por defecto
+                PacienteEntity paciente = new PacienteEntity(
+                        usuario.getId(),
+                        usuario.getNombre(),
+                        usuario.getClave(),
+                        LocalDate.of(2000, 1, 1), // Fecha de nacimiento por defecto
+                        "000-000-0000",           // Teléfono por defecto
+                        "Dirección no especificada" // Dirección por defecto
+                );
+                usuarioService.save(paciente); // Guardar como Paciente
+
             } else {
                 usuarioService.save(usuario); // Guardar como usuario común
             }
@@ -95,8 +110,11 @@ public class UsuarioController {
 
 
 
+
     public RolUsuario[] getRolesDisponibles() {
         return RolUsuario.values(); // 🔥 Devuelve todos los valores del enum
     }
 
 }
+
+
