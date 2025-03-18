@@ -60,29 +60,39 @@ public class UsuarioController {
     @PostMapping("/registrar")
     public String registrarUsuario(@ModelAttribute("usuario") UsuarioEntity usuario, Model model) {
         try {
+            // Verificar que el nombre no sea nulo o vacío
+            if (usuario.getNombre() == null || usuario.getNombre().trim().isEmpty()) {
+                model.addAttribute("error", "El nombre no puede estar vacío.");
+                return "presentation/registro_usuario"; // Retorna la vista con el mensaje de error
+            }
+
             if (usuario.getRol() == RolUsuario.MEDICO) {
-                // Convertimos el usuario genérico en un MedicoEntity
+                // Crear MedicoEntity asegurando valores válidos
                 MedicoEntity medico = new MedicoEntity(
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getClave(),
-                        "Especialidad por defecto",  // Puedes cambiar esto con datos del formulario
-                        0.0,
-                        "Localidad por defecto",
-                        30,
-                        "Presentación por defecto",
-                        MedicoEntity.EstadoAprobacion.PENDIENTE
+                        "Especialidad no definida",  // Mejor descripción
+                        0.0,                         // Asegurar que la calificación no sea nula
+                        "Localidad no especificada",
+                        30,                          // Edad por defecto
+                        "Presentación no disponible",
+                        MedicoEntity.EstadoAprobacion.pendiente
                 );
-                usuarioService.save(medico); // 🔥 Pasamos el MedicoEntity en vez de UsuarioEntity
+                usuarioService.save(medico); // Guardar como Médico
             } else {
-                usuarioService.save(usuario); // Para otros tipos de usuario
+                usuarioService.save(usuario); // Guardar como usuario común
             }
+
             model.addAttribute("mensaje", "Usuario registrado exitosamente.");
+            return "redirect:/login"; // Redirigir tras registro exitoso
+
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar usuario: " + e.getMessage());
+            return "presentation/registro_usuario"; // Volver al formulario en caso de error
         }
-        return "presentation/registro_usuario"; // Ajusta esto según tu página de registro
     }
+
 
 
     public RolUsuario[] getRolesDisponibles() {

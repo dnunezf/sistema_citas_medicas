@@ -27,7 +27,7 @@ public class MedicoEntity extends UsuarioEntity {
     private EstadoAprobacion estadoAprobacion;
 
     public enum EstadoAprobacion {
-        PENDIENTE, APROBADO, RECHAZADO
+        pendiente, aprobado, rechazado
     }
 
     public MedicoEntity() {}

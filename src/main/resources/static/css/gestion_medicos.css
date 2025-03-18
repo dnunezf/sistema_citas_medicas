@@ -1,0 +1,129 @@
+/* Estilos Generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título */
+.title {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Mensajes de éxito y error */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Estilos de la Tabla */
+.medicos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.medicos-table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.medicos-table th,
+.medicos-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.medicos-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.medicos-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Formulario de Selección */
+select {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .medicos-table,
+    .medicos-table thead,
+    .medicos-table tbody,
+    .medicos-table th,
+    .medicos-table td,
+    .medicos-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    .medicos-table th {
+        display: none;
+    }
+
+    .medicos-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .medicos-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+}

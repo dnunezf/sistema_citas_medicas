@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Médicos</title>
+    <link rel="stylesheet" th:href="@{css/gestion_medicos.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2 class="title">Gestión de Médicos</h2>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+    <table class="medicos-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Costo Consulta</th>
+            <th>Localidad</th>
+            <th>Estado Aprobación</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="medico : ${medicos}">
+            <td th:text="${medico.id}"></td>
+            <td th:text="${medico.nombre}"></td>
+            <td th:text="${medico.especialidad}"></td>
+            <td th:text="${medico.costoConsulta}"></td>
+            <td th:text="${medico.localidad}"></td>
+            <td>
+                <form th:action="@{/admin/actualizarEstado}" method="post">
+                    <input type="hidden" name="id" th:value="${medico.id}">
+                    <select name="estadoAprobacion">
+                        <option value="pendiente" th:selected="${medico.estadoAprobacion == 'pendiente'}">Pendiente</option>
+                        <option value="aprobado" th:selected="${medico.estadoAprobacion == 'aprobado'}">Aprobado</option>
+                        <option value="rechazado" th:selected="${medico.estadoAprobacion == 'rechazado'}">Rechazado</option>
+                    </select>
+                    <button type="submit">Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

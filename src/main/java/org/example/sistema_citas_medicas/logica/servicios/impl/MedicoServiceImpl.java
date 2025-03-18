@@ -8,6 +8,7 @@ import org.example.sistema_citas_medicas.logica.mappers.impl.MedicoMapper;
 import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,18 @@ public class MedicoServiceImpl implements MedicoService {
             return medicoRepository.save(medicoExistente);
         }).orElse(null);
     }
+
+    public List<MedicoEntity> obtenerTodosMedicos() {
+        return medicoRepository.findAll();
+    }
+
+    // Actualizar estado de aprobación
+    @Transactional
+    public void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado) {
+        MedicoEntity medico = medicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+        medico.setEstadoAprobacion(estado);
+        medicoRepository.save(medico);
+    }
+
 
 }
