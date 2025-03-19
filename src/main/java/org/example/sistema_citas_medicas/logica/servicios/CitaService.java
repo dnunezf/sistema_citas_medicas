@@ -18,4 +18,6 @@ public interface CitaService {
 
     // Actualizar estado y anotaciones de una cita
     CitaDto actualizarCita(Long idCita, CitaEntity.EstadoCita nuevoEstado, String notas);
+
+    Long obtenerIdMedicoPorCita(Long idCita);
 }
