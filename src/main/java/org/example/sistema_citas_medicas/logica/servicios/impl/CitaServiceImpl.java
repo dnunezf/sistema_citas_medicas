@@ -2,12 +2,20 @@ package org.example.sistema_citas_medicas.logica.servicios.impl;
 
 import jakarta.transaction.Transactional;
 import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
+import org.example.sistema_citas_medicas.datos.entidades.HorarioMedicoEntity;
 import org.example.sistema_citas_medicas.datos.repositorios.CitaRepository;
 import org.example.sistema_citas_medicas.logica.dto.CitaDto;
+import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 import org.example.sistema_citas_medicas.logica.mappers.impl.CitaMapper;
+import org.example.sistema_citas_medicas.logica.mappers.impl.HorarioMedicoMapper;
 import org.example.sistema_citas_medicas.logica.servicios.CitaService;
+import org.example.sistema_citas_medicas.logica.servicios.HorarioMedicoService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,4 +74,10 @@ public class CitaServiceImpl implements CitaService {
             throw new RuntimeException("Cita no encontrada");
         }
     }
+
+    @Override
+    public List<CitaEntity> obtenerCitasReservadas(Long idMedico, LocalDate fecha) {
+        return citaRepository.obtenerCitasReservadas(idMedico, fecha);
+    }
+
 }

@@ -1,0 +1,48 @@
+.container {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.date-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.nav-button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.schedule table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.schedule th, .schedule td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.reserved {
+    background-color: #FF6B6B;
+    color: white;
+    font-weight: bold;
+}
+
+.available {
+    background-color: #2ECC71;
+    color: white;
+    font-weight: bold;
+}

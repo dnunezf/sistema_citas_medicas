@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horario del Médico</title>
+    <link rel="stylesheet" th:href="@{/css/horario_medico.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2 class="title">Horario del Médico</h2>
+
+    <div class="date-navigation">
+        <a th:href="@{/horarios/medico/{idMedico}(idMedico=${idMedico}, fecha=${fecha.minusDays(1)})}" class="nav-button">⬅️ Día Anterior</a>
+        <span class="date-label" th:text="${#temporals.format(fecha, 'EEEE, dd MMMM yyyy')}"></span>
+        <a th:href="@{/horarios/medico/{idMedico}(idMedico=${idMedico}, fecha=${fecha.plusDays(1)})}" class="nav-button">Día Siguiente ➡️</a>
+    </div>
+
+    <div class="schedule">
+        <table>
+            <thead>
+            <tr>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+                <th>Duración</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="horario : ${horarios}">
+                <td th:text="${horario.horaInicio}"></td>
+                <td th:text="${horario.horaFin}"></td>
+                <td th:text="${horario.tiempoCita} + ' min'"></td>
+                <td th:text="${horario.reservado ? 'RESERVADO' : 'DISPONIBLE'}"
+                    th:classappend="${horario.reservado ? 'reserved' : 'available'}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/}" class="back-button">Volver al inicio</a>
+</div>
+
+</body>
+</html>

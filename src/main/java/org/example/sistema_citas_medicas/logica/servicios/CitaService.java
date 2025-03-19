@@ -3,6 +3,7 @@ package org.example.sistema_citas_medicas.logica.servicios;
 import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
 import org.example.sistema_citas_medicas.logica.dto.CitaDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CitaService {
@@ -18,4 +19,7 @@ public interface CitaService {
 
     // Actualizar estado y anotaciones de una cita
     CitaDto actualizarCita(Long idCita, CitaEntity.EstadoCita nuevoEstado, String notas);
+
+    List<CitaEntity> obtenerCitasReservadas(Long idMedico, LocalDate fecha);
+
 }
