@@ -28,17 +28,22 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Transactional
     public MedicoEntity actualizarMedico(MedicoEntity medico) {
-        return medicoRepository.findById(medico.getId()).map(medicoExistente -> {
-            medicoExistente.setNombre(medico.getNombre());
-            medicoExistente.setEspecialidad(medico.getEspecialidad());
-            medicoExistente.setCostoConsulta(medico.getCostoConsulta());
-            medicoExistente.setLocalidad(medico.getLocalidad());
-            medicoExistente.setFrecuenciaCitas(medico.getFrecuenciaCitas());
-            medicoExistente.setPresentacion(medico.getPresentacion());
-            medicoExistente.setEstadoAprobacion(medico.getEstadoAprobacion());
-            return medicoRepository.save(medicoExistente);
-        }).orElse(null);
+        MedicoEntity medicoExistente = medicoRepository.findById(medico.getId())
+                .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+
+        // 🔥 Mantener valores existentes si los nuevos son nulos o vacíos
+        medicoExistente.setNombre(medico.getNombre() != null ? medico.getNombre() : medicoExistente.getNombre());
+        medicoExistente.setEspecialidad(medico.getEspecialidad() != null ? medico.getEspecialidad() : medicoExistente.getEspecialidad());
+        medicoExistente.setCostoConsulta(medico.getCostoConsulta() != null ? medico.getCostoConsulta() : medicoExistente.getCostoConsulta());
+        medicoExistente.setLocalidad(medico.getLocalidad() != null ? medico.getLocalidad() : medicoExistente.getLocalidad());
+        medicoExistente.setFrecuenciaCitas(medico.getFrecuenciaCitas() != 0 ? medico.getFrecuenciaCitas() : medicoExistente.getFrecuenciaCitas());
+        medicoExistente.setPresentacion(medico.getPresentacion() != null ? medico.getPresentacion() : medicoExistente.getPresentacion());
+        medicoExistente.setEstadoAprobacion(medico.getEstadoAprobacion() != null ? medico.getEstadoAprobacion() : medicoExistente.getEstadoAprobacion());
+
+        return medicoRepository.save(medicoExistente);
     }
+
+
 
     public List<MedicoEntity> obtenerTodosMedicos() {
         return medicoRepository.findAll();
@@ -51,6 +56,14 @@ public class MedicoServiceImpl implements MedicoService {
         medico.setEstadoAprobacion(estado);
         medicoRepository.save(medico);
     }
+
+    @Override
+    public byte[] obtenerFotoPerfil(Long id) {
+        return medicoRepository.findById(id)
+                .map(MedicoEntity::getFotoPerfil)
+                .orElse(null);
+    }
+
 
 
 }

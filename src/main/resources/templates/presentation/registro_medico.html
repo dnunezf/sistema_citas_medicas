@@ -27,7 +27,7 @@
     <hr> <!-- Separador visual -->
 
     <!-- Formulario de edición (se llena después de cargar datos) -->
-    <form th:action="@{/medicos/actualizar}" th:object="${medico}" method="post" class="form-container" th:if="${medico}">
+    <form th:action="@{/medicos/actualizar}" th:object="${medico}" method="post" enctype="multipart/form-data" class="form-container" th:if="${medico}">
 
         <div class="form-group">
             <label for="id">ID</label>
@@ -71,16 +71,17 @@
             <p class="error-text" th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}"></p>
         </div>
 
+        <!--  Campo para cargar foto
         <div class="form-group">
-            <label for="estadoAprobacion">Estado de Aprobación</label>
-            <select id="estadoAprobacion" th:field="*{estadoAprobacion}" required>
-                <option value="">Seleccione una opción</option>
-                <option value="PENDIENTE">Pendiente</option>
-                <option value="APROBADO">Aprobado</option>
-                <option value="RECHAZADO">Rechazado</option>
-            </select>
-            <p class="error-text" th:if="${#fields.hasErrors('estadoAprobacion')}" th:errors="*{estadoAprobacion}"></p>
+            <label for="foto">Foto de Perfil</label>
+            <input type="file" id="foto" name="foto" accept="image/*">
         </div>
+
+        Mostrar imagen actual
+        <div class="form-group" th:if="${medico.id}">
+            <label>Foto Actual</label>
+            <img th:src="@{/medicos/foto/{id}(id=${medico.id})}" alt="Foto de perfil" style="max-width: 150px; border-radius: 50%;">
+        </div>-->
 
         <button type="submit" class="submit-button">Actualizar Información</button>
     </form>

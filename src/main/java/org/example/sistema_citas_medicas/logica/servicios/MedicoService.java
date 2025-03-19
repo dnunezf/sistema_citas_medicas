@@ -12,4 +12,5 @@ public interface MedicoService {
     MedicoEntity  actualizarMedico(MedicoEntity medico);
     List<MedicoEntity> obtenerTodosMedicos();
     void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado);
+    byte[] obtenerFotoPerfil(Long id); // ✅ Método para obtener la imagen
 }

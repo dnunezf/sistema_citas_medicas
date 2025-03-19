@@ -22,6 +22,9 @@ public class MedicoEntity extends UsuarioEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String presentacion;
 
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] fotoPerfil; // ✅ Guardar imagen como bytes
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoAprobacion estadoAprobacion;
@@ -61,4 +64,12 @@ public class MedicoEntity extends UsuarioEntity {
 
     public EstadoAprobacion getEstadoAprobacion() { return estadoAprobacion; }
     public void setEstadoAprobacion(EstadoAprobacion estadoAprobacion) { this.estadoAprobacion = estadoAprobacion; }
+
+    public byte[] getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(byte[] fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
 }

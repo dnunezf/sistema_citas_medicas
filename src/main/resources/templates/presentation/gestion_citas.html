@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Citas</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_citas.css}">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/images/logo.png" alt="Medical Appointments">
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#">About...</a></li>
+            <li><a href="#">Appointments</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><span th:text="${medico.nombre}"></span> ▼</li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h2>
+        Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - appointments
+    </h2>
+
+    <div class="filters">
+        <form th:action="@{/citas/medico/{idMedico}/filtrar/estado(idMedico=${medico.id})}" method="get">
+            <label for="estado">Status:</label>
+            <select id="estado" name="estado">
+                <option value="ALL">All</option>
+                <option value="pendiente">Pending</option>
+                <option value="confirmada">Confirmed</option>
+                <option value="cancelada">Canceled</option>
+                <option value="completada">Completed</option>
+            </select>
+            <label for="paciente">Patient:</label>
+            <input type="text" id="paciente" name="nombrePaciente" placeholder="Patient name">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="appointments">
+        <div class="appointment" th:each="cita : ${citas}">
+            <div class="patient-info">
+                <img src="/images/avatar.png" alt="Patient">
+                <span th:text="${cita.paciente.nombre}"></span>
+            </div>
+            <div class="appointment-details">
+                <span class="date-time" th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy - HH:mm')}"></span>
+                <span class="status" th:text="${cita.estado}"
+                      th:classappend="${cita.estado == 'pendiente' ? 'pending'
+                          : (cita.estado == 'completada' ? 'attended' : 'default')}">
+                    </span>
+            </div>
+            <div class="actions">
+                <form th:action="@{/citas/actualizar}" method="post">
+                    <input type="hidden" name="idCita" th:value="${cita.id}">
+                    <select name="estado">
+                        <option value="pendiente" th:selected="${cita.estado == 'pendiente'}">Pending</option>
+                        <option value="confirmada" th:selected="${cita.estado == 'confirmada'}">Confirmed</option>
+                        <option value="cancelada" th:selected="${cita.estado == 'cancelada'}">Canceled</option>
+                        <option value="completada" th:selected="${cita.estado == 'completada'}">Completed</option>
+                    </select>
+                    <input type="text" name="notas" placeholder="Add notes..." th:value="${cita.notas}">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Total Soft Inc.</p>
+    <div class="social-icons">
+        <img src="/images/facebook.png" alt="Facebook">
+        <img src="/images/twitter.png" alt="Twitter">
+        <img src="/images/instagram.png" alt="Instagram">
+    </div>
+</footer>
+</body>
+</html>

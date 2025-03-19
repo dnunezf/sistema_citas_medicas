@@ -2,6 +2,7 @@ package org.example.sistema_citas_medicas.logica.dto;
 
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
+import org.springframework.web.multipart.MultipartFile;
 
 public class MedicoDto extends UsuarioDto {
 
@@ -12,6 +13,7 @@ public class MedicoDto extends UsuarioDto {
     private int frecuenciaCitas;
     private String presentacion;
     private String estadoAprobacion;
+    private MultipartFile fotoPerfil; // ✅ Imagen como archivo
 
     public MedicoDto() {}
 
@@ -82,5 +84,13 @@ public class MedicoDto extends UsuarioDto {
 
     public void setEstadoAprobacion(String estadoAprobacion) {
         this.estadoAprobacion = estadoAprobacion;
+    }
+
+    public MultipartFile getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(MultipartFile fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 }

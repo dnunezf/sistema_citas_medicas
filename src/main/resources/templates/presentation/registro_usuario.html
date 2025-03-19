@@ -20,7 +20,7 @@
 
   <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
 
-    <!-- Campo ID -->
+  <!-- Campo ID -->
     <div class="input-container">
       <i class="fas fa-user"></i>
       <input type="number" id="id" th:field="*{id}" min="1" required>
@@ -30,8 +30,11 @@
     <!-- Campo Nombre -->
     <div class="input-container">
       <i class="fas fa-user-edit"></i>
-      <input type="text" id="nombre" th:field="*{nombre}" placeholder="nombre" required maxlength="100">
+      <input type="text" id="nombre" th:field="*{nombre}" placeholder="nombre" required maxlength="100"
+             pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" title="Solo se permiten letras y espacios">
+      <p class="error-text" th:if="${errorNombre}" th:text="${errorNombre}"></p>
     </div>
+
 
     <!-- Campo Clave -->
     <div class="input-container">

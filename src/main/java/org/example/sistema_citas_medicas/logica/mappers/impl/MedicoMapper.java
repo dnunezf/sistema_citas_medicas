@@ -6,6 +6,8 @@ import org.example.sistema_citas_medicas.logica.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class MedicoMapper implements Mapper<MedicoEntity, MedicoDto> {
     private ModelMapper modelMapper;
@@ -17,11 +19,22 @@ public class MedicoMapper implements Mapper<MedicoEntity, MedicoDto> {
 
     @Override
     public MedicoDto mapTo(MedicoEntity medicoEntity) {
-        return modelMapper.map(medicoEntity, MedicoDto.class);
+        MedicoDto dto = modelMapper.map(medicoEntity, MedicoDto.class);
+        dto.setFotoPerfil(null); // ✅ No podemos mapear `byte[]` a `MultipartFile` directamente
+        return dto;
     }
 
     @Override
     public MedicoEntity mapFrom(MedicoDto medicoDto) {
-        return modelMapper.map(medicoDto, MedicoEntity.class);
+        MedicoEntity entity = modelMapper.map(medicoDto, MedicoEntity.class);
+        try {
+            if (medicoDto.getFotoPerfil() != null && !medicoDto.getFotoPerfil().isEmpty()) {
+                entity.setFotoPerfil(medicoDto.getFotoPerfil().getBytes());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al convertir la imagen", e);
+        }
+        return entity;
     }
+
 }

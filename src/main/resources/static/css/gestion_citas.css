@@ -1,0 +1,130 @@
+/* Reset básico */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header */
+header {
+    background-color: #e3f2fd;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    align-items: center;
+}
+
+header .logo img {
+    height: 40px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header nav ul li {
+    display: inline;
+    font-weight: bold;
+}
+
+/* Contenido Principal */
+main {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #ccc;
+}
+
+h2 {
+    text-align: center;
+}
+
+.doctor-name {
+    color: blue;
+    font-style: italic;
+}
+
+/* Filtros */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filters select, .filters input {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Lista de citas */
+.appointments {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.appointment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.patient-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.patient-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.date-time {
+    font-weight: bold;
+    color: gray;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.pending {
+    background-color: yellow;
+}
+
+.attended {
+    background-color: green;
+    color: white;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #333;
+    color: white;
+}
+
+.social-icons img {
+    width: 20px;
+    margin: 5px;
+}
