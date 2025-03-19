@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
@@ -50,6 +51,20 @@ public class MedicoServiceImpl implements MedicoService {
         MedicoEntity medico = medicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
         medico.setEstadoAprobacion(estado);
         medicoRepository.save(medico);
+    }
+
+
+    @Override
+    public List<MedicoDto> buscarPorEspecialidadYUbicacion(String especialidad, String ubicacion) {
+        List<MedicoEntity> medicos = medicoRepository.findByEspecialidadAndLocalidad(especialidad, ubicacion);
+        return medicos.stream().map(medicoMapper::mapTo).collect(Collectors.toList());
+    }
+
+
+    // ✅ Obtener todas las especialidades únicas de los médicos
+    @Override
+    public List<String> obtenerEspecialidades() {
+        return medicoRepository.findDistinctEspecialidades();
     }
 
 

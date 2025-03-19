@@ -2,7 +2,9 @@ package org.example.sistema_citas_medicas.logica.servicios;
 
 import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
 import org.example.sistema_citas_medicas.logica.dto.CitaDto;
+import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CitaService {
@@ -20,4 +22,13 @@ public interface CitaService {
     CitaDto actualizarCita(Long idCita, CitaEntity.EstadoCita nuevoEstado, String notas);
 
     Long obtenerIdMedicoPorCita(Long idCita);
+
+    CitaDto agendarCita(Long idPaciente, Long idMedico, LocalDateTime fechaHora);
+
+
+    // Obtener horarios disponibles para los próximos 3 días
+    List<LocalDateTime> obtenerEspaciosDisponibles(Long idMedico, List<HorarioMedicoDto> horarios);
+
+
+
 }

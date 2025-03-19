@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendar Cita</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/agendar_cita.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Agendar Cita</h2>
+
+    <!-- Mensajes de error o éxito -->
+    <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+    <!-- Formulario para buscar médicos -->
+    <form th:action="@{/citas/buscar}" method="get">
+        <label for="especialidad">Especialidad:</label>
+        <select id="especialidad" name="especialidad">
+            <option value="">Seleccione...</option>
+            <option th:each="esp : ${especialidades}" th:value="${esp}" th:text="${esp}"></option>
+        </select>
+
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ciudad o localidad">
+
+        <button type="submit">Buscar Médicos</button>
+    </form>
+
+    <!-- Lista de médicos encontrados -->
+    <div th:if="${medicos}">
+        <h3>Médicos disponibles</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Especialidad</th>
+                <th>Ubicación</th>
+                <th>Seleccionar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medico : ${medicos}">
+                <td th:text="${medico.nombre}"></td>
+                <td th:text="${medico.especialidad}"></td>
+                <td th:text="${medico.localidad}"></td>
+                <td>
+                    <a th:href="@{/citas/horarios/{id}(id=${medico.id})}">Ver Horarios</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

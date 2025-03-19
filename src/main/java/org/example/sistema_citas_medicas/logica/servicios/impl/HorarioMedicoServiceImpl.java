@@ -1,13 +1,18 @@
 package org.example.sistema_citas_medicas.logica.servicios.impl;
 
 import org.example.sistema_citas_medicas.datos.entidades.HorarioMedicoEntity;
+import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.repositorios.HorarioMedicoRepository;
+import org.example.sistema_citas_medicas.datos.repositorios.MedicoRepository;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 import org.example.sistema_citas_medicas.logica.servicios.HorarioMedicoService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,20 +20,32 @@ import java.util.stream.Collectors;
 public class HorarioMedicoServiceImpl implements HorarioMedicoService {
 
     private final HorarioMedicoRepository horarioMedicoRepository;
+    private final MedicoRepository medicoRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm"); // ⏰ Formato 24 horas
+
+
+    @Autowired
     private final ModelMapper modelMapper;
 
-    public HorarioMedicoServiceImpl(HorarioMedicoRepository horarioMedicoRepository, ModelMapper modelMapper) {
+    public HorarioMedicoServiceImpl(HorarioMedicoRepository horarioMedicoRepository, MedicoRepository medicoRepository, ModelMapper modelMapper) {
         this.horarioMedicoRepository = horarioMedicoRepository;
+        this.medicoRepository = medicoRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<HorarioMedicoDto> obtenerHorariosPorMedico(Long idMedico) {
         List<HorarioMedicoEntity> horarios = horarioMedicoRepository.findByMedicoId(idMedico);
+
+        if (horarios == null || horarios.isEmpty()) {
+            return new ArrayList<>(); // Retorna lista vacía en vez de `null`
+        }
+
         return horarios.stream()
                 .map(horario -> modelMapper.map(horario, HorarioMedicoDto.class))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public HorarioMedicoDto obtenerHorarioPorId(Long idHorario) {
@@ -37,12 +54,26 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
         return modelMapper.map(horario, HorarioMedicoDto.class);
     }
 
-    @Override
-    public HorarioMedicoDto guardarHorario(HorarioMedicoDto horarioDto) {
-        HorarioMedicoEntity horario = modelMapper.map(horarioDto, HorarioMedicoEntity.class);
-        HorarioMedicoEntity guardado = horarioMedicoRepository.save(horario);
-        return modelMapper.map(guardado, HorarioMedicoDto.class);
+    public HorarioMedicoEntity guardarHorario(HorarioMedicoDto horarioDto) {
+        HorarioMedicoEntity horario = new HorarioMedicoEntity();
+
+        horario.setDiaSemana(HorarioMedicoEntity.DiaSemana.valueOf(horarioDto.getDiaSemana().toLowerCase())); // ✅ Convierte String a ENUM
+
+        // Formato de 24 horas
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        horario.setHoraInicio(LocalTime.parse(horarioDto.getHoraInicio(), formatter)); // ✅ Convierte String a LocalTime
+        horario.setHoraFin(LocalTime.parse(horarioDto.getHoraFin(), formatter)); // ✅ Convierte String a LocalTime
+
+        horario.setTiempoCita(horarioDto.getTiempoCita()); // ✅ Convierte String a int
+
+
+        MedicoEntity medico = medicoRepository.findById(horarioDto.getIdMedico())
+                .orElseThrow(() -> new RuntimeException("Error: Médico no encontrado con ID " + horarioDto.getIdMedico()));
+
+        horario.setMedico(medico); // Ahora sí se guarda correctamente
+        return horarioMedicoRepository.save(horario);
     }
+
 
     @Override
     public HorarioMedicoDto actualizarHorario(Long idHorario, HorarioMedicoDto horarioDto) {
@@ -70,5 +101,8 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
         }
         horarioMedicoRepository.deleteById(idHorario);
     }
+
+
+
 }
 

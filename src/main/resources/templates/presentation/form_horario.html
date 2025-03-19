@@ -2,51 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Registrar Horario Médico</title>
-  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+  <title>Formulario de Horario</title>
+  <link rel="stylesheet" th:href="@{/css/form_horario.css}">
 </head>
 <body>
+
 <div class="container">
-  <h2>Registrar Horario Médico</h2>
+  <h2 th:text="${horario.id} != null ? 'Editar Horario' : 'Nuevo Horario'"></h2>
 
-  <!-- Mensajes de error o éxito -->
-  <div th:if="${mensaje}" class="alert success" th:text="${mensaje}"></div>
-  <div th:if="${error}" class="alert error" th:text="${error}"></div>
+  <form th:action="@{/horarios/guardar/{idMedico}(idMedico=${idMedico})}" method="post">
+    <input type="hidden" name="idMedico" th:value="${idMedico}">
 
-  <!-- Formulario de registro de horario -->
-  <form th:action="@{/horarios/guardar}" th:object="${horario}" method="post">
-
-    <!-- ID del médico (oculto) -->
-    <input type="hidden" th:field="*{idMedico}">
-
-    <!-- Día de la semana -->
     <label for="diaSemana">Día de la Semana:</label>
-    <select id="diaSemana" th:field="*{diaSemana}" required>
+    <select id="diaSemana" name="diaSemana" required>
       <option value="lunes">Lunes</option>
       <option value="martes">Martes</option>
-      <option value="miércoles">Miércoles</option>
+      <option value="miercoles">Miércoles</option>
       <option value="jueves">Jueves</option>
       <option value="viernes">Viernes</option>
-      <option value="sábado">Sábado</option>
+      <option value="sabado">Sábado</option>
       <option value="domingo">Domingo</option>
     </select>
 
-    <!-- Hora de inicio -->
     <label for="horaInicio">Hora de Inicio:</label>
-    <input type="time" id="horaInicio" th:field="*{horaInicio}" required>
+    <input type="time" id="horaInicio" name="horaInicio" required>
 
-    <!-- Hora de fin -->
     <label for="horaFin">Hora de Fin:</label>
-    <input type="time" id="horaFin" th:field="*{horaFin}" required>
+    <input type="time" id="horaFin" name="horaFin" required>
 
-    <!-- Duración de la cita -->
-    <label for="tiempoCita">Duración de cada cita (minutos):</label>
-    <input type="number" id="tiempoCita" th:field="*{tiempoCita}" min="5" max="60" required>
+    <label for="tiempoCita">Duración de la Cita (min):</label>
+    <input type="number" id="tiempoCita" name="tiempoCita" min="5" required>
 
-    <button type="submit">Guardar Horario</button>
+    <button type="submit" class="btn guardar">💾 Guardar</button>
   </form>
 
-  <a href="/medico/horarios">Volver a la lista de horarios</a>
+  <a th:href="@{/horarios/medico/{idMedico}(idMedico=${idMedico})}" class="btn cancelar">❌ Cancelar</a>
 </div>
+
 </body>
 </html>

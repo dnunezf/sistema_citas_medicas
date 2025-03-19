@@ -31,7 +31,7 @@ public class HorarioMedicoEntity {
     private int tiempoCita; // Duración de la cita en minutos
 
     public enum DiaSemana {
-        lunes, martes, miércoles, jueves, viernes, sábado, domingo
+        lunes, martes, miercoles, jueves, viernes, sabado, domingo
     }
 
     // Constructor vacío

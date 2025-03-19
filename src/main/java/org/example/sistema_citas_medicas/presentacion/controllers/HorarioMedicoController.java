@@ -5,6 +5,7 @@ import org.example.sistema_citas_medicas.logica.servicios.HorarioMedicoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -36,13 +37,21 @@ public class HorarioMedicoController {
         return "presentation/form_horario";
     }
 
-    // Guardar un nuevo horario
     @PostMapping("/guardar/{idMedico}")
-    public String guardarHorario(@PathVariable Long idMedico, @ModelAttribute HorarioMedicoDto horarioDto) {
+    public String guardarHorario(@PathVariable Long idMedico, @ModelAttribute HorarioMedicoDto horarioDto, RedirectAttributes redirectAttributes) {
+        // Verificar que los valores no sean nulos
+        if (horarioDto.getHoraInicio() == null || horarioDto.getHoraFin() == null) {
+            redirectAttributes.addFlashAttribute("error", "Las horas de inicio y fin son obligatorias.");
+            return "redirect:/horarios/nuevo/" + idMedico;
+        }
+
         horarioDto.setIdMedico(idMedico);
         horarioMedicoService.guardarHorario(horarioDto);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Horario guardado correctamente.");
         return "redirect:/horarios/medico/" + idMedico;
     }
+
 
     // Mostrar formulario para editar un horario
     @GetMapping("/editar/{idHorario}")

@@ -12,4 +12,11 @@ public interface MedicoService {
     MedicoEntity  actualizarMedico(MedicoEntity medico);
     List<MedicoEntity> obtenerTodosMedicos();
     void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado);
+
+    List<MedicoDto> buscarPorEspecialidadYUbicacion(String especialidad, String ubicacion);
+
+    // Obtener todas las especialidades disponibles
+    List<String> obtenerEspecialidades();
+
+
 }

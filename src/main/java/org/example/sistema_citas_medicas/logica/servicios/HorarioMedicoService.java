@@ -1,5 +1,6 @@
 package org.example.sistema_citas_medicas.logica.servicios;
 
+import org.example.sistema_citas_medicas.datos.entidades.HorarioMedicoEntity;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 
 import java.util.List;
@@ -13,12 +14,13 @@ public interface HorarioMedicoService {
     HorarioMedicoDto obtenerHorarioPorId(Long idHorario);
 
     // Guardar un nuevo horario para un médico
-    HorarioMedicoDto guardarHorario(HorarioMedicoDto horarioDto);
+    HorarioMedicoEntity guardarHorario(HorarioMedicoDto horarioDto);
 
     // Actualizar un horario existente
     HorarioMedicoDto actualizarHorario(Long idHorario, HorarioMedicoDto horarioDto);
 
     // Eliminar un horario por su ID
     void eliminarHorario(Long idHorario);
+
 }
 

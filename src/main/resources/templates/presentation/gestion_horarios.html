@@ -3,40 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Gestión de Horarios</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_horarios.css}">
+  <link rel="stylesheet" th:href="@{/css/gestion_horarios.css}">
 </head>
 <body>
 
 <div class="container">
   <h2>Gestión de Horarios</h2>
 
-  <a th:href="@{/horarios/nuevo/{idMedico}(idMedico=${idMedico})}" class="btn">Agregar Horario</a>
+  <!-- Mensajes de éxito o error -->
+  <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
+  <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-  <table>
+  <!-- Botón para agregar nuevo horario -->
+  <a th:href="@{/horarios/nuevo/{idMedico}(idMedico=${idMedico})}" class="btn agregar">➕ Agregar Nuevo Horario</a>
+
+  <!-- Tabla de horarios -->
+  <table class="horarios-table">
     <thead>
     <tr>
       <th>Día</th>
       <th>Hora Inicio</th>
       <th>Hora Fin</th>
-      <th>Duración Cita</th>
+      <th>Duración Cita (min)</th>
       <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="horario : ${horarios}">
       <td th:text="${horario.diaSemana}"></td>
+
+      <!-- Mantener formato de 24 horas sin AM/PM -->
       <td th:text="${horario.horaInicio}"></td>
       <td th:text="${horario.horaFin}"></td>
-      <td th:text="${horario.tiempoCita} + ' min'"></td>
+
+
+
+
+      <td th:text="${horario.tiempoCita}"></td>
       <td>
-        <a th:href="@{/horarios/editar/{id}(id=${horario.codigoHorario})}" class="btn">Editar</a>
-        <form th:action="@{/horarios/eliminar/{id}(id=${horario.codigoHorario})}" method="post" style="display:inline;">
-          <button type="submit" class="btn-danger">Eliminar</button>
+        <a th:href="@{/horarios/editar/{idHorario}(idHorario=${horario.id})}" class="btn editar">✏️ Editar</a>
+        <form th:action="@{/horarios/eliminar/{idHorario}(idHorario=${horario.id})}" method="post" style="display:inline;">
+          <button type="submit" class="btn eliminar" onclick="return confirm('¿Está seguro de eliminar este horario?');">❌ Eliminar</button>
         </form>
       </td>
     </tr>
     </tbody>
   </table>
+
+  <!-- Botón para volver -->
+  <a th:href="@{/medicos}" class="btn volver">⬅ Volver</a>
+
 </div>
 
 </body>
