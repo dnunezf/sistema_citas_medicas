@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Horarios</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_horarios.css}">
+</head>
+<body>
+
+<div class="container">
+  <h2>Gestión de Horarios</h2>
+
+  <a th:href="@{/horarios/nuevo/{idMedico}(idMedico=${idMedico})}" class="btn">Agregar Horario</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Día</th>
+      <th>Hora Inicio</th>
+      <th>Hora Fin</th>
+      <th>Duración Cita</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="horario : ${horarios}">
+      <td th:text="${horario.diaSemana}"></td>
+      <td th:text="${horario.horaInicio}"></td>
+      <td th:text="${horario.horaFin}"></td>
+      <td th:text="${horario.tiempoCita} + ' min'"></td>
+      <td>
+        <a th:href="@{/horarios/editar/{id}(id=${horario.codigoHorario})}" class="btn">Editar</a>
+        <form th:action="@{/horarios/eliminar/{id}(id=${horario.codigoHorario})}" method="post" style="display:inline;">
+          <button type="submit" class="btn-danger">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
