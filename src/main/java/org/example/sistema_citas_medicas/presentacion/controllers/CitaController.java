@@ -1,12 +1,10 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
-import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
-import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
+import jakarta.servlet.http.HttpSession;
+import org.example.sistema_citas_medicas.datos.entidades.*;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
-import org.example.sistema_citas_medicas.logica.servicios.CitaService;
-import org.example.sistema_citas_medicas.logica.servicios.HorarioMedicoService;
-import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
+import org.example.sistema_citas_medicas.logica.servicios.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +33,13 @@ public class CitaController {
     private final CitaService citaService;
     private final MedicoService medicoService;
     private final HorarioMedicoService horarioMedicoService;
+    private final PacienteService pacienteService;
 
-    public CitaController(CitaService citaService, MedicoService medicoService, HorarioMedicoService horarioMedicoService, HorarioMedicoService horarioMedicoService1) {
+    public CitaController(CitaService citaService, MedicoService medicoService, HorarioMedicoService horarioMedicoService, HorarioMedicoService horarioMedicoService1, PacienteService pacienteService) {
         this.citaService = citaService;
         this.medicoService = medicoService;
         this.horarioMedicoService = horarioMedicoService1;
+        this.pacienteService = pacienteService;
     }
 
     // ✅ Listar todas las citas de un médico
@@ -103,7 +103,7 @@ public class CitaController {
 
 
     // ✅ Mostrar formulario de búsqueda de médicos
-    @GetMapping("/agendar")
+    @GetMapping("/ver")
     public String mostrarFormularioAgendar(Model model) {
         model.addAttribute("especialidades", medicoService.obtenerEspecialidades());
         return "presentation/agendar_cita";
@@ -120,42 +120,79 @@ public class CitaController {
 
     @GetMapping("/horarios/{idMedico}")
     public String mostrarHorarios(@PathVariable Long idMedico, Model model) {
+        // 🔹 Buscar el médico en la base de datos
+        Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(idMedico);
+
+        if (medicoOpt.isEmpty()) {
+            model.addAttribute("error", "No se encontró el médico.");
+            return "error"; // Redirige a una página de error si el médico no existe
+        }
+
+        MedicoEntity medico = medicoOpt.get(); // 🔹 Obtener el objeto MedicoEntity
+
+        // 🔹 Obtener los horarios y espacios disponibles
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
         List<LocalDateTime> espaciosDisponibles = citaService.obtenerEspaciosDisponibles(idMedico, horarios);
 
-        // Agrupar espacios disponibles por fecha para mejor visualización
+        // 🔹 Agrupar los espacios disponibles por fecha
         Map<LocalDate, List<LocalDateTime>> espaciosPorFecha = espaciosDisponibles.stream()
                 .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
 
+        // 🔹 Agregar datos al modelo para Thymeleaf
+        model.addAttribute("medico", medico);  // ⚠️ Aquí se envía el médico con su nombre
         model.addAttribute("horarios", horarios);
         model.addAttribute("espaciosPorFecha", espaciosPorFecha);
         model.addAttribute("idMedico", idMedico);
+
         return "presentation/seleccionar_horario";
     }
 
 
 
-    // ✅ Agendar cita
-    @PostMapping("/crear")
-    public String crearCita(@RequestParam Long idMedico, @RequestParam LocalDateTime fechaHora,
-                            @RequestParam(required = false) Long idPaciente,
-                            RedirectAttributes redirectAttributes) {
 
-        if (idPaciente == null) {
-            redirectAttributes.addFlashAttribute("error", "Debe iniciar sesión para agendar una cita.");
+    // ✅ Agendar cita
+    @GetMapping("/agendar")
+    public String agendarCita(@RequestParam Long idMedico,
+                              @RequestParam String fechaHora,
+                              @RequestParam Long idPaciente,
+                              Model model) {
+        Optional<PacienteEntity> pacienteOpt = pacienteService.findOne(idPaciente);
+        Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(idMedico);
+
+        if (pacienteOpt.isPresent() && medicoOpt.isPresent()) {
+            CitaEntity cita = new CitaEntity();
+            cita.setMedico(medicoOpt.get());
+            cita.setPaciente(pacienteOpt.get());
+            cita.setFechaHora(LocalDateTime.parse(fechaHora)); // Convertir String a LocalDateTime
+            cita.setEstado(CitaEntity.EstadoCita.valueOf("pendiente"));
+
+            citaService.guardarCita(cita);
+            model.addAttribute("mensaje", "Cita agendada con éxito.");
+        } else {
+            model.addAttribute("error", "Error al agendar la cita, verifique los datos.");
+        }
+
+        return "redirect:/citas/mis_citas?idPaciente=" + idPaciente;
+    }
+
+    @GetMapping("/mis_citas")
+    public String verMisCitas(HttpSession session, Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
             return "redirect:/login";
         }
 
-        try {
-            citaService.agendarCita(idPaciente, idMedico, fechaHora);
-            redirectAttributes.addFlashAttribute("mensaje", "Cita agendada exitosamente.");
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", "No se pudo agendar la cita. " + e.getMessage());
-        }
-
-        return "redirect:/citas/agendar";
+        List<CitaEntity> citas = citaService.obtenerCitasPorPaciente(usuario.getId());
+        model.addAttribute("citas", citas);
+        return "presentation/mis_citas";
     }
 
 
 
+
+
 }
+
+
+

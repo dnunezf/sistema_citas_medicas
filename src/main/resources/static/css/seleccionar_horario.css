@@ -1,37 +1,58 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
 
-header {
+.container {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Estilos para el título principal */
+.title {
     background-color: #007bff;
     color: white;
     padding: 15px;
+    font-size: 20px;
+    margin-bottom: 20px;
 }
 
-main {
-    background: white;
-    width: 60%;
-    margin: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Información del médico */
+.medico-info {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
-h3 {
-    color: #007bff;
+.medico-nombre {
+    color: blue;
+    font-weight: bold;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Sección de horarios */
+.horarios-titulo {
+    color: blue;
+    font-weight: bold;
+}
+
+.horario-section {
     margin-top: 20px;
 }
 
+/* Estilos para las tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
 th, td {
-    padding: 10px;
     border: 1px solid #ddd;
+    padding: 10px;
     text-align: center;
 }
 
@@ -40,32 +61,34 @@ th {
     color: white;
 }
 
-.botones {
-    margin-top: 20px;
+/* Fecha de la sección de horarios */
+.horario-fecha {
+    color: black;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
-button {
-    background-color: #28a745;
-    color: white;
+/* Botones */
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    font-size: 16px;
 }
 
-button:hover {
-    background-color: #218838;
-}
-
-.cancelar {
-    margin-left: 15px;
+.btn-success {
+    background-color: #28a745;
     color: white;
-    background-color: #dc3545;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
 }
 
-.cancelar:hover {
-    background-color: #c82333;
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
 }

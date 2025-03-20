@@ -23,8 +23,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -49,8 +51,25 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public List<CitaDto> obtenerCitasPorMedico(Long idMedico) {
         List<CitaEntity> citas = citaRepository.findByMedicoOrdenadas(idMedico);
-        return citas.stream().map(cita -> modelMapper.map(cita, CitaDto.class)).collect(Collectors.toList());
+
+        return citas.stream().map(cita -> {
+            CitaDto citaDto = modelMapper.map(cita, CitaDto.class);
+
+            // ✅ Asignar manualmente el nombre del paciente y médico
+            if (cita.getPaciente() != null) {
+                citaDto.setIdPaciente(cita.getPaciente().getId());
+                citaDto.setNombrePaciente(cita.getPaciente().getNombre());
+            }
+
+            if (cita.getMedico() != null) {
+                citaDto.setIdMedico(cita.getMedico().getId());
+                citaDto.setNombreMedico(cita.getMedico().getNombre());
+            }
+
+            return citaDto;
+        }).collect(Collectors.toList());
     }
+
 
     // ✅ Filtrar citas por estado
     @Override
@@ -95,15 +114,16 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public List<LocalDateTime> obtenerEspaciosDisponibles(Long idMedico, List<HorarioMedicoDto> horarios) {
         List<LocalDateTime> espaciosDisponibles = new ArrayList<>();
-        LocalDateTime ahora = LocalDateTime.now();
-        LocalDate fechaActual = ahora.toLocalDate();
+        LocalDate fechaActual = LocalDate.now();
 
-        for (int i = 0; i < 3; i++) { // Buscar horarios para los próximos 3 días
+        // 🔹 Iterar los próximos 3 días
+        for (int i = 0; i < 3; i++) {
             LocalDate fecha = fechaActual.plusDays(i);
-            DayOfWeek diaSemana = fecha.getDayOfWeek();
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // 🔹 Obtener el día en español (ej: "lunes")
 
             for (HorarioMedicoDto horario : horarios) {
-                if (diaSemana.name().equalsIgnoreCase(horario.getDiaSemana())) {
+                if (diaSemana.equalsIgnoreCase(horario.getDiaSemana())) { // 🔹 Comparar correctamente
+
                     LocalTime horaInicio = LocalTime.parse(horario.getHoraInicio());
                     LocalTime horaFin = LocalTime.parse(horario.getHoraFin());
                     int duracion = horario.getTiempoCita();
@@ -119,9 +139,9 @@ public class CitaServiceImpl implements CitaService {
                 }
             }
         }
-
         return espaciosDisponibles;
     }
+
 
     // ✅ Agendar cita validando disponibilidad
     @Override
@@ -143,6 +163,22 @@ public class CitaServiceImpl implements CitaService {
         nuevaCita = citaRepository.save(nuevaCita);
 
         return modelMapper.map(nuevaCita, CitaDto.class);
+
+
+
+
+
+    }
+
+
+    @Override
+    public void guardarCita(CitaEntity cita) {
+        citaRepository.save(cita);
+    }
+
+    @Override
+    public List<CitaEntity> obtenerCitasPorPaciente(Long idPaciente) {
+        return citaRepository.findByPacienteId(idPaciente);
     }
 
 

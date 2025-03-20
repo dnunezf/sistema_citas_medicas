@@ -11,74 +11,44 @@
 <div class="container">
     <h2 class="title">Seleccionar Horario para la Cita</h2>
 
-    <p><strong>Médico:</strong> <span th:text="${medico.nombre}"></span></p>
-    <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
-    <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
+    <!-- Información del Médico -->
+    <div class="medico-info">
+        <p><strong>Médico:</strong> <span th:text="${medico.nombre}" class="medico-nombre"></span></p>
+        <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
+        <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
+    </div>
 
-    <hr>
+    <h3 class="horarios-titulo">Horarios Disponibles</h3>
 
-    <h3>Seleccione una Fecha:</h3>
-    <select id="fechaSeleccionada">
-        <option th:each="entry : ${espaciosPorFecha}"
-                th:value="${entry.key}"
-                th:text="${#temporals.format(entry.key, 'EEEE dd MMMM yyyy')}">
-        </option>
-    </select>
+    <!-- Tabla de horarios -->
+    <div class="horario-section" th:each="entry : ${espaciosPorFecha}">
+        <h4 class="horario-fecha" th:text="${#temporals.format(entry.key, 'EEEE dd/MM/yyyy')}"></h4> <!-- Día y Fecha -->
 
-    <hr>
-
-    <h3>Horarios Disponibles:</h3>
-    <form th:action="@{/citas/agendar}" method="post">
         <table>
             <thead>
             <tr>
-                <th>Hora de Inicio</th>
+                <th>Hora</th>
                 <th>Seleccionar</th>
             </tr>
             </thead>
-            <tbody id="horariosContainer">
-            <!-- Aquí se insertarán los horarios dinámicamente -->
+            <tbody>
+            <tr th:each="espacio : ${entry.value}">
+                <td th:text="${#temporals.format(espacio, 'HH:mm')}"></td>
+                <td>
+                    <input type="radio" name="horarioSeleccionado" th:value="${espacio}">
+                </td>
+            </tr>
             </tbody>
         </table>
+    </div>
 
-        <button type="submit" class="submit-button">Agendar Cita</button>
-    </form>
+    <!-- Botones de acción -->
+    <div class="botones">
+        <button type="submit" class="btn btn-success">Agendar Cita</button>
+        <button type="button" class="btn btn-danger">Cancelar</button>
+    </div>
+
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const espaciosPorFecha = /*[[${espaciosPorFecha}]]*/ {};
-        const fechaSeleccionada = document.getElementById("fechaSeleccionada");
-        const horariosContainer = document.getElementById("horariosContainer");
-
-        function actualizarHorarios() {
-            const fecha = fechaSeleccionada.value;
-            const horarios = espaciosPorFecha[fecha] || [];
-            horariosContainer.innerHTML = "";
-
-            horarios.forEach(horario => {
-                const row = document.createElement("tr");
-
-                const horaCell = document.createElement("td");
-                horaCell.textContent = horario.substring(11, 16); // Extrae solo la hora HH:mm
-
-                const selectCell = document.createElement("td");
-                const radioInput = document.createElement("input");
-                radioInput.type = "radio";
-                radioInput.name = "horaSeleccionada";
-                radioInput.value = horario;
-
-                selectCell.appendChild(radioInput);
-                row.appendChild(horaCell);
-                row.appendChild(selectCell);
-                horariosContainer.appendChild(row);
-            });
-        }
-
-        fechaSeleccionada.addEventListener("change", actualizarHorarios);
-        actualizarHorarios(); // Cargar los horarios de la primera fecha al inicio
-    });
-</script>
 
 </body>
 </html>

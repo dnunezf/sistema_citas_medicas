@@ -27,4 +27,5 @@ public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
 
     boolean existsByMedicoAndFechaHora(MedicoEntity medico, LocalDateTime fechaHora);
 
+    List<CitaEntity> findByPacienteId(Long idPaciente);
 }

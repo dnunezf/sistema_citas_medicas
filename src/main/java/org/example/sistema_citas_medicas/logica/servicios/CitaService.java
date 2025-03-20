@@ -29,6 +29,7 @@ public interface CitaService {
     // Obtener horarios disponibles para los próximos 3 días
     List<LocalDateTime> obtenerEspaciosDisponibles(Long idMedico, List<HorarioMedicoDto> horarios);
 
-
+    void guardarCita(CitaEntity cita);
+    List<CitaEntity> obtenerCitasPorPaciente(Long idPaciente);
 
 }

@@ -22,7 +22,7 @@
 
 <main>
     <h2>
-        Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - appointments
+        Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Appointments
     </h2>
 
     <div class="filters">
@@ -45,14 +45,14 @@
         <div class="appointment" th:each="cita : ${citas}">
             <div class="patient-info">
                 <img src="/images/avatar.png" alt="Patient">
-                <span th:text="${cita.paciente.nombre}"></span>
+                <span th:text="${cita.nombrePaciente}"></span> <!-- Corrección aquí -->
             </div>
             <div class="appointment-details">
                 <span class="date-time" th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy - HH:mm')}"></span>
                 <span class="status" th:text="${cita.estado}"
                       th:classappend="${cita.estado == 'pendiente' ? 'pending'
                           : (cita.estado == 'completada' ? 'attended' : 'default')}">
-                    </span>
+                </span>
             </div>
             <div class="actions">
                 <form th:action="@{/citas/actualizar}" method="post">
