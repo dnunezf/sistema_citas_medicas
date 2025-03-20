@@ -75,9 +75,9 @@
             <label for="estadoAprobacion">Estado de Aprobación</label>
             <select id="estadoAprobacion" th:field="*{estadoAprobacion}" required>
                 <option value="">Seleccione una opción</option>
-                <option value="PENDIENTE">Pendiente</option>
-                <option value="APROBADO">Aprobado</option>
-                <option value="RECHAZADO">Rechazado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="aprobado">Aprobado</option>
+                <option value="rechazado">Rechazado</option>
             </select>
             <p class="error-text" th:if="${#fields.hasErrors('estadoAprobacion')}" th:errors="*{estadoAprobacion}"></p>
         </div>

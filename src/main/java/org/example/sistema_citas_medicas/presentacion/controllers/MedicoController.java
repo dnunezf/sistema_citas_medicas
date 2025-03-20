@@ -28,6 +28,13 @@ public class MedicoController {
 
     @PostMapping("/actualizar")
     public String actualizarMedico(@ModelAttribute("medico") MedicoEntity medico, Model model) {
+        System.out.println("🟢 ID recibido: " + medico.getId());
+
+        if (medico.getId() == null || medico.getId() <= 0) {
+            model.addAttribute("error", "El ID del médico es inválido.");
+            return "presentation/registro_medico";
+        }
+
         Optional<MedicoEntity> medicoExistente = medicoService.obtenerPorId(medico.getId());
 
         if (medicoExistente.isPresent()) {
@@ -37,8 +44,9 @@ public class MedicoController {
             model.addAttribute("error", "El médico no existe.");
         }
 
-        return "presentation/registro_medico"; // Retornar la misma página con el mensaje
+        return "presentation/registro_medico";
     }
+
 
 
     @GetMapping("/cargar")
@@ -51,7 +59,7 @@ public class MedicoController {
             model.addAttribute("error", "No se encontró un médico con el ID ingresado.");
         }
 
-        return "editar_medico"; // Retorna al formulario
+        return "presentation/registro_medico"; // Retorna al formulario
     }
 
 

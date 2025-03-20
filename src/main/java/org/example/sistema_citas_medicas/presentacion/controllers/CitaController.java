@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/citas")
@@ -114,17 +118,22 @@ public class CitaController {
         return "presentation/agendar_cita";
     }
 
-    // ✅ Mostrar horarios disponibles de un médico
     @GetMapping("/horarios/{idMedico}")
     public String mostrarHorarios(@PathVariable Long idMedico, Model model) {
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
         List<LocalDateTime> espaciosDisponibles = citaService.obtenerEspaciosDisponibles(idMedico, horarios);
 
+        // Agrupar espacios disponibles por fecha para mejor visualización
+        Map<LocalDate, List<LocalDateTime>> espaciosPorFecha = espaciosDisponibles.stream()
+                .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
+
         model.addAttribute("horarios", horarios);
-        model.addAttribute("espaciosDisponibles", espaciosDisponibles);
+        model.addAttribute("espaciosPorFecha", espaciosPorFecha);
         model.addAttribute("idMedico", idMedico);
         return "presentation/seleccionar_horario";
     }
+
+
 
     // ✅ Agendar cita
     @PostMapping("/crear")

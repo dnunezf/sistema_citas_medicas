@@ -2,60 +2,83 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Seleccionar Horario</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/seleccionar_horario.css}">
+    <link rel="stylesheet" th:href="@{/css/seleccionar_horario.css}">
 </head>
 <body>
 
-<header>
-    <h2>Seleccionar Horario para la Cita</h2>
-</header>
+<div class="container">
+    <h2 class="title">Seleccionar Horario para la Cita</h2>
 
-<main>
-    <div class="info-medico">
-        <h3>Médico: <span th:text="${medico.nombre}"></span></h3>
-        <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
-        <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
-    </div>
+    <p><strong>Médico:</strong> <span th:text="${medico.nombre}"></span></p>
+    <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
+    <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
 
-    <form th:action="@{/citas/crear}" method="post">
-        <input type="hidden" name="idMedico" th:value="${idMedico}">
+    <hr>
 
-        <h3>Horarios Disponibles</h3>
+    <h3>Seleccione una Fecha:</h3>
+    <select id="fechaSeleccionada">
+        <option th:each="entry : ${espaciosPorFecha}"
+                th:value="${entry.key}"
+                th:text="${#temporals.format(entry.key, 'EEEE dd MMMM yyyy')}">
+        </option>
+    </select>
+
+    <hr>
+
+    <h3>Horarios Disponibles:</h3>
+    <form th:action="@{/citas/agendar}" method="post">
         <table>
             <thead>
             <tr>
-                <th>Día</th>
                 <th>Hora de Inicio</th>
-                <th>Hora de Fin</th>
                 <th>Seleccionar</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="horario : ${horarios}">
-                <td th:text="${horario.diaSemana}"></td>
-                <td th:text="${horario.horaInicio}"></td>
-                <td th:text="${horario.horaFin}"></td>
-                <td>
-                    <input type="radio" name="fechaHora"
-                           th:value="${horario.diaSemana + ' ' + horario.horaInicio}"
-                           required>
-                </td>
-            </tr>
+            <tbody id="horariosContainer">
+            <!-- Aquí se insertarán los horarios dinámicamente -->
             </tbody>
         </table>
 
-        <div class="botones">
-            <button type="submit">Agendar Cita</button>
-            <a href="/citas/agendar" class="cancelar">Cancelar</a>
-        </div>
+        <button type="submit" class="submit-button">Agendar Cita</button>
     </form>
+</div>
 
-</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const espaciosPorFecha = /*[[${espaciosPorFecha}]]*/ {};
+        const fechaSeleccionada = document.getElementById("fechaSeleccionada");
+        const horariosContainer = document.getElementById("horariosContainer");
 
-<footer>
-    <p>&copy; 2025 Sistema de Citas Médicas</p>
-</footer>
+        function actualizarHorarios() {
+            const fecha = fechaSeleccionada.value;
+            const horarios = espaciosPorFecha[fecha] || [];
+            horariosContainer.innerHTML = "";
+
+            horarios.forEach(horario => {
+                const row = document.createElement("tr");
+
+                const horaCell = document.createElement("td");
+                horaCell.textContent = horario.substring(11, 16); // Extrae solo la hora HH:mm
+
+                const selectCell = document.createElement("td");
+                const radioInput = document.createElement("input");
+                radioInput.type = "radio";
+                radioInput.name = "horaSeleccionada";
+                radioInput.value = horario;
+
+                selectCell.appendChild(radioInput);
+                row.appendChild(horaCell);
+                row.appendChild(selectCell);
+                horariosContainer.appendChild(row);
+            });
+        }
+
+        fechaSeleccionada.addEventListener("change", actualizarHorarios);
+        actualizarHorarios(); // Cargar los horarios de la primera fecha al inicio
+    });
+</script>
 
 </body>
 </html>

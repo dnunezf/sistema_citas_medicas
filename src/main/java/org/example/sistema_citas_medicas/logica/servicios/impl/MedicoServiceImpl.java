@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class MedicoServiceImpl implements MedicoService {
     private final MedicoRepository medicoRepository;
     private final MedicoMapper medicoMapper;
