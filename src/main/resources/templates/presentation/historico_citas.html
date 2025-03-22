@@ -1,0 +1,88 @@
+<!-- NOTA: ESTE FORMULARIO UTILIZA EL CSS DE gestion_citas.css -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment History</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_citas.css}">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/images/logo.png" alt="Medical Appointments">
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#">About...</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Search</a></li>
+            <li><span th:text="${session.usuario.nombre}"></span> ▼</li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h2>
+        Patient - <span class="doctor-name" th:text="${session.usuario.nombre}"></span> - appointment history
+    </h2>
+
+    <div class="filters">
+        <form th:action="@{/citas/paciente/historico/filtrar/estado}" method="get">
+            <label for="estado">Status:</label>
+            <select id="estado" name="estado">
+                <option value="pendiente">Pending</option>
+                <option value="confirmada">Confirmed</option>
+                <option value="cancelada">Canceled</option>
+                <option value="completada">Attended</option>
+            </select>
+
+            <label for="nombreMedico">Doctor:</label>
+            <input type="text" id="nombreMedico" name="nombreMedico" placeholder="Doctor's name">
+
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="appointments">
+        <div class="appointment" th:each="cita : ${citas}">
+            <div class="patient-info">
+                <img src="/images/avatar.png" alt="Doctor">
+                <div>
+                    <span th:text="${cita.nombreMedico}" style="font-weight: bold; font-size: 1.1em;"></span><br>
+                    <span th:text="'ID: ' + ${cita.idMedico}"></span><br>
+                    <span>Specialty Placeholder</span><br>
+                    <span>Location Placeholder</span>
+                </div>
+            </div>
+
+            <div class="appointment-details">
+                <span class="date-time" th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy - HH:mm')}"></span>
+                <span class="status"
+                      th:text="${cita.estado}"
+                      th:classappend="${cita.estado == 'pendiente' ? 'pending'
+                          : (cita.estado == 'completada' ? 'attended'
+                          : (cita.estado == 'confirmada' ? 'default'
+                          : 'cancelled'))}">
+                </span>
+            </div>
+
+            <div class="actions">
+                <a href="#" title="View">
+                    <img src="/images/view_icon.png" alt="View" style="height: 25px;">
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Total Soft Inc.</p>
+    <div class="social-icons">
+        <img src="/images/facebook.png" alt="Facebook">
+        <img src="/images/twitter.png" alt="Twitter">
+        <img src="/images/instagram.png" alt="Instagram">
+    </div>
+</footer>
+</body>
+</html>

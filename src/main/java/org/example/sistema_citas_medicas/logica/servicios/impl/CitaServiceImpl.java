@@ -163,23 +163,49 @@ public class CitaServiceImpl implements CitaService {
         nuevaCita = citaRepository.save(nuevaCita);
 
         return modelMapper.map(nuevaCita, CitaDto.class);
-
-
-
-
-
     }
-
 
     @Override
     public void guardarCita(CitaEntity cita) {
         citaRepository.save(cita);
     }
 
+    /*PUNTO 9*/
+
     @Override
-    public List<CitaEntity> obtenerCitasPorPaciente(Long idPaciente) {
-        return citaRepository.findByPacienteId(idPaciente);
+    public List<CitaDto> obtenerCitasPorPaciente(Long idPaciente) {
+        List<CitaEntity> citas = citaRepository.findByPacienteId(idPaciente);
+        return citas.stream()
+                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora())) // más recientes primero
+                .map(cita -> modelMapper.map(cita, CitaDto.class))
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<CitaDto> filtrarCitasPorEstadoPaciente(Long idPaciente, CitaEntity.EstadoCita estado) {
+        List<CitaEntity> citas = citaRepository.findByPacienteId(idPaciente).stream()
+                .filter(cita -> cita.getEstado().equals(estado))
+                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora()))
+                .collect(Collectors.toList());
+
+        return citas.stream()
+                .map(cita -> modelMapper.map(cita, CitaDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CitaDto> filtrarCitasPorNombreMedico(Long idPaciente, String nombreMedico) {
+        List<CitaEntity> citas = citaRepository.findByPacienteId(idPaciente).stream()
+                .filter(cita -> cita.getMedico().getNombre().toLowerCase().contains(nombreMedico.toLowerCase()))
+                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora()))
+                .collect(Collectors.toList());
+
+        return citas.stream()
+                .map(cita -> modelMapper.map(cita, CitaDto.class))
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }

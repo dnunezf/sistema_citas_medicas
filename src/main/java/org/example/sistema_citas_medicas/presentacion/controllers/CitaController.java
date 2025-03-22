@@ -175,23 +175,53 @@ public class CitaController {
         return "redirect:/citas/mis_citas?idPaciente=" + idPaciente;
     }
 
-    @GetMapping("/mis_citas")
-    public String verMisCitas(HttpSession session, Model model) {
+    /*PUNTO 9*/
+
+    // Mostrar el historial de citas del paciente
+    @GetMapping("/paciente/historico")
+    public String verHistoricoCitas(HttpSession session, Model model) {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
         if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
             return "redirect:/login";
         }
 
-        List<CitaEntity> citas = citaService.obtenerCitasPorPaciente(usuario.getId());
+        List<CitaDto> citas = citaService.obtenerCitasPorPaciente(usuario.getId());
         model.addAttribute("citas", citas);
-        return "presentation/mis_citas";
+        return "presentation/historico_citas";
     }
 
+    // Filtrar por estado
+    @GetMapping("/paciente/historico/filtrar/estado")
+    public String filtrarHistoricoPorEstado(HttpSession session,
+                                            @RequestParam("estado") String estado,
+                                            Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
+        if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
+            return "redirect:/login";
+        }
 
+        List<CitaDto> citas = citaService.filtrarCitasPorEstadoPaciente(usuario.getId(), CitaEntity.EstadoCita.valueOf(estado));
+        model.addAttribute("citas", citas);
+        return "presentation/historico_citas";
+    }
 
+    // Filtrar por nombre del médico
+    @GetMapping("/paciente/historico/filtrar/medico")
+    public String filtrarHistoricoPorMedico(HttpSession session,
+                                            @RequestParam("nombreMedico") String nombreMedico,
+                                            Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
+        if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
+            return "redirect:/login";
+        }
+
+        List<CitaDto> citas = citaService.filtrarCitasPorNombreMedico(usuario.getId(), nombreMedico);
+        model.addAttribute("citas", citas);
+        return "presentation/historico_citas"; // Página aún por crear
+    }
 }
 
 

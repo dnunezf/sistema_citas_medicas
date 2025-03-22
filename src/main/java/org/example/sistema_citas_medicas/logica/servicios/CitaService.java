@@ -30,6 +30,12 @@ public interface CitaService {
     List<LocalDateTime> obtenerEspaciosDisponibles(Long idMedico, List<HorarioMedicoDto> horarios);
 
     void guardarCita(CitaEntity cita);
-    List<CitaEntity> obtenerCitasPorPaciente(Long idPaciente);
+
+    //*PUNTO 9*//
+    List<CitaDto> obtenerCitasPorPaciente(Long idPaciente);
+
+    List<CitaDto> filtrarCitasPorEstadoPaciente(Long idPaciente, CitaEntity.EstadoCita estado);
+
+    List<CitaDto> filtrarCitasPorNombreMedico(Long idPaciente, String nombreMedico);
 
 }
