@@ -23,6 +23,11 @@
 </header>
 
 <main>
+    <!-- Mensaje de éxito -->
+    <div th:if="${mensaje}" class="alert alert-success" role="alert" style="margin: 20px;">
+        <p th:text="${mensaje}"></p>
+    </div>
+
     <h2>
         Patient - <span class="doctor-name" th:text="${session.usuario.nombre}"></span> - appointment history
     </h2>

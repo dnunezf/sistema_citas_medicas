@@ -1,5 +1,6 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.PacienteEntity;
 import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -39,24 +41,30 @@ public class UsuarioController {
         return "presentation/login/view"; // Renderiza templates/presentation/login/view.html
     }
 
-    // 🟢 Procesar el login
     @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute("login") UsuarioDto usuarioDto, Model model) {
+    public String procesarLogin(@ModelAttribute("login") UsuarioDto usuarioDto,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
         Optional<UsuarioEntity> usuario = usuarioService.login(usuarioDto.getId(), usuarioDto.getClave());
 
         if (usuario.isPresent()) {
-            return "redirect:/dashboard"; // ✅ Solo redirige si el login es correcto
+            UsuarioEntity usuarioLogueado = usuario.get();
+            session.setAttribute("usuario", usuarioLogueado);
+
+            // 🟢 Verificar si hay una URL pendiente para volver al punto exacto
+            String urlPendiente = (String) session.getAttribute("urlPendiente");
+
+            if (urlPendiente != null) {
+                session.removeAttribute("urlPendiente");
+                return "redirect:" + urlPendiente;
+            }
+
+            return "redirect:/citas/ver"; // Ruta por defecto si no había flujo pendiente
         } else {
             model.addAttribute("error", "⚠️ Usuario o contraseña incorrectos.");
-            return "presentation/login/view"; // 🔄 Recarga la misma página con el mensaje de error
+            return "presentation/login/view";
         }
-    }
-
-    @GetMapping("/registro")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("usuario", new UsuarioEntity());
-        model.addAttribute("roles", getRolesDisponibles()); // Enviar los roles disponibles
-        return "presentation/registro_usuario";
     }
 
     @PostMapping("/registrar")

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Cita</title>
+    <link rel="stylesheet" th:href="@{/css/confirmar_cita.css}">
+</head>
+<body>
+
+<!-- Encabezado general (ya existente en su sistema) -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container-confirmacion">
+    <div class="card-confirmacion">
+        <div class="medico-imagen">
+            <img src="/img/avatar-medico.png" alt="Foto del médico">
+        </div>
+        <div class="info">
+            <p class="nombre-medico" th:text="${medico.nombre}">Nombre del médico</p>
+            <p><i class="fas fa-calendar-alt"></i>
+                <span th:text="${#temporals.format(fechaHora, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+            <p><i class="fas fa-map-marker-alt"></i> <span th:text="${medico.localidad}">Localidad</span></p>
+        </div>
+
+        <form th:action="@{/citas/confirmar}" method="post" class="formulario-confirmar">
+            <input type="hidden" name="idMedico" th:value="${medico.id}">
+            <input type="hidden" name="idPaciente" th:value="${paciente.id}">
+            <input type="hidden" name="fechaHora" th:value="${fechaHora}">
+            <div class="botones-confirmar">
+                <button type="submit" class="btn btn-confirmar">Confirmar</button>
+                <a th:href="@{/citas/horarios/{id}(id=${medico.id})}" class="btn btn-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Pie de página (ya existente en su sistema) -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

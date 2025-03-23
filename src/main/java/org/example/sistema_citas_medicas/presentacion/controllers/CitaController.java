@@ -222,6 +222,90 @@ public class CitaController {
         model.addAttribute("citas", citas);
         return "presentation/historico_citas"; // Página aún por crear
     }
+
+    @GetMapping("/confirmar")
+    public String confirmarCita(@RequestParam Long idMedico,
+                                @RequestParam String fechaHora,
+                                HttpSession session,
+                                Model model) {
+        System.out.println("📥 Entrando a /citas/confirmar");
+        System.out.println("➡️ idMedico = " + idMedico);
+        System.out.println("➡️ fechaHora = " + fechaHora);
+
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        if (usuario == null) {
+            // 🟢 Guardar la URL exacta para retornar luego del login
+            session.setAttribute("urlPendiente", "/citas/confirmar?idMedico=" + idMedico + "&fechaHora=" + fechaHora);
+            return "redirect:/usuarios/login";
+        }
+
+        System.out.println("👤 Usuario autenticado: " + usuario.getId());
+
+        try {
+            PacienteEntity paciente = pacienteService.obtenerPorId(usuario.getId());
+            if (paciente == null) {
+                System.out.println("❌ Paciente no encontrado");
+                return "redirect:/citas/ver";
+            }
+
+            MedicoEntity medico = medicoService.obtenerPorId(idMedico)
+                    .orElseThrow(() -> new RuntimeException("❌ Médico no encontrado con ID: " + idMedico));
+
+            LocalDateTime fechaConvertida;
+            try {
+                fechaConvertida = LocalDateTime.parse(fechaHora);
+                System.out.println("🕒 Fecha convertida correctamente: " + fechaConvertida);
+            } catch (Exception e) {
+                System.out.println("❌ Error al convertir la fecha: " + fechaHora);
+                e.printStackTrace();
+                return "redirect:/citas/ver";
+            }
+
+            model.addAttribute("medico", medico);
+            model.addAttribute("paciente", paciente);
+            model.addAttribute("fechaHora", fechaConvertida); // ✅ LocalDateTime directamente
+
+            return "presentation/confirmar_cita";
+
+        } catch (Exception e) {
+            System.out.println("🔥 ERROR INTERNO:");
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping("/confirmar")
+    public String procesarConfirmacion(@RequestParam Long idMedico,
+                                       @RequestParam Long idPaciente,
+                                       @RequestParam String fechaHora,
+                                       HttpSession session,
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            LocalDateTime fecha = LocalDateTime.parse(fechaHora);
+            citaService.agendarCita(idPaciente, idMedico, fecha);
+
+            // Mensaje para mostrar en la siguiente vista
+            String mensaje = "🩺 Cita confirmada exitosamente para el " +
+                    fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ".";
+            redirectAttributes.addFlashAttribute("mensaje", mensaje);
+
+            // Guardar al paciente en sesión si no estuviera
+            if (session.getAttribute("usuario") == null) {
+                PacienteEntity paciente = pacienteService.obtenerPorId(idPaciente);
+                session.setAttribute("usuario", paciente); // solo si no se ha guardado aún
+            }
+
+            return "redirect:/citas/paciente/historico";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "❌ Ocurrió un error al confirmar la cita.");
+            return "redirect:/citas/ver";
+        }
+    }
+
+
 }
 
 
