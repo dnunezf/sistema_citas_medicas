@@ -1,5 +1,6 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.PacienteEntity;
 import org.example.sistema_citas_medicas.datos.entidades.RolUsuario;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -39,18 +41,37 @@ public class UsuarioController {
         return "presentation/login/view"; // Renderiza templates/presentation/login/view.html
     }
 
-    // 🟢 Procesar el login
     @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute("login") UsuarioDto usuarioDto, Model model) {
-        Optional<UsuarioEntity> usuario = usuarioService.login(usuarioDto.getId(), usuarioDto.getClave());
+    public String procesarLogin(@ModelAttribute("login") UsuarioDto usuarioDto, Model model, HttpSession session) {
+        Optional<UsuarioEntity> usuarioOpt = usuarioService.login(usuarioDto.getId(), usuarioDto.getClave());
 
-        if (usuario.isPresent()) {
-            return "redirect:/dashboard"; // ✅ Solo redirige si el login es correcto
+        if (usuarioOpt.isPresent()) {
+            UsuarioEntity usuario = usuarioOpt.get();
+
+            // Verificar si es médico con estado pendiente
+            if (usuario instanceof MedicoEntity medico) {
+                if (medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
+                    model.addAttribute("error", "⚠️ Su cuenta de médico está pendiente de aprobación.");
+                    return "presentation/login/view";
+                }
+            }
+
+            session.setAttribute("usuario", usuario); // Guardar en sesión
+
+            // Redirigir según el rol
+            if (usuario.getRol() == RolUsuario.MEDICO) {
+                return "redirect:/citas/medico/" + usuario.getId();
+            } else if (usuario.getRol() == RolUsuario.ADMINISTRADOR) {
+                return "redirect:/admin/lista";
+            } else {
+                return "redirect:/"; // PACIENTE se queda en dashboard
+            }
         } else {
             model.addAttribute("error", "⚠️ Usuario o contraseña incorrectos.");
-            return "presentation/login/view"; // 🔄 Recarga la misma página con el mensaje de error
+            return "presentation/login/view";
         }
     }
+
 
     @GetMapping("/registro")
     public String mostrarFormulario(Model model) {
@@ -107,6 +128,14 @@ public class UsuarioController {
             return "presentation/registro_usuario"; // Volver al formulario en caso de error
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
 
 
 

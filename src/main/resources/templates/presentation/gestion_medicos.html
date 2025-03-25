@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head th:replace="fragments/head :: head">
     <title>Gestión de Médicos</title>
     <link rel="stylesheet" th:href="@{/css/gestion_medicos.css}">
 </head>
 <body>
+
+<header th:replace="fragments/header :: header"></header> <!-- ⬅️ Header común con botón logout -->
 
 <div class="container">
     <h2 class="title">Gestión de Médicos</h2>
@@ -57,8 +57,9 @@
         </tr>
         </tbody>
     </table>
-
 </div>
+
+<footer th:replace="fragments/footer :: footer"></footer> <!-- ⬅️ Footer común -->
 
 </body>
 </html>

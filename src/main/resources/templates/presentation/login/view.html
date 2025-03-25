@@ -1,67 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/head :: head}">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" th:href="@{/css/login.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body style="background-color: white">
 
-<header th:replace="~{fragments/header :: header}"></header>  <!-- Incluir HEADER -->
-
 <!-- Contenedor Principal -->
 <div class="cuerpo">
     <form th:action="@{/usuarios/login}" method="post" th:object="${login}">
-        <div id="login"> <!-- div del login en general -->
-            <div id="tituloLogin"> <!-- título login -->
+        <div id="login">
+            <div id="tituloLogin">
                 <h2>Login</h2>
             </div>
 
-            <div id="datosLogin">  <!-- div del la imagen, id, password y boton de login -->
-                <div> <!-- div del la imagen-->
+            <div id="datosLogin">
+                <div>
                     <img class="login-icono" th:src="@{/images/login.jpg}" alt="Login">
                 </div>
 
-                <div class="input-group"> <!-- div del id-->
+                <div class="input-group">
                     <span class="icon">
-                         <img th:src="@{/images/user.jpg}" alt="User Icon">
+                        <img th:src="@{/images/user.jpg}" alt="User Icon">
                     </span>
                     <input type="number" id="id" th:field="*{id}" min="1" required>
                     <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
                 </div>
 
-                <div class="input-group"> <!-- div del password-->
+                <div class="input-group">
                     <span class="icon">
-                         <img th:src="@{/images/llave.jpg}" alt="Password Icon">
+                        <img th:src="@{/images/llave.jpg}" alt="Password Icon">
                     </span>
                     <input type="password" th:field="*{clave}" placeholder="Password" required>
                 </div>
 
-                <div class="button-container"> <!-- div del botón de login-->
+                <div class="button-container">
                     <button type="submit" class="btn-login">Log in</button>
                 </div>
             </div>
 
-            <!-- REGISTRARSE -->
+            <!-- Registro -->
             <div class="register-container">
                 <span>Don't have an account?</span>
-                <a href="/register" class="btn-register">Register here</a>
+                <a href="/usuarios/registro" class="btn-register">Register here</a>
             </div>
-
         </div>
 
-        <!-- Mensaje de error si las credenciales son incorrectas -->
+        <!-- Error -->
         <div th:if="${error}" class="error-message">
             <p th:text="${error}"></p>
         </div>
-
-
     </form>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div> <!-- Incluir FOOTER -->
-
 </body>
 </html>
-
-

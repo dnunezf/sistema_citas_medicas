@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main class="dashboard-container">
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" th:action="@{/}">
+        <input type="text" name="especialidad" placeholder="Speciality" th:value="${param.especialidad}">
+        <input type="text" name="localidad" placeholder="City" th:value="${param.localidad}">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Tarjetas de médicos -->
+    <div th:each="medico : ${medicos}" class="doctor-card">
+        <div class="doctor-info">
+            <img src="/images/avatar.png" alt="Doctor Avatar">
+            <div>
+                <strong th:text="${medico.nombre}">Nombre del médico</strong>
+                <div th:text="${medico.especialidad}">Especialidad</div>
+                <div th:text="${medico.localidad}">Ubicación</div>
+            </div>
+        </div>
+
+        <!-- Espacios disponibles por fecha -->
+        <div class="horarios">
+            <div th:each="entry : ${espaciosAgrupados[medico.id]}">
+                <div class="fecha" th:text="${#temporals.format(entry.key, 'dd/MM/yyyy')}"></div>
+                <div class="horas">
+                    <span th:each="hora : ${entry.value}"
+                          th:text="${#temporals.format(hora, 'HH:mm')}"
+                          class="hora">
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón de agendar -->
+        <div class="schedule-button">
+            <a th:href="@{'/citas/horarios/' + ${medico.id}}">Schedule →</a>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

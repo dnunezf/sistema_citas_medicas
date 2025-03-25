@@ -11,6 +11,7 @@ public interface MedicoService {
     Optional<MedicoEntity> obtenerPorId(Long id);
     MedicoEntity  actualizarMedico(MedicoEntity medico);
     List<MedicoEntity> obtenerTodosMedicos();
+    List<MedicoDto> obtenerMedicos();
     void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado);
 
     List<MedicoDto> buscarPorEspecialidadYUbicacion(String especialidad, String ubicacion);

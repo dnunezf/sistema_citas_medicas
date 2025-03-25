@@ -46,6 +46,15 @@ public class MedicoServiceImpl implements MedicoService {
         return medicoRepository.findAll();
     }
 
+
+    public List<MedicoDto> obtenerMedicos() {
+        List<MedicoEntity> medicos = medicoRepository.findAll();
+        return medicos.stream()
+                .map(medicoMapper::mapTo)
+                .collect(Collectors.toList());
+    }
+
+
     // Actualizar estado de aprobación
     @Transactional
     public void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado) {

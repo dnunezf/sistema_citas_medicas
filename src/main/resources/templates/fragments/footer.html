@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-</head>
-
-<footer th:fragment="footer" class="footer">
-    <div class="footer"> <!-- div FOOTER -->
-        <div id="footerInfo"> <!-- div de la info del footer -->
-            <h3>
-                Total Soft Inc.
-            </h3>
-        </div>
-        <div id="redesSociales"> <!-- div de las redes sociales -->
-            <!-- aquí van las imágenes de los íconos -->
-        </div>
-        <div id="footerContacto">
-            <p>
-                @2019 Tsf, Inc.
-            </p>
-        </div>
+<footer th:fragment="footer">
+    <p>&copy; 2025 Total Soft Inc.</p>
+    <div class="social-icons">
+        <img src="/images/facebook.png" alt="Facebook">
+        <img src="/images/twitter.png" alt="Twitter">
+        <img src="/images/instagram.png" alt="Instagram">
     </div>
 </footer>
-
-</html>

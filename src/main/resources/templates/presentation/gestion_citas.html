@@ -1,30 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="fragments/head :: head">
     <title>Gestión de Citas</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_citas.css}">
+    <link rel="stylesheet" th:href="@{/css/gestion_citas.css}">
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="/images/logo.png" alt="Medical Appointments">
-    </div>
-    <nav>
-        <ul>
-            <li><a href="#">About...</a></li>
-            <li><a href="#">Appointments</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><span th:text="${medico.nombre}"></span> ▼</li>
-        </ul>
-    </nav>
-</header>
+
+<header th:replace="fragments/header :: header"></header> <!-- ✅ Header con menú y logout -->
 
 <main>
     <h2>
         Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Appointments
     </h2>
 
+    <!-- Filtro por estado y paciente -->
     <div class="filters">
         <form th:action="@{/citas/medico/{idMedico}/filtrar/estado(idMedico=${medico.id})}" method="get">
             <label for="estado">Status:</label>
@@ -35,17 +24,20 @@
                 <option value="cancelada">Canceled</option>
                 <option value="completada">Completed</option>
             </select>
+
             <label for="paciente">Patient:</label>
             <input type="text" id="paciente" name="nombrePaciente" placeholder="Patient name">
+
             <button type="submit">Search</button>
         </form>
     </div>
 
+    <!-- Listado de citas -->
     <div class="appointments">
         <div class="appointment" th:each="cita : ${citas}">
             <div class="patient-info">
                 <img src="/images/avatar.png" alt="Patient">
-                <span th:text="${cita.nombrePaciente}"></span> <!-- Corrección aquí -->
+                <span th:text="${cita.nombrePaciente}"></span>
             </div>
             <div class="appointment-details">
                 <span class="date-time" th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy - HH:mm')}"></span>
@@ -71,13 +63,6 @@
     </div>
 </main>
 
-<footer>
-    <p>&copy; 2025 Total Soft Inc.</p>
-    <div class="social-icons">
-        <img src="/images/facebook.png" alt="Facebook">
-        <img src="/images/twitter.png" alt="Twitter">
-        <img src="/images/instagram.png" alt="Instagram">
-    </div>
-</footer>
+<footer th:replace="fragments/footer :: footer"></footer> <!-- ✅ Footer reutilizable -->
 </body>
 </html>
