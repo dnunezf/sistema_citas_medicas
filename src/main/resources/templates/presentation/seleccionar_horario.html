@@ -22,32 +22,33 @@
 
     <!-- Tabla de horarios -->
     <div class="horario-section" th:each="entry : ${espaciosPorFecha}">
-        <h4 class="horario-fecha" th:text="${#temporals.format(entry.key, 'EEEE dd/MM/yyyy')}"></h4> <!-- Día y Fecha -->
+        <h4 class="horario-fecha" th:text="${#temporals.format(entry.key, 'EEEE dd/MM/yyyy')}"></h4>
 
         <table>
             <thead>
             <tr>
                 <th>Hora</th>
-                <th>Seleccionar</th>
+                <th>Acción</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="espacio : ${entry.value}">
                 <td th:text="${#temporals.format(espacio, 'HH:mm')}"></td>
                 <td>
-                    <input type="radio" name="horarioSeleccionado" th:value="${espacio}">
+                    <a th:href="@{/citas/confirmar(idMedico=${medico.id}, fechaHora=${espacio})}"
+                       class="btn btn-success">
+                        Agendar Cita
+                    </a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Botones de acción -->
+    <!-- Botón Cancelar -->
     <div class="botones">
-        <button type="submit" class="btn btn-success">Agendar Cita</button>
-        <button type="button" class="btn btn-danger">Cancelar</button>
+        <a th:href="@{/citas/ver}" class="btn btn-danger">Cancelar</a>
     </div>
-
 </div>
 
 </body>
