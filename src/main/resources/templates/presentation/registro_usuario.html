@@ -9,6 +9,8 @@
 
 <body>
 
+<header th:replace="fragments/header :: header"></header>
+
 <div class="form-container">
   <img src="/images/user.jpg" alt="User Icon" class="user-icon">
   <h2>Registro</h2>
@@ -47,9 +49,7 @@
   </form>
 </div>
 
-<div class="footer">
-  Total Soft Inc. &copy; 2024
-</div>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 </html>

@@ -8,6 +8,9 @@
 </head>
 <body>
 
+<header th:replace="fragments/header :: header"></header>
+
+
 <div class="container">
     <h2 class="title">Editar Datos del Paciente</h2>
 
@@ -53,6 +56,8 @@
         <button type="submit">Guardar Cambios</button>
     </form>
 </div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 </html>

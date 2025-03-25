@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<header th:replace="fragments/header :: header"></header>
+
 <div class="container">
     <h2 class="title">Seleccionar Horario para la Cita</h2>
 
@@ -50,6 +52,8 @@
         <a th:href="@{/citas/ver}" class="btn btn-danger">Cancelar</a>
     </div>
 </div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 </html>
