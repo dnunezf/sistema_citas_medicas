@@ -11,8 +11,6 @@
 
 <body style="background-color: white">
 
-<header th:insert="fragments/header :: header"></header>
-
 <!-- Contenedor Principal -->
 <div class="cuerpo">
     <form th:action="@{/usuarios/login}" method="post" th:object="${login}">
@@ -59,8 +57,5 @@
         </div>
     </form>
 </div>
-
-<footer th:insert="fragments/footer :: footer"></footer>
-
 </body>
 </html>
