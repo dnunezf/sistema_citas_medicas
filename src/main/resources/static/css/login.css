@@ -5,12 +5,12 @@ div.footer {
     bottom: 0;
     width: 100%;
     background-color: grey;
-    padding: 10px 20px; /* Asegura espacio en los lados */
+    padding: 10px 20px;
     font-size: x-large;
     margin-bottom: 1px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Distribuye los elementos */
+    justify-content: space-between;
     color: white;
     font-family: Calibri;
 }
@@ -23,81 +23,78 @@ div.footer {
     text-align: center;
     flex-grow: 1;
     display: flex;
-    justify-content: center; /* Centra los íconos */
+    justify-content: center;
 }
 
 #footerContacto {
     text-align: right;
-    margin-right: 60px; /* Agrega margen derecho para que no se corte */
-    align-self: flex-end; /* Mueve el elemento hacia la parte inferior */
-    font-size: 16px; /* Ajusta el tamaño de la fuente */
+    margin-right: 60px;
+    align-self: flex-end;
+    font-size: 16px;
+}
+
+/* Tamaño de los íconos de redes sociales */
+.social-icons img {
+    width: 15px;  /* Ajusta el tamaño del ícono */
+    height: auto;  /* Mantiene la relación de aspecto */
+    margin: 0 10px;  /* Añade espacio entre los íconos */
 }
 
 /*-------------------------------------------------Header------------------------------------------------------------*/
-/* Estilos para el header */
+/* Header */
 header {
     background-color: lightblue;
-    padding: 10px 20px; /* Espaciado interno */
-    font-size: x-large;
-    margin-bottom: 5px;
+    padding: 10px 20px;
     display: flex;
-    align-items: center; /* Alinea verticalmente los elementos */
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-}
-/* Estilos para el header */
-header {
-    background-color: lightblue;
-    padding: 10px 20px; /* Espaciado interno */
-    font-size: large; /* Ajusta el tamaño de fuente general */
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center; /* Alinea verticalmente los elementos */
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    align-items: center;
+    justify-content: space-between;
 }
 
-/* Contenedor del logo y el título */
+/* Contenedor del logo y título */
 .header-left {
     display: flex;
     align-items: center; /* Alinea verticalmente */
-    gap: 10px; /* Reduce el espacio entre logo y título */
+    gap: 5px; /* Espaciado reducido entre el logo y el título */
 }
 
-/* Ajuste del logo */
+/* Logo */
 .logo {
-    width: 50px; /* Reduce el tamaño del logo */
+    width: 50px;
     height: auto;
-    margin-left: 10px; /* Espacio desde el borde izquierdo */
+    margin-left: 10px;
 }
 
-/* Ajuste del título */
+/* Título */
 #tituloPagina {
     font-family: serif;
     font-style: italic;
     font-weight: 100;
     color: darkcyan;
-    margin: 0; /* Elimina márgenes innecesarios */
-    font-size: 20px; /* Reduce el tamaño del título */
+    margin: 0; /* Evita espacios innecesarios */
+    font-size: 20px;
 }
 
 /* Contenedor del teléfono */
-.header-center {
+.header-right {
     display: flex;
     align-items: center;
-    gap: 8px; /* Espacio entre el icono del teléfono y el número */
-    flex-grow: 1; /* Permite que este contenedor se expanda */
-    justify-content: center; /* Centra el contenido */
-    margin-left: -400px; /* Mueve el contenedor más a la izquierda */
+    gap: 8px;
 }
 
-/* Imagen del teléfono */
+/* Icono del teléfono */
 .telefono-icono {
-    width: 20px; /* Ajusta el tamaño de la imagen del teléfono */
+    width: 20px;
     height: auto;
+    display: inline-block; /* Para alinear bien con el número */
 }
 
-/* Ajuste del número */
+/* Número de teléfono */
 .telefono-numero {
-    font-size: 16px; /* Reduce el tamaño del número */
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaciado con el ícono */
 }
 
 

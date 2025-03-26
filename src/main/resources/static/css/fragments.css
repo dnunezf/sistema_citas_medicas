@@ -1,0 +1,80 @@
+/*-------------------------------------------------Footer------------------------------------------------------------*/
+div.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: grey;
+    padding: 10px 20px;
+    font-size: x-large;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-family: Calibri;
+}
+
+/* Tamaño de los íconos de redes sociales */
+.social-icons img {
+    width: 10px;  /* Ajusta el tamaño del ícono aún más pequeño */
+    height: auto;  /* Mantiene la relación de aspecto */
+    margin: 0 10px;  /* Añade espacio entre los íconos */
+}
+
+/*-------------------------------------------------Header------------------------------------------------------------*/
+/* Header */
+header {
+    background-color: lightblue;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Contenedor del logo y título */
+.header-left {
+    display: flex;
+    align-items: center; /* Alinea verticalmente */
+    gap: 5px; /* Espaciado reducido entre el logo y el título */
+}
+
+/* Logo */
+.logo {
+    width: 50px;
+    height: auto;
+    margin-left: 10px;
+}
+
+/* Título */
+#tituloPagina {
+    font-family: serif;
+    font-style: italic;
+    font-weight: 100;
+    color: darkcyan;
+    margin: 0; /* Evita espacios innecesarios */
+    font-size: 20px;
+}
+
+/* Contenedor del teléfono */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Icono del teléfono */
+.telefono-icono {
+    width: 20px;
+    height: auto;
+    display: inline-block; /* Para alinear bien con el número */
+}
+
+/* Número de teléfono */
+.telefono-numero {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaciado con el ícono */
+}
