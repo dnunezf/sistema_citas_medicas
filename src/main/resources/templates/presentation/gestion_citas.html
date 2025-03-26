@@ -13,6 +13,11 @@
         Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Appointments
     </h2>
 
+    <!-- Botón para redirigir a la página de edición del doctor -->
+    <a th:href="@{/medicos/perfil}" class="edit-doctor-button">
+        Editar Información
+    </a>
+
     <!-- Filtro por estado y paciente -->
     <div class="filters">
         <form th:action="@{/citas/medico/{idMedico}/filtrar/estado(idMedico=${medico.id})}" method="get">

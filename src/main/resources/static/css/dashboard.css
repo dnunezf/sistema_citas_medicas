@@ -1,146 +1,112 @@
+/* Estilos generales */
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f2f7fb;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
 
-header {
-    background-color: #eaf6ff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    border-bottom: 1px solid #ccc;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: #0099cc;
-}
-
-.logo img {
-    width: 50px;
-    margin-right: 10px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-}
-
-.container {
-    max-width: 1000px;
+/* Contenedor principal */
+.dashboard-container {
+    max-width: 1100px;
     margin: 30px auto;
-    padding: 0 20px;
+    padding: 20px;
 }
 
-.search-bar {
+/* Formulario de búsqueda */
+form {
     display: flex;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
 }
 
-.search-bar input {
+form input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     flex: 1;
 }
 
-.search-bar button {
+form button {
     background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 18px;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.medico-card {
+/* Tarjeta de médico */
+.doctor-card {
     background-color: white;
     padding: 20px;
-    margin-bottom: 25px;
     border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.medico-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.medico-info {
+/* Información del médico */
+.doctor-info {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-.medico-info img {
-    width: 55px;
-    height: 55px;
+.doctor-info img {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
 
-.medico-name {
-    font-weight: bold;
+strong {
     font-size: 18px;
 }
 
-.medico-id {
-    color: #007bff;
-    font-weight: 600;
-}
-
-.medico-details {
+.doctor-info div {
     font-size: 14px;
     color: #555;
-    margin-top: 4px;
 }
 
+/* Horarios */
 .horarios {
     margin-top: 15px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.horarios .fecha {
+    font-weight: bold;
+    color: #ff7f00;
+    margin-bottom: 5px;
+}
+
+.horas {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-}
-
-.fecha-grupo {
-    margin-right: 25px;
-}
-
-.fecha {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #ff7f00;
+    gap: 8px;
 }
 
 .hora {
-    display: inline-block;
     background-color: #e1f0ff;
     color: #007bff;
     padding: 6px 10px;
     border-radius: 5px;
-    margin: 2px;
-    font-size: 13px;
-    text-decoration: none;
+    font-size: 14px;
 }
 
-footer {
-    background-color: #222;
+/* Botón de agendar */
+.schedule-button {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.schedule-button a {
+    background-color: #007bff;
     color: white;
-    padding: 15px;
-    text-align: center;
-    margin-top: 40px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
 }
