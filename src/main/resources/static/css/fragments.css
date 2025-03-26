@@ -1,5 +1,5 @@
 /*-------------------------------------------------Footer------------------------------------------------------------*/
-div.footer {
+footer {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -15,15 +15,20 @@ div.footer {
     font-family: Calibri;
 }
 
-/* Tamaño de los íconos de redes sociales */
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .social-icons img {
-    width: 10px;  /* Ajusta el tamaño del ícono aún más pequeño */
-    height: auto;  /* Mantiene la relación de aspecto */
-    margin: 0 10px;  /* Añade espacio entre los íconos */
+    width: 30px;  /* Aumenta el tamaño de los íconos */
+    height: auto;
+    margin: 0 10px;
 }
 
 /*-------------------------------------------------Header------------------------------------------------------------*/
-/* Header */
 header {
     background-color: lightblue;
     padding: 10px 20px;
@@ -32,49 +37,59 @@ header {
     justify-content: space-between;
 }
 
-/* Contenedor del logo y título */
-.header-left {
-    display: flex;
-    align-items: center; /* Alinea verticalmente */
-    gap: 5px; /* Espaciado reducido entre el logo y el título */
-}
-
-/* Logo */
 .logo {
     width: 50px;
     height: auto;
-    margin-left: 10px;
 }
 
-/* Título */
-#tituloPagina {
-    font-family: serif;
-    font-style: italic;
-    font-weight: 100;
-    color: darkcyan;
-    margin: 0; /* Evita espacios innecesarios */
-    font-size: 20px;
-}
-
-/* Contenedor del teléfono */
-.header-right {
+nav ul {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-/* Icono del teléfono */
-.telefono-icono {
-    width: 20px;
-    height: auto;
-    display: inline-block; /* Para alinear bien con el número */
+nav li {
+    margin-right: 20px;
 }
 
-/* Número de teléfono */
-.telefono-numero {
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Espaciado con el ícono */
+nav a {
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.username:hover {
+    cursor: pointer;
+}
+
+/*-------------------------------------------------General Styles--------------------------------------------------*/
+header, footer {
+    font-family: Arial, sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+    footer {
+        font-size: medium;
+    }
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
 }

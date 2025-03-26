@@ -6,10 +6,9 @@
   <link rel="stylesheet" type="text/css" href="/css/registro_usuario.css">
 </head>
 
-
 <body>
 
-<header th:replace="fragments/header :: header"></header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <div class="form-container">
   <img src="/images/user.jpg" alt="User Icon" class="user-icon">
@@ -49,7 +48,7 @@
   </form>
 </div>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

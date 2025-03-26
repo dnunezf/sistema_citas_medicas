@@ -8,7 +8,7 @@
 <body>
 
 <!-- Encabezado general (ya existente en su sistema) -->
-<header th:replace="fragments/header :: header"></header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container-confirmacion">
     <div class="card-confirmacion">
@@ -36,7 +36,7 @@
 </div>
 
 <!-- Pie de página (ya existente en su sistema) -->
-<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

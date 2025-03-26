@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<div th:replace="~{fragments/header :: header}"></div>
+
 <div class="container">
   <h2>Gestión de Horarios</h2>
 
@@ -55,7 +57,7 @@
 
 </div>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

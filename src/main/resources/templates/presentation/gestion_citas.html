@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<header th:replace="fragments/header :: header"></header> <!-- ✅ Header con menú y logout -->
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main>
     <h2>
@@ -63,6 +63,7 @@
     </div>
 </main>
 
-<footer th:replace="fragments/footer :: footer"></footer> <!-- ✅ Footer reutilizable -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head th:replace="fragments/head :: head"></head>
 <body>
 
-<header th:replace="fragments/header :: header"></header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main class="dashboard-container">
 
@@ -46,6 +46,7 @@
 
 </main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

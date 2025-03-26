@@ -1,27 +1,27 @@
-<header>
+<header th:fragment="header">
     <div class="logo">
-        <a href="/"><img src="/images/logo.png" alt="Logo" style="height: 40px;"></a>
+        <a href="/"><img src="@{/images/logo.png}" alt="Logo" style="height: 40px;"></a>
     </div>
     <nav>
         <ul>
             <li><a th:href="@{/}">About</a></li>
             <li><a th:href="@{/}">Search</a></li>
-
-            <!-- 🔓 Si no hay usuario logueado -->
             <li th:if="${session.usuario == null}">
                 <a th:href="@{/usuarios/login}">Login</a>
             </li>
-
-            <!-- 🔐 Si hay usuario logueado -->
             <li th:if="${session.usuario != null}" class="dropdown">
                 <a href="#" class="username">[[${session.usuario.nombre}]] ▼</a>
                 <ul class="dropdown-content">
                     <li><a th:href="@{/usuarios/logout}">Cerrar sesión</a></li>
-
-                    <!-- Rol específico: enlaces opcionales -->
-                    <li th:if="${session.usuario.rol == 'PACIENTE'}"><a th:href="@{/citas/mis_citas}">Mis Citas</a></li>
-                    <li th:if="${session.usuario.rol == 'MEDICO'}"><a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Mis Citas</a></li>
-                    <li th:if="${session.usuario.rol == 'ADMINISTRADOR'}"><a th:href="@{/admin/lista}">Panel Admin</a></li>
+                    <li th:if="${session.usuario.rol == 'PACIENTE'}">
+                        <a th:href="@{/citas/mis_citas}">Mis Citas</a>
+                    </li>
+                    <li th:if="${session.usuario.rol == 'MEDICO'}">
+                        <a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Mis Citas</a>
+                    </li>
+                    <li th:if="${session.usuario.rol == 'ADMINISTRADOR'}">
+                        <a th:href="@{/admin/lista}">Panel Admin</a>
+                    </li>
                 </ul>
             </li>
         </ul>

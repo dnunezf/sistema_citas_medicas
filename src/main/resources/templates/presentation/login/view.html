@@ -10,7 +10,7 @@
 
 <body style="background-color: white">
 
-<header th:replace="fragments/header :: header"></header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- Contenedor Principal -->
 <div class="cuerpo">
@@ -59,7 +59,7 @@
     </form>
 </div>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<header th:replace="fragments/header :: header"></header> <!-- ⬅️ Header común con botón logout -->
+<div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container">
     <h2 class="title">Gestión de Médicos</h2>
@@ -59,7 +59,7 @@
     </table>
 </div>
 
-<footer th:replace="fragments/footer :: footer"></footer> <!-- ⬅️ Footer común -->
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
