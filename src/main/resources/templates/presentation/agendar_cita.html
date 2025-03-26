@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Agendar Cita</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/agendar_cita.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
+<header th:insert="fragments/header :: header"></header>
 
 <div class="container">
     <h2>Agendar Cita</h2>
@@ -57,7 +58,7 @@
 
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>

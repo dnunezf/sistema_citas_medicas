@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <title>Appointment History</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_citas.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
+<header th:insert="fragments/header :: header"></header>
 
 <main>
     <!-- Mensaje de éxito -->
@@ -70,7 +71,7 @@
     </div>
 </main>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>

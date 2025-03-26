@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Paciente</title>
     <link rel="stylesheet" th:href="@{/css/registro_paciente.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
+<header th:insert="fragments/header :: header"></header>
 
 <div class="container">
     <h2 class="title">Editar Datos del Paciente</h2>
@@ -56,7 +57,7 @@
     </form>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>

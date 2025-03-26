@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body style="background-color: white">
 
-
+<header th:insert="fragments/header :: header"></header>
 
 <!-- Contenedor Principal -->
 <div class="cuerpo">
@@ -59,7 +60,7 @@
     </form>
 </div>
 
-
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>
