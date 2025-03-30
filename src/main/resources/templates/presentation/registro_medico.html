@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,73 +11,87 @@
 
 <header th:insert="fragments/header :: header"></header>
 
-<div class="container">
-    <h2 class="title">Actualizar Información del Médico</h2>
+<div class="main-content">
+    <div class="container">
+        <h2 class="title">Actualizar Información del Médico</h2>
 
-    <!-- Mensajes de éxito o error -->
-    <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
-    <div th:if="${error}" class="message error" th:text="${error}"></div>
+        <!-- Mensajes de éxito o error -->
+        <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-    <!-- Formulario para ingresar manualmente el ID -->
-    <form th:action="@{/medicos/cargar}" method="get" class="form-container">
-        <div class="form-group">
-            <label for="idBuscar">Ingrese ID del Médico</label>
-            <input type="number" id="idBuscar" name="id" required min="1" title="El ID debe ser un número positivo">
-        </div>
-        <button type="submit" class="submit-button">Cargar Datos</button>
-    </form>
+        <!-- Mostrar siempre una foto de perfil -->
+        <div class="foto-circular">
+            <img th:if="${medico != null and medico.rutaFotoPerfil != null}"
+                 th:src="@{${medico.rutaFotoPerfil}}"
+                 alt="Foto de perfil"/>
 
-    <hr> <!-- Separador visual -->
-
-    <!-- Formulario de edición (se llena después de cargar datos) -->
-    <form th:action="@{/medicos/actualizar}" th:object="${medico}" method="post" class="form-container" th:if="${medico}">
-
-        <div class="form-group">
-            <label for="id">ID</label>
-            <input type="number" id="id" th:field="*{id}" required readonly>
+            <img th:unless="${medico != null and medico.rutaFotoPerfil != null}"
+                 th:src="@{/images/no_photo.png}"
+                 alt="Foto de perfil"/>
         </div>
 
-        <div class="form-group">
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" th:field="*{nombre}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
-        </div>
+        <!-- Formulario para ingresar manualmente el ID -->
+        <form th:action="@{/medicos/cargar}" method="get" class="form-container">
+            <div class="form-group full-width">
+                <label for="idBuscar">Ingrese ID del Médico</label>
+                <input type="number" id="idBuscar" name="id" required min="1" title="El ID debe ser un número positivo">
+            </div>
+            <button type="submit" class="submit-button">Cargar Datos</button>
+        </form>
 
-        <div class="form-group">
-            <label for="especialidad">Especialidad</label>
-            <input type="text" id="especialidad" th:field="*{especialidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
-        </div>
+        <hr>
 
-        <div class="form-group">
-            <label for="costoConsulta">Costo de Consulta</label>
-            <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required min="1" max="1000">
-        </div>
+        <!-- Formulario de edición del médico -->
+        <form th:action="@{/medicos/actualizar}" th:object="${medico}" method="post"
+              class="form-container" th:if="${medico}" enctype="multipart/form-data">
 
-        <div class="form-group">
-            <label for="localidad">Localidad</label>
-            <input type="text" id="localidad" th:field="*{localidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
-        </div>
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input type="number" id="id" th:field="*{id}" required readonly>
+            </div>
 
-        <div class="form-group">
-            <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>
-            <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required min="10" max="120">
-        </div>
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+            </div>
 
-        <div class="form-group">
-            <label for="presentacion">Presentación</label>
-            <textarea id="presentacion" th:field="*{presentacion}" required minlength="10" maxlength="500"></textarea>
-        </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <input type="text" id="especialidad" th:field="*{especialidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+            </div>
 
-        <div class="form-group">
-            <label for="estadoAprobacion">Estado de Aprobación</label>
-            <input type="text" id="estadoAprobacion" th:field="*{estadoAprobacion}" readonly>
-        </div>
+            <div class="form-group">
+                <label for="costoConsulta">Costo de Consulta</label>
+                <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required min="1" max="1000">
+            </div>
 
-        <button type="submit" class="submit-button">Actualizar Información</button>
-    </form>
+            <div class="form-group">
+                <label for="localidad">Localidad</label>
+                <input type="text" id="localidad" th:field="*{localidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+            </div>
 
+            <div class="form-group">
+                <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>
+                <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required min="10" max="120">
+            </div>
+
+            <div class="form-group full-width">
+                <label for="presentacion">Presentación</label>
+                <textarea id="presentacion" th:field="*{presentacion}" required minlength="10" maxlength="500"></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="fotoPerfil">Subir Nueva Foto de Perfil</label>
+                <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*">
+            </div>
+
+            <button type="submit" class="submit-button">Actualizar Información</button>
+        </form>
+    </div>
 </div>
 
 <footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>
+

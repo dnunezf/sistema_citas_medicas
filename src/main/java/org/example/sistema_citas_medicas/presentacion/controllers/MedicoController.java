@@ -7,7 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @Controller
@@ -27,9 +33,9 @@ public class MedicoController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarMedico(@ModelAttribute("medico") MedicoEntity medico, Model model) {
-        System.out.println("🟢 ID recibido: " + medico.getId());
-
+    public String actualizarMedico(@ModelAttribute("medico") MedicoEntity medico,
+                                   @RequestParam(value = "fotoPerfil", required = false) MultipartFile file,
+                                   Model model) {
         if (medico.getId() == null || medico.getId() <= 0) {
             model.addAttribute("error", "El ID del médico es inválido.");
             return "presentation/registro_medico";
@@ -38,7 +44,35 @@ public class MedicoController {
         Optional<MedicoEntity> medicoExistente = medicoService.obtenerPorId(medico.getId());
 
         if (medicoExistente.isPresent()) {
-            medicoService.actualizarMedico(medico);
+            MedicoEntity medicoActual = medicoExistente.get();
+
+            medicoActual.setNombre(medico.getNombre());
+            medicoActual.setEspecialidad(medico.getEspecialidad());
+            medicoActual.setCostoConsulta(medico.getCostoConsulta());
+            medicoActual.setLocalidad(medico.getLocalidad());
+            medicoActual.setFrecuenciaCitas(medico.getFrecuenciaCitas());
+            medicoActual.setPresentacion(medico.getPresentacion());
+
+            // Si se subió una nueva imagen, guardarla
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String nombreArchivo = "medico_" + medico.getId() + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    Path rutaCarpeta = Paths.get("uploads/fotos_perfil");
+                    Files.createDirectories(rutaCarpeta);
+
+                    Path rutaCompleta = rutaCarpeta.resolve(nombreArchivo);
+                    Files.copy(file.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
+
+                    // Guardamos solo la ruta relativa para usar en HTML
+                    String rutaRelativa = "/uploads/fotos_perfil/" + nombreArchivo;
+                    medicoActual.setRutaFotoPerfil(rutaRelativa);
+                } catch (IOException e) {
+                    model.addAttribute("error", "Error al guardar la foto de perfil.");
+                    return "presentation/registro_medico";
+                }
+            }
+
+            medicoService.actualizarMedico(medicoActual);
             model.addAttribute("mensaje", "Información actualizada correctamente.");
         } else {
             model.addAttribute("error", "El médico no existe.");
@@ -46,6 +80,7 @@ public class MedicoController {
 
         return "presentation/registro_medico";
     }
+
 
 
 
