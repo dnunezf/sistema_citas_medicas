@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Usuario</title>
-  <link rel="stylesheet" type="text/css" href="/css/registro_usuario.css">
   <link rel="stylesheet" th:href="@{/css/fragments.css}">
+  <link rel="stylesheet" th:href="@{/css/registro_usuario.css}">
 </head>
 
 <body>
 
 <header th:insert="fragments/header :: header"></header>
 
-<div class="form-container">
-  <img src="/images/user.jpg" alt="User Icon" class="user-icon">
-  <h2>Registro</h2>
+<main class="main-wrapper">
+  <div class="form-container">
+    <img th:src="@{/images/user.jpg}" alt="User Icon" class="user-icon">
+    <h2>Registro</h2>
 
-  <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
+    <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
 
-    <!-- Campo ID -->
-    <div class="input-container">
-      <i class="fas fa-user"></i>
-      <input type="number" id="id" th:field="*{id}" min="1" required>
-      <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
-    </div>
+      <!-- Campo ID -->
+      <div class="input-container">
+        <i class="fas fa-user"></i>
+        <input type="number" id="id" th:field="*{id}" min="1" required placeholder="ID de usuario">
+        <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+      </div>
 
-    <!-- Campo Nombre -->
-    <div class="input-container">
-      <i class="fas fa-user-edit"></i>
-      <input type="text" id="nombre" th:field="*{nombre}" placeholder="nombre" required maxlength="100">
-    </div>
+      <!-- Campo Nombre -->
+      <div class="input-container">
+        <i class="fas fa-user-edit"></i>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre completo" required maxlength="100">
+      </div>
 
-    <!-- Campo Clave -->
-    <div class="input-container">
-      <i class="fas fa-key"></i>
-      <input type="password" id="clave" th:field="*{clave}" placeholder="password" required maxlength="100">
-    </div>
+      <!-- Campo Clave -->
+      <div class="input-container">
+        <i class="fas fa-key"></i>
+        <input type="password" id="clave" th:field="*{clave}" placeholder="Contraseña" required maxlength="100">
+      </div>
 
-    <!-- Selección de Rol -->
-    <div class="input-container">
-      <i class="fas fa-user-tag"></i>
-      <select id="rol" th:field="*{rol}" required>
-        <option value="">Seleccione un rol</option>
-        <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
-      </select>
-    </div>
+      <!-- Selección de Rol -->
+      <div class="input-container">
+        <i class="fas fa-user-tag"></i>
+        <select id="rol" th:field="*{rol}" required>
+          <option value="">Seleccione un rol</option>
+          <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
+        </select>
+      </div>
 
-    <button type="submit">Registrar</button>
-  </form>
-</div>
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+</main>
 
 <footer th:insert="fragments/footer :: footer"></footer>
 
