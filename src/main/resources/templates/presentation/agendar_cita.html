@@ -3,38 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Agendar Cita</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/agendar_cita.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/agendar_cita.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
 <header th:insert="fragments/header :: header"></header>
 
-<div class="container">
-    <h2>Agendar Cita</h2>
+<div class="agendar-container">
+    <h2 class="title">Agendar Cita</h2>
 
-    <!-- Mensajes de error o éxito -->
+    <!-- Mensajes de éxito o error -->
     <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
     <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-    <!-- Formulario para buscar médicos -->
-    <form th:action="@{/citas/buscar}" method="get">
-        <label for="especialidad">Especialidad:</label>
-        <select id="especialidad" name="especialidad">
-            <option value="">Seleccione...</option>
+    <!-- Formulario de búsqueda -->
+    <form th:action="@{/citas/buscar}" method="get" class="form-busqueda">
+        <select id="especialidad" name="especialidad" class="select-input">
+            <option value="">Especialidad...</option>
             <option th:each="esp : ${especialidades}" th:value="${esp}" th:text="${esp}"></option>
         </select>
 
-        <label for="ubicacion">Ubicación:</label>
-        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ciudad o localidad">
+        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ubicación (ciudad, zona...)" class="text-input">
 
-        <button type="submit">Buscar Médicos</button>
+        <button type="submit" class="btn-buscar">Buscar Médicos</button>
     </form>
 
-    <!-- Lista de médicos encontrados -->
+    <!-- Lista de médicos -->
     <div th:if="${medicos}">
         <h3>Médicos disponibles</h3>
-        <table>
+        <table class="tabla-medicos">
             <thead>
             <tr>
                 <th>Nombre</th>
@@ -49,13 +49,12 @@
                 <td th:text="${medico.especialidad}"></td>
                 <td th:text="${medico.localidad}"></td>
                 <td>
-                    <a th:href="@{/citas/horarios/{id}(id=${medico.id})}">Ver Horarios</a>
+                    <a th:href="@{/citas/horarios/{id}(id=${medico.id})}" class="btn-ver-horarios">Ver Horarios</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
 </div>
 
 <footer th:insert="fragments/footer :: footer"></footer>

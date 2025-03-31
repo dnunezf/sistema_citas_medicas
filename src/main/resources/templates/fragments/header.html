@@ -1,7 +1,7 @@
 <header th:fragment="header">
     <div class="top-bar">
         <div class="logo">
-            <a href="/"><img th:src="@{/images/logo.png}" alt="Logo" style="height: 50px;"></a>
+            <a href="/"><img th:src="@{/images/logo.png}" alt="Logo"></a>
             <span class="brand-title">Medical Appointments</span>
         </div>
         <div class="contact-info">
@@ -11,7 +11,7 @@
 
     <nav class="main-nav">
         <ul>
-            <li><a th:href="@{/}">About...</a></li>
+            <li><a th:href="@{/}">About</a></li>
             <li><a th:href="@{/}">Appointments</a></li>
             <li><a th:href="@{/}">Profile</a></li>
 
@@ -45,7 +45,7 @@
 
             <!-- Si el usuario NO ha iniciado sesión -->
             <li th:if="${session.usuario == null}">
-                <a th:href="@{/usuarios/login}">Login</a>
+                <a th:href="@{/usuarios/login}" class="login-button">Login</a>
             </li>
         </ul>
     </nav>

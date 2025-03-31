@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
@@ -7,44 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body style="background-color: white">
+<body>
 
-<div class="cuerpo">
-    <!-- Spring Security manejará esta acción -->
-    <form th:action="@{/usuarios/login}" method="post">
-        <div id="login">
-            <div id="tituloLogin">
-                <h2>Login</h2>
-            </div>
+<div class="login-container">
 
-            <div id="datosLogin">
-                <div>
-                    <img class="login-icono" th:src="@{/images/login.jpg}" alt="Login">
-                </div>
+    <form th:action="@{/usuarios/login}" method="post" class="login-form">
 
-                <div class="input-group">
-                    <span class="icon">
-                        <img th:src="@{/images/user.jpg}" alt="User Icon">
-                    </span>
-                    <input type="number" name="username" id="username" min="1" required placeholder="ID de Usuario">
-                </div>
-
-                <div class="input-group">
-                    <span class="icon">
-                        <img th:src="@{/images/llave.jpg}" alt="Password Icon">
-                    </span>
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-
-                <div class="button-container">
-                    <button type="submit" class="btn-login">Log in</button>
-                </div>
-            </div>
-
-            <div class="register-container">
-                <span>Don't have an account?</span>
-                <a th:href="@{/usuarios/registro}" class="btn-register">Register here</a>
-            </div>
+        <div class="login-header">
+            <img th:src="@{/images/login.jpg}" alt="Login Icon" class="login-image">
+            <h2>Bienvenido</h2>
+            <p>Inicie sesión para acceder a su cuenta</p>
         </div>
 
         <!-- Mensaje de error de Spring Security -->
@@ -52,8 +24,32 @@
             <p th:if="${param.error == 'true'}">⚠️ Usuario o contraseña incorrectos.</p>
             <p th:if="${param.error == 'pendiente'}">⚠️ Su cuenta de médico está pendiente de aprobación.</p>
         </div>
+
+        <div class="input-group">
+            <span class="icon">
+                <i class="fas fa-id-card"></i>
+            </span>
+            <input type="number" name="username" id="username" min="1" required placeholder="ID de Usuario">
+        </div>
+
+        <div class="input-group">
+            <span class="icon">
+                <i class="fas fa-lock"></i>
+            </span>
+            <input type="password" name="password" placeholder="Contraseña" required>
+        </div>
+
+        <button type="submit" class="btn-login">Iniciar Sesión</button>
+
+        <div class="register-container">
+            <span>¿No tienes una cuenta?</span>
+            <a th:href="@{/usuarios/registro}" class="btn-register">Regístrate aquí</a>
+        </div>
+
     </form>
 </div>
 
+<!-- Font Awesome para íconos -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

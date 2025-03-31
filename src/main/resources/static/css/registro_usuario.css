@@ -1,105 +1,131 @@
-/* Reset general */
+/* ===== Reset ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Estilo del cuerpo */
+/* ===== Cuerpo general ===== */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #eef2f7;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
 }
 
-/* Contenedor principal del formulario */
+/* ===== Contenedor principal ===== */
 .form-container {
     background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 420px;
     text-align: center;
 }
 
-/* Imagen del usuario */
+/* ===== Icono de usuario ===== */
 .user-icon {
     width: 80px;
     height: 80px;
+    object-fit: cover;
     border-radius: 50%;
     margin-bottom: 10px;
 }
 
-/* Estilos del título */
+/* ===== Título ===== */
 h2 {
-    font-size: 22px;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 20px;
 }
 
-/* Contenedor de los campos */
+/* ===== Input group con ícono ===== */
 .input-container {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
-/* Iconos dentro de los inputs */
 .input-container i {
     position: absolute;
-    left: 10px;
     top: 50%;
+    left: 12px;
     transform: translateY(-50%);
     color: #888;
+    font-size: 15px;
 }
 
-/* Campos de entrada */
+/* ===== Campos de entrada ===== */
 input, select {
     width: 100%;
-    padding: 10px;
-    padding-left: 35px; /* Espacio para el icono */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    outline: none;
+    padding: 12px 12px 12px 38px;
+    border: 1.8px solid #dcdde1;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #fcfcfc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Botón de envío */
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+}
+
+/* ===== Botón de registrar ===== */
 button {
-    background-color: #17a2b8;
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 12px;
     width: 100%;
     font-size: 16px;
-    border-radius: 5px;
+    font-weight: bold;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #138496;
+    background-color: #0056b3;
 }
 
-/* Mensaje de error */
-span {
+/* ===== Mensajes de error ===== */
+.error-text, span {
     display: block;
-    font-size: 12px;
-    color: red;
+    font-size: 13px;
+    color: #dc3545;
     margin-top: 5px;
+    text-align: left;
+    padding-left: 4px;
 }
 
-/* Estilo del pie de página */
+/* ===== Footer fijo (si lo usás) ===== */
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: #666;
+    margin-top: 40px;
+    background-color: #343a40;
     color: white;
+    width: 100%;
+    padding: 15px;
     text-align: center;
-    padding: 10px;
     font-size: 14px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 25px 20px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    input, select {
+        font-size: 14px;
+    }
 }

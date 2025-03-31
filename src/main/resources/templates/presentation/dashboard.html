@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Appointments</title>
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 
 <body>
@@ -15,21 +15,23 @@
 
 <main class="dashboard-container">
 
+    <h2 class="dashboard-title">Buscar Médicos</h2>
+
     <!-- Formulario de búsqueda -->
-    <form method="get" th:action="@{/}">
-        <input type="text" name="especialidad" placeholder="Speciality" th:value="${param.especialidad}">
-        <input type="text" name="localidad" placeholder="City" th:value="${param.localidad}">
-        <button type="submit">Search</button>
+    <form method="get" th:action="@{/}" class="form-busqueda">
+        <input type="text" name="especialidad" placeholder="Especialidad" th:value="${param.especialidad}">
+        <input type="text" name="localidad" placeholder="Ciudad o zona" th:value="${param.localidad}">
+        <button type="submit">Buscar</button>
     </form>
 
     <!-- Tarjetas de médicos -->
     <div th:each="medico : ${medicos}" class="doctor-card">
         <div class="doctor-info">
             <img src="/images/avatar.png" alt="Doctor Avatar">
-            <div>
+            <div class="doctor-text">
                 <strong th:text="${medico.nombre}">Nombre del médico</strong>
-                <div th:text="${medico.especialidad}">Especialidad</div>
-                <div th:text="${medico.localidad}">Ubicación</div>
+                <div class="especialidad" th:text="${medico.especialidad}">Especialidad</div>
+                <div class="ubicacion" th:text="${medico.localidad}">Ubicación</div>
             </div>
         </div>
 
@@ -48,7 +50,7 @@
 
         <!-- Botón de agendar -->
         <div class="schedule-button">
-            <a th:href="@{'/citas/horarios/' + ${medico.id}}">Schedule →</a>
+            <a th:href="@{'/citas/horarios/' + ${medico.id}}">Agendar Cita →</a>
         </div>
     </div>
 

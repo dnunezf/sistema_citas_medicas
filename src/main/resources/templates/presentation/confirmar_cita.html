@@ -5,6 +5,9 @@
     <title>Confirmar Cita</title>
     <link rel="stylesheet" th:href="@{/css/confirmar_cita.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -12,26 +15,41 @@
 
 <div class="container-confirmacion">
     <div class="card-confirmacion">
+
+        <!-- Foto del médico -->
         <div class="medico-imagen">
-            <img src="/img/avatar-medico.png" alt="Foto del médico">
-        </div>
-        <div class="info">
-            <p class="nombre-medico" th:text="${medico.nombre}">Nombre del médico</p>
-            <p><i class="fas fa-calendar-alt"></i>
-                <span th:text="${#temporals.format(fechaHora, 'yyyy-MM-dd HH:mm')}"></span>
-            </p>
-            <p><i class="fas fa-map-marker-alt"></i> <span th:text="${medico.localidad}">Localidad</span></p>
+            <img th:src="@{/images/avatar-medico.png}" alt="Foto del médico">
         </div>
 
+        <!-- Info del médico -->
+        <div class="info">
+            <p class="nombre-medico" th:text="${medico.nombre}">Nombre del médico</p>
+            <p>
+                <i class="fas fa-calendar-alt"></i>
+                <span th:text="${#temporals.format(fechaHora, 'dd/MM/yyyy HH:mm')}">Fecha y hora</span>
+            </p>
+            <p>
+                <i class="fas fa-map-marker-alt"></i>
+                <span th:text="${medico.localidad}">Localidad</span>
+            </p>
+        </div>
+
+        <!-- Formulario de confirmación -->
         <form th:action="@{/citas/confirmar}" method="post" class="formulario-confirmar">
             <input type="hidden" name="idMedico" th:value="${medico.id}">
             <input type="hidden" name="idPaciente" th:value="${paciente.id}">
             <input type="hidden" name="fechaHora" th:value="${fechaHora}">
+
             <div class="botones-confirmar">
-                <button type="submit" class="btn btn-confirmar">Confirmar</button>
-                <a th:href="@{/citas/horarios/{id}(id=${medico.id})}" class="btn btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn btn-confirmar">
+                    <i class="fas fa-check-circle"></i> Confirmar
+                </button>
+                <a th:href="@{/citas/horarios/{id}(id=${medico.id})}" class="btn btn-cancelar">
+                    <i class="fas fa-times-circle"></i> Cancelar
+                </a>
             </div>
         </form>
+
     </div>
 </div>
 

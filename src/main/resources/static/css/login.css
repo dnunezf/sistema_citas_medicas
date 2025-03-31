@@ -1,223 +1,120 @@
-/*-------------------------------------------------Footer------------------------------------------------------------*/
-div.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: grey;
-    padding: 10px 20px;
-    font-size: x-large;
-    margin-bottom: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
-    font-family: Calibri;
+/* ============================ */
+/*   LOGIN FORM MODERNO        */
+/* ============================ */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f2f8fd;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#footerInfo {
-    text-align: left;
-}
-
-#redesSociales {
-    text-align: center;
-    flex-grow: 1;
+/* Contenedor centrado */
+.login-container {
     display: flex;
     justify-content: center;
-}
-
-#footerContacto {
-    text-align: right;
-    margin-right: 60px;
-    align-self: flex-end;
-    font-size: 16px;
-}
-
-/* Tamaño de los íconos de redes sociales */
-.social-icons img {
-    width: 15px;  /* Ajusta el tamaño del ícono */
-    height: auto;  /* Mantiene la relación de aspecto */
-    margin: 0 10px;  /* Añade espacio entre los íconos */
-}
-
-/*-------------------------------------------------Header------------------------------------------------------------*/
-/* Header */
-header {
-    background-color: lightblue;
-    padding: 10px 20px;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    height: 100vh;
 }
 
-/* Contenedor del logo y título */
-.header-left {
-    display: flex;
-    align-items: center; /* Alinea verticalmente */
-    gap: 5px; /* Espaciado reducido entre el logo y el título */
-}
-
-/* Logo */
-.logo {
-    width: 50px;
-    height: auto;
-    margin-left: 10px;
-}
-
-/* Título */
-#tituloPagina {
-    font-family: serif;
-    font-style: italic;
-    font-weight: 100;
-    color: darkcyan;
-    margin: 0; /* Evita espacios innecesarios */
-    font-size: 20px;
-}
-
-/* Contenedor del teléfono */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Icono del teléfono */
-.telefono-icono {
-    width: 20px;
-    height: auto;
-    display: inline-block; /* Para alinear bien con el número */
-}
-
-/* Número de teléfono */
-.telefono-numero {
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Espaciado con el ícono */
-}
-
-
-/*-------------------------------------------------Login------------------------------------------------------------*/
-/* 🔹 Estilos Generales */
-#login {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* Formulario */
+.login-form {
     background: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 320px;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 380px;
     text-align: center;
-    font-family: Calibri, sans-serif;
-    border: 1px solid lightgray;
-    border-radius: 8px; /* Bordes redondeados */
 }
 
-/* 🔹 Título Login */
-#tituloLogin {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px;
+/* Header del form */
+.login-header h2 {
+    margin: 10px 0 5px;
+    font-size: 24px;
+    color: #007bff;
 }
 
-/* 🔹 Imagen de Perfil */
-.icon-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
+.login-header p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-.profile-icon {
+.login-image {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
-/* 🔹 Inputs */
+/* Input con ícono */
 .input-group {
     display: flex;
     align-items: center;
-    background: #f8f9fa;
+    background: #f1f3f5;
     border: 1px solid #ced4da;
-    border-radius: 5px;
-    padding: 8px;
-    margin-bottom: 12px;
-    width: 100%;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 16px;
 }
 
 .icon {
-    background: #e9ecef;
-    padding: 8px;
-    border-right: 1px solid #ced4da;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon img {
-    width: 20px;
-    height: 20px;
+    color: #6c757d;
+    margin-right: 10px;
+    font-size: 16px;
 }
 
 .input-group input {
     border: none;
-    outline: none;
-    padding: 10px;
-    width: 100%;
-    font-size: 14px;
     background: transparent;
+    width: 100%;
+    font-size: 15px;
+    outline: none;
 }
 
-/* 🔹 Botón Login */
+/* Botón login */
 .btn-login {
-    width: 100%;
-    padding: 10px;
-    background-color: #17a2b8;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
 .btn-login:hover {
-    background-color: #138496;
+    background-color: #0056b3;
 }
 
-/* 🔹 Contenedor de Registro */
+/* Registro */
 .register-container {
-    margin-top: 15px;
+    margin-top: 18px;
     font-size: 14px;
 }
 
 .btn-register {
     color: #dc3545;
-    font-weight: bold;
+    font-weight: 500;
     text-decoration: none;
-    margin-left: 5px;
+    margin-left: 6px;
 }
 
 .btn-register:hover {
     text-decoration: underline;
 }
 
+/* Error */
 .error-message {
-    color: red; /* 🔴 Color del mensaje de error */
+    background-color: #ffe5e5;
+    color: #c82333;
+    padding: 10px;
+    border-radius: 6px;
     font-size: 14px;
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-family: Calibri;
+    margin-bottom: 15px;
+    border: 1px solid #f5c2c7;
 }
-
-
-
-
-
-
-
-
-
