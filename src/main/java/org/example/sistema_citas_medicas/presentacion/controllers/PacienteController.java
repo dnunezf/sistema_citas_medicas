@@ -35,13 +35,24 @@ public class PacienteController {
 
     // Procesar la actualización de datos del paciente
     @PostMapping("/actualizar")
+
     public String actualizarPaciente(@ModelAttribute("paciente") PacienteEntity paciente, RedirectAttributes redirectAttributes) {
+        System.out.println("📥 Actualizando paciente:");
+        System.out.println("ID: " + paciente.getId());
+        System.out.println("Nombre: " + paciente.getNombre());
+        System.out.println("Clave: " + paciente.getClave());
+        System.out.println("Fecha Nacimiento: " + paciente.getFechaNacimiento());
+        System.out.println("Teléfono: " + paciente.getTelefono());
+        System.out.println("Dirección: " + paciente.getDireccion());
+        System.out.println("Rol: " + paciente.getRol());
+
         try {
+
             pacienteService.actualizarPaciente(paciente);
             redirectAttributes.addFlashAttribute("mensaje", "Datos actualizados correctamente.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al actualizar datos: " + e.getMessage());
         }
-        return "redirect:/pacientes/editar/" + paciente.getId();
+        return "redirect:/";
     }
 }

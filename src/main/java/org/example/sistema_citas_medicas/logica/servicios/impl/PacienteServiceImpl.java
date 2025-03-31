@@ -7,6 +7,7 @@ import org.example.sistema_citas_medicas.datos.repositorios.PacienteRepository;
 import org.example.sistema_citas_medicas.datos.repositorios.UsuarioRepository;
 import org.example.sistema_citas_medicas.logica.servicios.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class PacienteServiceImpl implements PacienteService {
 
     private final PacienteRepository pacienteRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public PacienteServiceImpl(PacienteRepository pacienteRepository) {
@@ -29,19 +32,28 @@ public class PacienteServiceImpl implements PacienteService {
         return pacienteRepository.findById(id).orElse(null);
     }
 
+
+
     @Override
+    @Transactional
     public void actualizarPaciente(PacienteEntity paciente) {
         PacienteEntity pacienteExistente = pacienteRepository.findById(paciente.getId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
         pacienteExistente.setNombre(paciente.getNombre());
-        pacienteExistente.setClave(paciente.getClave());
+
+        // 🔐 Solo encriptar si la contraseña cambió
+        if (!passwordEncoder.matches(paciente.getClave(), pacienteExistente.getClave())) {
+            pacienteExistente.setClave(passwordEncoder.encode(paciente.getClave()));
+        }
+
         pacienteExistente.setFechaNacimiento(paciente.getFechaNacimiento());
         pacienteExistente.setTelefono(paciente.getTelefono());
         pacienteExistente.setDireccion(paciente.getDireccion());
 
         pacienteRepository.save(pacienteExistente);
     }
+
 
     @Override
     public Optional<PacienteEntity> findOne(Long id) {

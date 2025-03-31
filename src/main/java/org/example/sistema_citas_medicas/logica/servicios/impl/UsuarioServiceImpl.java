@@ -94,4 +94,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         return Optional.empty(); // Si no coincide la clave
     }
 
+    @Override
+    public Optional<UsuarioEntity> findById(Long id) {
+        return usuarioRepository.findById(id);
+    }
+
 }

@@ -19,8 +19,11 @@
 
     <form th:action="@{/pacientes/actualizar}" th:object="${paciente}" method="post">
 
-        <!-- Campo ID (No editable) -->
+        <!-- Campo ID (oculto) -->
         <input type="hidden" th:field="*{id}">
+
+        <!-- Campo ROL (oculto, necesario para mantener el tipo de usuario) -->
+        <input type="hidden" th:field="*{rol}">
 
         <!-- Nombre -->
         <div class="input-group">
@@ -28,10 +31,16 @@
             <input type="text" id="nombre" th:field="*{nombre}" required>
         </div>
 
-        <!-- Clave -->
+        <!-- Contraseña -->
         <div class="input-group">
             <label for="clave">Contraseña:</label>
             <input type="password" id="clave" th:field="*{clave}" required>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="input-group">
+            <label for="confirmarClave">Confirmar contraseña:</label>
+            <input type="password" id="confirmarClave" name="confirmarClave" required>
         </div>
 
         <!-- Fecha de nacimiento -->

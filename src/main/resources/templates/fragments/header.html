@@ -1,28 +1,51 @@
 <header th:fragment="header">
-    <div class="logo">
-        <a href="/"><img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px;"></a>
+    <div class="top-bar">
+        <div class="logo">
+            <a href="/"><img th:src="@{/images/logo.png}" alt="Logo" style="height: 50px;"></a>
+            <span class="brand-title">Medical Appointments</span>
+        </div>
+        <div class="contact-info">
+            <span>📞 +506 5467 0937</span>
+        </div>
     </div>
-    <nav>
+
+    <nav class="main-nav">
         <ul>
-            <li><a th:href="@{/}">About</a></li>
-            <li><a th:href="@{/}">Search</a></li>
-            <li th:if="${session.usuario == null}">
-                <a th:href="@{/usuarios/login}">Login</a>
-            </li>
-            <li th:if="${session.usuario != null}" class="dropdown">
-                <a href="#" class="username">[[${session.usuario.nombre}]] ▼</a>
+            <li><a th:href="@{/}">About...</a></li>
+            <li><a th:href="@{/}">Appointments</a></li>
+            <li><a th:href="@{/}">Profile</a></li>
+
+            <!-- Si el usuario está logueado y es MÉDICO -->
+            <li th:if="${session.usuario != null and session.usuario.rol.name() == 'MEDICO'}" class="dropdown">
+                <a href="#" class="username">
+                    [[${#strings.arraySplit(session.usuario.nombre, ' ')[0]}]] ▼
+                </a>
                 <ul class="dropdown-content">
+                    <li><a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Mis Citas</a></li>
+                    <li><a th:href="@{'/medicos/perfil/' + ${session.usuario.id}}">Perfil</a></li>
                     <li><a th:href="@{/usuarios/logout}">Cerrar sesión</a></li>
-                    <li th:if="${session.usuario.rol == 'PACIENTE'}">
+                </ul>
+            </li>
+
+            <!-- Si el usuario está logueado pero NO es médico -->
+            <li th:if="${session.usuario != null and session.usuario.rol.name() != 'MEDICO'}" class="dropdown">
+                <a href="#" class="username">
+                    [[${session.usuario.nombre}]] ▼
+                </a>
+                <ul class="dropdown-content">
+                    <li th:if="${session.usuario.rol.name() == 'PACIENTE'}">
                         <a th:href="@{/citas/mis_citas}">Mis Citas</a>
                     </li>
-                    <li th:if="${session.usuario.rol == 'MEDICO'}">
-                        <a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Mis Citas</a>
-                    </li>
-                    <li th:if="${session.usuario.rol == 'ADMINISTRADOR'}">
+                    <li th:if="${session.usuario.rol.name() == 'ADMINISTRADOR'}">
                         <a th:href="@{/admin/lista}">Panel Admin</a>
                     </li>
+                    <li><a th:href="@{/usuarios/logout}">Cerrar sesión</a></li>
                 </ul>
+            </li>
+
+            <!-- Si el usuario NO ha iniciado sesión -->
+            <li th:if="${session.usuario == null}">
+                <a th:href="@{/usuarios/login}">Login</a>
             </li>
         </ul>
     </nav>

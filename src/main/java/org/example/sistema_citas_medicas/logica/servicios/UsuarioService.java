@@ -19,4 +19,6 @@ public interface UsuarioService {
     void delete(Long id); // Eliminar usuario por ID
 
     Optional<UsuarioEntity> login(Long id, String clave); // Login
+    Optional<UsuarioEntity> findById(Long id);
+
 }

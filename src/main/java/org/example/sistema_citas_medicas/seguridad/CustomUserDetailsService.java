@@ -1,4 +1,4 @@
-package org.example.sistema_citas_medicas;
+package org.example.sistema_citas_medicas.seguridad;
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.datos.repositorios.UsuarioRepository;
@@ -7,13 +7,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-
-
 import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.datos.repositorios.UsuarioRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -39,11 +38,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con ID: " + id));
 
-        // 🔒 Verifica si es un médico con estado "pendiente"
-        if (usuario instanceof MedicoEntity medico &&
-                medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
-            throw new PendingApprovalException("pendiente");
+        // Verificación personalizada: si es médico y está pendiente, no dejarlo entrar
+        if (usuario instanceof MedicoEntity medico && medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
+            throw new BadCredentialsException("MEDICO_PENDIENTE");
+
         }
+
 
         return new User(
                 usuario.getId().toString(),

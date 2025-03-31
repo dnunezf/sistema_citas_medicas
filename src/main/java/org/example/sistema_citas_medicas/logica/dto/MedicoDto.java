@@ -12,6 +12,7 @@ public class MedicoDto extends UsuarioDto {
     private int frecuenciaCitas;
     private String presentacion;
     private String estadoAprobacion;
+    private String rutaFotoPerfil;
 
     public MedicoDto() {}
 
@@ -25,6 +26,20 @@ public class MedicoDto extends UsuarioDto {
         this.frecuenciaCitas = frecuenciaCitas;
         this.presentacion = presentacion;
         this.estadoAprobacion = estadoAprobacion;
+        this.rutaFotoPerfil = "";
+    }
+
+    public MedicoDto(Long id, String nombre, String clave, String especialidad, Double costoConsulta,
+                     String localidad, int frecuenciaCitas, String presentacion, String estadoAprobacion, String rutaFotoPerfil) {
+        super(id, nombre, clave, "MEDICO");
+        this.id = id;
+        this.especialidad = especialidad;
+        this.costoConsulta = costoConsulta;
+        this.localidad = localidad;
+        this.frecuenciaCitas = frecuenciaCitas;
+        this.presentacion = presentacion;
+        this.estadoAprobacion = estadoAprobacion;
+        this.rutaFotoPerfil = rutaFotoPerfil;
     }
 
     // Getters y Setters
@@ -82,5 +97,13 @@ public class MedicoDto extends UsuarioDto {
 
     public void setEstadoAprobacion(String estadoAprobacion) {
         this.estadoAprobacion = estadoAprobacion;
+    }
+
+    public String getRutaFotoPerfil() {
+        return rutaFotoPerfil;
+    }
+
+    public void setRutaFotoPerfil(String rutaFotoPerfil) {
+        this.rutaFotoPerfil = rutaFotoPerfil;
     }
 }

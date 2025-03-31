@@ -30,6 +30,9 @@ public class MedicoEntity extends UsuarioEntity {
         pendiente, aprobado, rechazado
     }
 
+    @Column(name = "ruta_foto_perfil")
+    private String rutaFotoPerfil;
+
     public MedicoEntity() {}
 
     public MedicoEntity(Long id, String nombre, String clave, String especialidad, Double costoConsulta,
@@ -41,6 +44,19 @@ public class MedicoEntity extends UsuarioEntity {
         this.frecuenciaCitas = frecuenciaCitas;
         this.presentacion = presentacion;
         this.estadoAprobacion = estadoAprobacion;
+        this.rutaFotoPerfil = "";
+    }
+
+    public MedicoEntity(Long id, String nombre, String clave, String especialidad, Double costoConsulta,
+                        String localidad, int frecuenciaCitas, String presentacion, EstadoAprobacion estadoAprobacion, String rutaFotoPerfil) {
+        super(id, nombre, clave, RolUsuario.MEDICO);
+        this.especialidad = especialidad;
+        this.costoConsulta = costoConsulta;
+        this.localidad = localidad;
+        this.frecuenciaCitas = frecuenciaCitas;
+        this.presentacion = presentacion;
+        this.estadoAprobacion = estadoAprobacion;
+        this.rutaFotoPerfil = rutaFotoPerfil;
     }
 
     // Getters y Setters
@@ -61,4 +77,12 @@ public class MedicoEntity extends UsuarioEntity {
 
     public EstadoAprobacion getEstadoAprobacion() { return estadoAprobacion; }
     public void setEstadoAprobacion(EstadoAprobacion estadoAprobacion) { this.estadoAprobacion = estadoAprobacion; }
+
+    public String getRutaFotoPerfil() {
+        return rutaFotoPerfil;
+    }
+
+    public void setRutaFotoPerfil(String rutaFotoPerfil) {
+        this.rutaFotoPerfil = rutaFotoPerfil;
+    }
 }

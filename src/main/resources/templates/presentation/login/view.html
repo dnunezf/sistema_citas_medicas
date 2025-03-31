@@ -47,11 +47,12 @@
             </div>
         </div>
 
-        <!-- Mensaje de error desde Spring Security -->
+        <!-- Mensaje de error de Spring Security -->
         <div th:if="${param.error}" class="error-message">
-            <p>⚠️ Usuario o contraseña incorrectos.</p>
+            <p th:if="${param.error == 'true'}">⚠️ Usuario o contraseña incorrectos.</p>
+            <p th:if="${param.error == 'pendiente'}">⚠️ Su cuenta de médico está pendiente de aprobación.</p>
         </div>
-    </form>*
+    </form>
 </div>
 
 </body>

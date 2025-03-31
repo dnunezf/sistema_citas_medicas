@@ -41,32 +41,7 @@ public class UsuarioController {
         return "presentation/login/view"; // Renderiza templates/presentation/login/view.html
     }
 
-    @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute("login") UsuarioDto usuarioDto, Model model, HttpSession session) {
-        Optional<UsuarioEntity> usuarioOpt = usuarioService.login(usuarioDto.getId(), usuarioDto.getClave());
 
-        if (usuarioOpt.isPresent()) {
-            UsuarioEntity usuario = usuarioOpt.get();
-
-            if (usuario instanceof MedicoEntity medico) {
-                if (medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
-                    model.addAttribute("error", "⚠️ Su cuenta de médico está pendiente de aprobación.");
-                    return "presentation/login/view";
-                }
-            }
-
-            session.setAttribute("usuario", usuario);
-
-            return switch (usuario.getRol()) {
-                case MEDICO -> "redirect:/citas/medico/" + usuario.getId();
-                case ADMINISTRADOR -> "redirect:/admin/lista";
-                default -> "redirect:/";
-            };
-        } else {
-            model.addAttribute("error", "⚠️ Usuario o contraseña incorrectos.");
-            return "presentation/login/view";
-        }
-    }
 
 
     @GetMapping("/registro")
@@ -111,6 +86,7 @@ public class UsuarioController {
                         "Dirección no especificada" // Dirección por defecto
                 );
                 usuarioService.save(paciente); // Guardar como Paciente
+                return "redirect:/pacientes/editar/"+usuario.getId();
 
             } else {
                 usuarioService.save(usuario); // Guardar como usuario común
