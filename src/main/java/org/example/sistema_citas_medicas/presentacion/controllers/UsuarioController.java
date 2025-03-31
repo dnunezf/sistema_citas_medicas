@@ -48,7 +48,6 @@ public class UsuarioController {
         if (usuarioOpt.isPresent()) {
             UsuarioEntity usuario = usuarioOpt.get();
 
-            // Verificar si es médico con estado pendiente
             if (usuario instanceof MedicoEntity medico) {
                 if (medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
                     model.addAttribute("error", "⚠️ Su cuenta de médico está pendiente de aprobación.");
@@ -56,16 +55,13 @@ public class UsuarioController {
                 }
             }
 
-            session.setAttribute("usuario", usuario); // Guardar en sesión
+            session.setAttribute("usuario", usuario);
 
-            // Redirigir según el rol
-            if (usuario.getRol() == RolUsuario.MEDICO) {
-                return "redirect:/citas/medico/" + usuario.getId();
-            } else if (usuario.getRol() == RolUsuario.ADMINISTRADOR) {
-                return "redirect:/admin/lista";
-            } else {
-                return "redirect:/"; // PACIENTE se queda en dashboard
-            }
+            return switch (usuario.getRol()) {
+                case MEDICO -> "redirect:/citas/medico/" + usuario.getId();
+                case ADMINISTRADOR -> "redirect:/admin/lista";
+                default -> "redirect:/";
+            };
         } else {
             model.addAttribute("error", "⚠️ Usuario o contraseña incorrectos.");
             return "presentation/login/view";

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
@@ -10,11 +9,9 @@
 
 <body style="background-color: white">
 
-
-
-<!-- Contenedor Principal -->
 <div class="cuerpo">
-    <form th:action="@{/usuarios/login}" method="post" th:object="${login}">
+    <!-- Spring Security manejará esta acción -->
+    <form th:action="@{/usuarios/login}" method="post">
         <div id="login">
             <div id="tituloLogin">
                 <h2>Login</h2>
@@ -29,15 +26,14 @@
                     <span class="icon">
                         <img th:src="@{/images/user.jpg}" alt="User Icon">
                     </span>
-                    <input type="number" id="id" th:field="*{id}" min="1" required>
-                    <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                    <input type="number" name="username" id="username" min="1" required placeholder="ID de Usuario">
                 </div>
 
                 <div class="input-group">
                     <span class="icon">
                         <img th:src="@{/images/llave.jpg}" alt="Password Icon">
                     </span>
-                    <input type="password" th:field="*{clave}" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                 </div>
 
                 <div class="button-container">
@@ -45,21 +41,18 @@
                 </div>
             </div>
 
-            <!-- Registro -->
             <div class="register-container">
                 <span>Don't have an account?</span>
-                <a href="/usuarios/registro" class="btn-register">Register here</a>
+                <a th:href="@{/usuarios/registro}" class="btn-register">Register here</a>
             </div>
         </div>
 
-        <!-- Error -->
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
+        <!-- Mensaje de error desde Spring Security -->
+        <div th:if="${param.error}" class="error-message">
+            <p>⚠️ Usuario o contraseña incorrectos.</p>
         </div>
-    </form>
+    </form>*
 </div>
-
-
 
 </body>
 </html>
