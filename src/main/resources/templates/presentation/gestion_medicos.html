@@ -3,10 +3,11 @@
 <head th:replace="fragments/head :: head">
     <title>Gestión de Médicos</title>
     <link rel="stylesheet" th:href="@{/css/gestion_medicos.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
+<header th:insert="fragments/header :: header"></header>
 
 <div class="container">
     <h2 class="title">Gestión de Médicos</h2>
@@ -59,7 +60,7 @@
     </table>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>

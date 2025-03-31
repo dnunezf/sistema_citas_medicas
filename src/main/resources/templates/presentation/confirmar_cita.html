@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>Confirmar Cita</title>
     <link rel="stylesheet" th:href="@{/css/confirmar_cita.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<!-- Encabezado general (ya existente en su sistema) -->
-<div th:replace="~{fragments/header :: header}"></div>
+<header th:insert="fragments/header :: header"></header>
 
 <div class="container-confirmacion">
     <div class="card-confirmacion">
@@ -35,8 +35,7 @@
     </div>
 </div>
 
-<!-- Pie de página (ya existente en su sistema) -->
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:insert="fragments/footer :: footer"></footer>
 
 </body>
 </html>
