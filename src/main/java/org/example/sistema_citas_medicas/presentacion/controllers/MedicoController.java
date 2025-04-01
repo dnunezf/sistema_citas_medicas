@@ -32,7 +32,27 @@ public class MedicoController {
         Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(id);
 
         if (medicoOpt.isPresent()) {
-            model.addAttribute("medico", medicoOpt.get());
+            MedicoEntity medico = medicoOpt.get();
+
+            // ⚠️ Verificamos si ya ha completado sus datos (incluyendo la foto)
+            boolean datosCompletados = medico.getEspecialidad() != null && !medico.getEspecialidad().equals("Especialidad no definida")
+                    && medico.getCostoConsulta() != null && medico.getCostoConsulta() > 0
+                    && medico.getLocalidad() != null && !medico.getLocalidad().equals("Localidad no especificada")
+                    && medico.getPresentacion() != null && !medico.getPresentacion().equals("Presentación no disponible")
+                    && medico.getRutaFotoPerfil() != null && !medico.getRutaFotoPerfil().isBlank();
+
+
+            if (!datosCompletados) {
+                // Limpiar los campos (menos nombre y ID)
+                medico.setEspecialidad(null);
+                medico.setCostoConsulta(null);
+                medico.setLocalidad(null);
+                medico.setFrecuenciaCitas(0);
+                medico.setPresentacion(null);
+                medico.setRutaFotoPerfil(null);
+            }
+
+            model.addAttribute("medico", medico);
         } else {
             model.addAttribute("error", "No se encontró un médico con el ID proporcionado.");
             model.addAttribute("medico", new MedicoEntity());
@@ -40,6 +60,7 @@ public class MedicoController {
 
         return "presentation/registro_medico";
     }
+
 
     // ACTUALIZAR MÉDICO
     @PostMapping("/actualizar")

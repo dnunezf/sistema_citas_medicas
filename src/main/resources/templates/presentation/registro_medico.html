@@ -36,42 +36,55 @@
 
             <div class="form-group">
                 <label for="id">ID</label>
-                <input type="number" id="id" th:field="*{id}" required readonly>
+                <input type="number" id="id" th:field="*{id}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="nombre">Nombre Completo</label>
-                <input type="text" id="nombre" th:field="*{nombre}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+                <input type="text" id="nombre" th:field="*{nombre}" required
+                       pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"
+                       placeholder="Nombre completo del doctor">
             </div>
 
             <div class="form-group">
                 <label for="especialidad">Especialidad</label>
-                <input type="text" id="especialidad" th:field="*{especialidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+                <input type="text" id="especialidad" th:field="*{especialidad}"
+                       placeholder="Especialidad del doctor"
+                       pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" required>
             </div>
 
             <div class="form-group">
-                <label for="costoConsulta">Costo de Consulta</label>
-                <input type="number" id="costoConsulta" step="0.01" th:field="*{costoConsulta}" required min="1" max="1000">
+                <label for="costoConsulta">Costo de Consulta (en dólares)</label>
+                <input type="number" id="costoConsulta" th:field="*{costoConsulta}"
+                       step="0.01" min="1" max="1000" placeholder="Ej: 50.00" required>
             </div>
 
             <div class="form-group">
                 <label for="localidad">Localidad</label>
-                <input type="text" id="localidad" th:field="*{localidad}" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$">
+                <input type="text" id="localidad" th:field="*{localidad}"
+                       placeholder="Ciudad o zona de consulta"
+                       pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" required>
             </div>
 
             <div class="form-group">
                 <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>
-                <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}" required min="10" max="120">
+                <input type="number" id="frecuenciaCitas" th:field="*{frecuenciaCitas}"
+                       min="10" max="120" placeholder="Ej: 30" required>
             </div>
 
             <div class="form-group full-width">
                 <label for="presentacion">Presentación</label>
-                <textarea id="presentacion" th:field="*{presentacion}" required minlength="10" maxlength="500"></textarea>
+                <textarea id="presentacion" th:field="*{presentacion}" minlength="10"
+                          maxlength="500" placeholder="Breve presentación sobre ti, experiencia, enfoque, etc."
+                          required></textarea>
             </div>
 
+            <!-- Validar si ya hay foto para decidir si es obligatoria -->
+            <!-- Foto de Perfil: obligatoria solo si no hay foto existente -->
             <div class="form-group full-width">
                 <label for="fotoPerfil">Subir Nueva Foto de Perfil</label>
-                <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*">
+                <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*"
+                       th:attr="required=${medico.rutaFotoPerfil == null}">
             </div>
 
             <div class="button-wrapper">
@@ -79,6 +92,7 @@
             </div>
 
         </form>
+
     </div>
 </div>
 
@@ -86,3 +100,4 @@
 
 </body>
 </html>
+
