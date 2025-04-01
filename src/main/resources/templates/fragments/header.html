@@ -2,7 +2,7 @@
     <div class="top-bar">
         <div class="logo">
             <a href="/"><img th:src="@{/images/logo.png}" alt="Logo"></a>
-            <span class="brand-title">Medical Appointments</span>
+            <span class="brand-title">Citas Médicas</span>
         </div>
         <div class="contact-info">
             <span>📞 +506 5467 0937</span>
@@ -11,25 +11,25 @@
 
     <nav class="main-nav">
         <ul>
-            <li><a th:href="@{/}">About</a></li>
+            <li><a th:href="@{/}">Inicio</a></li>
 
             <!-- Appointments redirige por rol -->
             <li th:if="${session.usuario != null and session.usuario.rol.name() == 'PACIENTE'}">
-                <a th:href="@{/citas/paciente/historico}">Appointments</a>
+                <a th:href="@{/citas/paciente/historico}">Citas</a>
             </li>
             <li th:if="${session.usuario != null and session.usuario.rol.name() == 'MEDICO'}">
-                <a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Appointments</a>
+                <a th:href="@{'/citas/medico/' + ${session.usuario.id}}">Citas</a>
             </li>
             <li th:if="${session.usuario == null or session.usuario.rol.name() == 'ADMINISTRADOR'}">
-                <a th:href="@{/}">Appointments</a>
+                <a th:href="@{/}">Citas</a>
             </li>
 
             <!-- Botón "Profile" visible para cada rol -->
             <li th:if="${session.usuario != null and session.usuario.rol.name() == 'PACIENTE'}">
-                <a th:href="@{'/pacientes/editar/' + ${session.usuario.id}}">Profile</a>
+                <a th:href="@{'/pacientes/editar/' + ${session.usuario.id}}">Perfil</a>
             </li>
             <li th:if="${session.usuario != null and session.usuario.rol.name() == 'MEDICO'}">
-                <a th:href="@{'/medicos/perfil/' + ${session.usuario.id}}">Profile</a>
+                <a th:href="@{'/medicos/perfil/' + ${session.usuario.id}}">Perfil</a>
             </li>
 
             <!-- Si el usuario está logueado y es MÉDICO -->
@@ -74,7 +74,7 @@
 
             <!-- Si el usuario NO ha iniciado sesión -->
             <li th:if="${session.usuario == null}">
-                <a th:href="@{/usuarios/login}" class="login-button">Login</a>
+                <a th:href="@{/usuarios/login}" class="login-button">Iniciar Sesión</a>
             </li>
         </ul>
     </nav>

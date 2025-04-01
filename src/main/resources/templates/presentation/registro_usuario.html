@@ -23,14 +23,19 @@
       <!-- Campo ID -->
       <div class="input-container">
         <i class="fas fa-user"></i>
-        <input type="number" id="id" th:field="*{id}" min="1" required placeholder="ID de usuario">
+        <input type="number" id="id" th:field="*{id}" min="1" max="999999999999"
+               placeholder="ID de usuario" required
+               oninput="this.value = this.value.slice(0, 12)">
         <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
       </div>
 
       <!-- Campo Nombre -->
       <div class="input-container">
         <i class="fas fa-user-edit"></i>
-        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre completo" required maxlength="100">
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre completo"
+               required maxlength="100"
+               pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+               title="Solo letras y espacios, sin números ni símbolos">
       </div>
 
       <!-- Campo Clave -->

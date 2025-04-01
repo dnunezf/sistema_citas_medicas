@@ -8,17 +8,24 @@ import java.io.IOException;
 
 @Component
 public class CustomFailureHandler implements AuthenticationFailureHandler {
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        if ("MEDICO_PENDIENTE".equalsIgnoreCase(exception.getMessage())) {
+
+        String errorMessage = exception.getMessage();
+
+        if ("MEDICO_PENDIENTE".equalsIgnoreCase(errorMessage)) {
             response.sendRedirect("/usuarios/login?error=pendiente");
+        } else if ("MEDICO_RECHAZADO".equalsIgnoreCase(errorMessage)) {
+            response.sendRedirect("/usuarios/login?error=rechazado");
         } else {
             response.sendRedirect("/usuarios/login?error=true");
         }
     }
 }
+
 
 
 

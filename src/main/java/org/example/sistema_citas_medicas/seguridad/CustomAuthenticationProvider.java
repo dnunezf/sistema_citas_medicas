@@ -48,10 +48,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
 
         // ✅ Validar estado médico
-        if (usuario instanceof MedicoEntity medico &&
-                medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
-            throw new BadCredentialsException("MEDICO_PENDIENTE");
+        if (usuario instanceof MedicoEntity medico) {
+            switch (medico.getEstadoAprobacion()) {
+                case pendiente -> throw new BadCredentialsException("MEDICO_PENDIENTE");
+                case rechazado -> throw new BadCredentialsException("MEDICO_RECHAZADO");
+            }
         }
+
 
         return new UsernamePasswordAuthenticationToken(
                 usuario.getId().toString(),

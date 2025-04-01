@@ -21,9 +21,11 @@
 
         <!-- Mensaje de error de Spring Security -->
         <div th:if="${param.error}" class="error-message">
-            <p th:if="${param.error == 'true'}">⚠️ Usuario o contraseña incorrectos.</p>
-            <p th:if="${param.error == 'pendiente'}">⚠️ Su cuenta de médico está pendiente de aprobación.</p>
+            <p th:if="${param.error[0] == 'true'}">⚠️ Usuario o contraseña incorrectos.</p>
+            <p th:if="${param.error[0] == 'pendiente'}">⚠️ Su cuenta de médico está pendiente de aprobación.</p>
+            <p th:if="${param.error[0] == 'rechazado'}">❌ Su solicitud fue rechazada. Contacte al administrador.</p>
         </div>
+
 
         <div class="input-group">
             <span class="icon">
