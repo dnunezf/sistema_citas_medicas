@@ -135,3 +135,28 @@ button:hover {
         font-size: 14px;
     }
 }
+
+.alert-error {
+    background-color: #ffe5e5;
+    color: #a80000;
+    border: 1px solid #ff6666;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.alert-success {
+    background-color: #e1f7e1;
+    color: #217a00;
+    border: 1px solid #66cc66;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+

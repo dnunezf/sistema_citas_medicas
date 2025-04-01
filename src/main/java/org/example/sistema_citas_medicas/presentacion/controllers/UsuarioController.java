@@ -64,6 +64,14 @@ public class UsuarioController {
                 return "presentation/registro_usuario";
             }
 
+            // ✅ Validar si el ID ya está en uso
+            if (usuarioService.findById(usuario.getId()).isPresent()) {
+                model.addAttribute("error", "Ya existe un usuario registrado con ese número de identificación.");
+                model.addAttribute("roles", getRolesDisponibles());
+                return "presentation/registro_usuario";
+            }
+
+            // Registro según rol
             if (usuario.getRol() == RolUsuario.MEDICO) {
                 MedicoEntity medico = new MedicoEntity(
                         usuario.getId(),
@@ -88,7 +96,6 @@ public class UsuarioController {
                         "Dirección no especificada"
                 );
                 usuarioService.save(paciente);
-                return "redirect:/pacientes/editar/" + paciente.getId();
 
             } else {
                 usuarioService.save(usuario);
@@ -103,6 +110,7 @@ public class UsuarioController {
             return "presentation/registro_usuario";
         }
     }
+
 
 
     @GetMapping("/logout")

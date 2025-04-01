@@ -18,6 +18,12 @@
     <img th:src="@{/images/user.jpg}" alt="User Icon" class="user-icon">
     <h2>Registro</h2>
 
+    <!-- Mensajes de error generales -->
+    <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+
+    <!-- Mensaje de éxito -->
+    <div th:if="${mensaje}" class="alert-success" th:text="${mensaje}"></div>
+
     <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="post">
 
       <!-- Campo ID -->
