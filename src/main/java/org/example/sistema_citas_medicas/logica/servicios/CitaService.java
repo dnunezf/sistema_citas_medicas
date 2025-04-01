@@ -40,4 +40,6 @@ public interface CitaService {
 
     CitaDto obtenerCitaPorId(Long idCita);
 
+    List<CitaDto> filtrarCitasPorEstadoYNombre(Long idMedico, CitaEntity.EstadoCita estado, String nombrePaciente);
+
 }

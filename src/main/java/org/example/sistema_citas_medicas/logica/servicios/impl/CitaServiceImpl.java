@@ -81,9 +81,21 @@ public class CitaServiceImpl implements CitaService {
     // ✅ Filtrar citas por paciente
     @Override
     public List<CitaDto> filtrarCitasPorPaciente(Long idMedico, String nombrePaciente) {
-        List<CitaEntity> citas = citaRepository.findByMedicoAndPaciente(idMedico, nombrePaciente);
-        return citas.stream().map(cita -> modelMapper.map(cita, CitaDto.class)).collect(Collectors.toList());
+        List<CitaEntity> citas = citaRepository.buscarPorNombrePaciente(idMedico, nombrePaciente);
+        return citas.stream().map(cita -> {
+            CitaDto dto = modelMapper.map(cita, CitaDto.class);
+            if (cita.getPaciente() != null) {
+                dto.setIdPaciente(cita.getPaciente().getId());
+                dto.setNombrePaciente(cita.getPaciente().getNombre());
+            }
+            if (cita.getMedico() != null) {
+                dto.setIdMedico(cita.getMedico().getId());
+                dto.setNombreMedico(cita.getMedico().getNombre());
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
+
 
     // ✅ Actualizar estado y notas de la cita
     @Override
@@ -222,6 +234,19 @@ public class CitaServiceImpl implements CitaService {
         );
     }
 
+    @Override
+    public List<CitaDto> filtrarCitasPorEstadoYNombre(Long idMedico, CitaEntity.EstadoCita estado, String nombrePaciente) {
+        List<CitaEntity> citas = citaRepository.buscarPorNombrePaciente(idMedico, nombrePaciente).stream()
+                .filter(cita -> cita.getEstado().equals(estado))
+                .collect(Collectors.toList());
+
+        return citas.stream().map(cita -> {
+            CitaDto dto = modelMapper.map(cita, CitaDto.class);
+            dto.setNombrePaciente(cita.getPaciente().getNombre());
+            dto.setNombreMedico(cita.getMedico().getNombre());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
 
 }

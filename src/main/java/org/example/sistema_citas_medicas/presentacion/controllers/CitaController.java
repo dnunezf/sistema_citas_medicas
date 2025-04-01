@@ -61,37 +61,58 @@ public class CitaController {
 
     // ✅ Filtrar citas por estado
     @GetMapping("/medico/{idMedico}/filtrar/estado")
-    public String filtrarPorEstado(@PathVariable Long idMedico, @RequestParam("estado") String estado, Model model) {
+    public String filtrarPorEstado(@PathVariable Long idMedico,
+                                   @RequestParam("estado") String estado,
+                                   Model model) {
+
         MedicoEntity medico = medicoService.obtenerPorId(idMedico)
                 .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
 
-        if (medico == null) {
-            throw new RuntimeException("El médico no existe");
-        }
+        List<CitaDto> citas;
 
-        List<CitaDto> citas = citaService.filtrarCitasPorEstado(idMedico, CitaEntity.EstadoCita.valueOf(estado));
+        // Manejo de filtro "ALL"
+        if (estado.equalsIgnoreCase("ALL")) {
+            citas = citaService.obtenerCitasPorMedico(idMedico);
+        } else {
+            CitaEntity.EstadoCita estadoEnum = CitaEntity.EstadoCita.valueOf(estado);
+            citas = citaService.filtrarCitasPorEstado(idMedico, estadoEnum);
+        }
 
         model.addAttribute("medico", medico);
         model.addAttribute("citas", citas);
         return "presentation/gestion_citas";
     }
 
-    // ✅ Filtrar citas por paciente
-    @GetMapping("/medico/{idMedico}/filtrar/paciente")
-    public String filtrarPorPaciente(@PathVariable Long idMedico, @RequestParam("nombrePaciente") String nombrePaciente, Model model) {
+
+    @GetMapping("/medico/{idMedico}/filtrar")
+    public String filtrarCitas(@PathVariable Long idMedico,
+                               @RequestParam(required = false) String estado,
+                               @RequestParam(required = false) String nombrePaciente,
+                               Model model) {
         MedicoEntity medico = medicoService.obtenerPorId(idMedico)
                 .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
 
-        if (medico == null) {
-            throw new RuntimeException("El médico no existe");
-        }
+        List<CitaDto> citas;
 
-        List<CitaDto> citas = citaService.filtrarCitasPorPaciente(idMedico, nombrePaciente);
+        boolean filtraEstado = estado != null && !estado.equalsIgnoreCase("ALL");
+        boolean filtraNombre = nombrePaciente != null && !nombrePaciente.isBlank();
+
+        if (filtraEstado && filtraNombre) {
+            citas = citaService.filtrarCitasPorEstadoYNombre(idMedico,
+                    CitaEntity.EstadoCita.valueOf(estado), nombrePaciente);
+        } else if (filtraEstado) {
+            citas = citaService.filtrarCitasPorEstado(idMedico, CitaEntity.EstadoCita.valueOf(estado));
+        } else if (filtraNombre) {
+            citas = citaService.filtrarCitasPorPaciente(idMedico, nombrePaciente);
+        } else {
+            citas = citaService.obtenerCitasPorMedico(idMedico);
+        }
 
         model.addAttribute("medico", medico);
         model.addAttribute("citas", citas);
         return "presentation/gestion_citas";
     }
+
 
     // ✅ Actualizar estado de la cita y agregar notas
     @PostMapping("/actualizar")

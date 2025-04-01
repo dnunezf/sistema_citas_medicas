@@ -12,31 +12,25 @@
 
 <main>
     <h2>
-        Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Appointments
+        Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Citas
     </h2>
-
-    <!-- Botón de edición del perfil de médico -->
-    <a th:href="@{'/medicos/perfil/' + ${medico.id}}" class="edit-doctor-button">
-        <i class="fas fa-user-edit"></i> Editar Información
-    </a>
-
 
     <!-- Filtro por estado y paciente -->
     <div class="filters">
-        <form th:action="@{/citas/medico/{idMedico}/filtrar/estado(idMedico=${medico.id})}" method="get">
-            <label for="estado">Status:</label>
+        <form th:action="@{/citas/medico/{idMedico}/filtrar(idMedico=${medico.id})}" method="get">
+        <label for="estado">Estado:</label>
             <select id="estado" name="estado">
-                <option value="ALL">All</option>
-                <option value="pendiente">Pending</option>
-                <option value="confirmada">Confirmed</option>
-                <option value="cancelada">Canceled</option>
-                <option value="completada">Completed</option>
+                <option value="ALL">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="cancelada">Cancelada</option>
+                <option value="completada">Completada</option>
             </select>
 
-            <label for="paciente">Patient:</label>
-            <input type="text" id="paciente" name="nombrePaciente" placeholder="Patient name">
+            <label for="paciente">Paciente:</label>
+            <input type="text" id="paciente" name="nombrePaciente" placeholder="Nombre del Paciente">
 
-            <button type="submit">Search</button>
+            <button type="submit">Buscar</button>
         </form>
     </div>
 
@@ -58,13 +52,13 @@
                 <form th:action="@{/citas/actualizar}" method="post">
                     <input type="hidden" name="idCita" th:value="${cita.id}">
                     <select name="estado">
-                        <option value="pendiente" th:selected="${cita.estado == 'pendiente'}">Pending</option>
-                        <option value="confirmada" th:selected="${cita.estado == 'confirmada'}">Confirmed</option>
-                        <option value="cancelada" th:selected="${cita.estado == 'cancelada'}">Canceled</option>
-                        <option value="completada" th:selected="${cita.estado == 'completada'}">Completed</option>
+                        <option value="pendiente" th:selected="${cita.estado == 'pendiente'}">Pendiente</option>
+                        <option value="confirmada" th:selected="${cita.estado == 'confirmada'}">Confirmada</option>
+                        <option value="cancelada" th:selected="${cita.estado == 'cancelada'}">Cancelada</option>
+                        <option value="completada" th:selected="${cita.estado == 'completada'}">Completada</option>
                     </select>
-                    <input type="text" name="notas" placeholder="Add notes..." th:value="${cita.notas}">
-                    <button type="submit">Update</button>
+                    <input type="text" name="notas" placeholder="Añadir notas..." th:value="${cita.notas}">
+                    <button type="submit">Actualizar</button>
                 </form>
             </div>
         </div>

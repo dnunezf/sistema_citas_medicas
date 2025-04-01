@@ -28,4 +28,8 @@ public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
     boolean existsByMedicoAndFechaHora(MedicoEntity medico, LocalDateTime fechaHora);
 
     List<CitaEntity> findByPacienteId(Long idPaciente);
+
+    @Query("SELECT c FROM CitaEntity c WHERE c.medico.id = :idMedico AND LOWER(c.paciente.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')) ORDER BY c.fechaHora DESC")
+    List<CitaEntity> buscarPorNombrePaciente(@Param("idMedico") Long idMedico, @Param("nombre") String nombre);
+
 }
