@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
+<head>
     <title>Gestión de Citas</title>
     <link rel="stylesheet" th:href="@{/css/gestion_citas.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
@@ -16,9 +16,10 @@
     </h2>
 
     <!-- Botón de edición del perfil de médico -->
-    <a th:href="@{/medicos/perfil}" class="edit-doctor-button">
+    <a th:href="@{'/medicos/perfil/' + ${medico.id}}" class="edit-doctor-button">
         <i class="fas fa-user-edit"></i> Editar Información
     </a>
+
 
     <!-- Filtro por estado y paciente -->
     <div class="filters">

@@ -305,6 +305,28 @@ public class CitaController {
         }
     }
 
+    @GetMapping("/paciente/detalle/{idCita}")
+    public String verDetalleCita(@PathVariable Long idCita, HttpSession session, Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
+            return "redirect:/usuarios/login";
+        }
+
+        CitaDto cita = citaService.obtenerCitaPorId(idCita);
+        if (cita == null) {
+            model.addAttribute("error", "Cita no encontrada.");
+            return "redirect:/citas/paciente/historico";
+        }
+
+        MedicoEntity medico = medicoService.obtenerPorId(cita.getIdMedico())
+                .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
+
+        model.addAttribute("cita", cita);
+        model.addAttribute("medico", medico);
+        return "presentation/detalle_cita";
+    }
+
 
 }
 

@@ -1,0 +1,66 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef3fb;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 35px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.detalle-cita-box {
+    margin-top: 20px;
+}
+
+.detalle-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detalle-tabla th,
+.detalle-tabla td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dce4ec;
+}
+
+.detalle-tabla th {
+    background-color: #f2f7fb;
+    color: #2c3e50;
+    width: 35%;
+    font-weight: bold;
+}
+
+.detalle-tabla td {
+    background-color: #f9fcff;
+    color: #34495e;
+}
+
+.btn.volver {
+    display: inline-block;
+    margin-top: 30px;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn.volver:hover {
+    background-color: #2c80b4;
+}

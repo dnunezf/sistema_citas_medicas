@@ -44,6 +44,10 @@
             <input type="password" id="confirmarClave" name="confirmarClave" required>
         </div>
 
+        <!-- Mostrar error de confirmación -->
+        <div th:if="${errorClave}" class="message error" th:text="${errorClave}"></div>
+
+
         <!-- Fecha de nacimiento -->
         <div class="input-group">
             <label for="fechaNacimiento">Fecha de Nacimiento:</label>

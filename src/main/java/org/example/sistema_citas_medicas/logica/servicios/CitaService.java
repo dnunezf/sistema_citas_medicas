@@ -38,4 +38,6 @@ public interface CitaService {
 
     List<CitaDto> filtrarCitasPorNombreMedico(Long idPaciente, String nombreMedico);
 
+    CitaDto obtenerCitaPorId(Long idCita);
+
 }

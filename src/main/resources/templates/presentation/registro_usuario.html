@@ -39,6 +39,16 @@
         <input type="password" id="clave" th:field="*{clave}" placeholder="Contraseña" required maxlength="100">
       </div>
 
+      <!-- Campo Confirmar Clave -->
+      <div class="input-container">
+        <i class="fas fa-key"></i>
+        <input type="password" name="confirmarClave" placeholder="Confirmar contraseña" required maxlength="100">
+      </div>
+
+      <!-- Mostrar mensaje si hay error -->
+      <div th:if="${errorClave}" class="error-text" th:text="${errorClave}"></div>
+
+
       <!-- Selección de Rol -->
       <div class="input-container">
         <i class="fas fa-user-tag"></i>

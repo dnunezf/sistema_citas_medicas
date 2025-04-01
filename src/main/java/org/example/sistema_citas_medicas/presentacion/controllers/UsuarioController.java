@@ -11,10 +11,7 @@ import org.example.sistema_citas_medicas.logica.servicios.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -52,54 +49,61 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrar")
-    public String registrarUsuario(@ModelAttribute("usuario") UsuarioEntity usuario, Model model) {
+    public String registrarUsuario(@ModelAttribute("usuario") UsuarioEntity usuario,
+                                   @RequestParam("confirmarClave") String confirmarClave,
+                                   Model model) {
         try {
-            // Verificar que el nombre no sea nulo o vacío
             if (usuario.getNombre() == null || usuario.getNombre().trim().isEmpty()) {
                 model.addAttribute("error", "El nombre no puede estar vacío.");
-                return "presentation/registro_usuario"; // Retorna la vista con el mensaje de error
+                return "presentation/registro_usuario";
+            }
+
+            if (!usuario.getClave().equals(confirmarClave)) {
+                model.addAttribute("errorClave", "Las contraseñas no coinciden.");
+                model.addAttribute("roles", getRolesDisponibles());
+                return "presentation/registro_usuario";
             }
 
             if (usuario.getRol() == RolUsuario.MEDICO) {
-                // Crear MedicoEntity asegurando valores válidos
                 MedicoEntity medico = new MedicoEntity(
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getClave(),
-                        "Especialidad no definida",  // Especialidad por defecto
-                        0.0,                         // Costo consulta predeterminado
-                        "Localidad no especificada", // Localidad por defecto
-                        30,                          // Frecuencia de citas por defecto
-                        "Presentación no disponible",// Presentación por defecto
-                        MedicoEntity.EstadoAprobacion.pendiente // Estado inicial
+                        "Especialidad no definida",
+                        0.0,
+                        "Localidad no especificada",
+                        30,
+                        "Presentación no disponible",
+                        MedicoEntity.EstadoAprobacion.pendiente
                 );
-                usuarioService.save(medico); // Guardar como Médico
+                usuarioService.save(medico);
 
             } else if (usuario.getRol() == RolUsuario.PACIENTE) {
-                // Crear PacienteEntity con valores por defecto
                 PacienteEntity paciente = new PacienteEntity(
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getClave(),
-                        LocalDate.of(2000, 1, 1), // Fecha de nacimiento por defecto
-                        "000-000-0000",           // Teléfono por defecto
-                        "Dirección no especificada" // Dirección por defecto
+                        LocalDate.of(2000, 1, 1),
+                        "000-000-0000",
+                        "Dirección no especificada"
                 );
-                usuarioService.save(paciente); // Guardar como Paciente
-                return "redirect:/pacientes/editar/"+usuario.getId();
+                usuarioService.save(paciente);
+                return "redirect:/pacientes/editar/" + paciente.getId();
 
             } else {
-                usuarioService.save(usuario); // Guardar como usuario común
+                usuarioService.save(usuario);
             }
 
             model.addAttribute("mensaje", "Usuario registrado exitosamente.");
-            return "redirect:/login"; // Redirigir tras registro exitoso
+            return "redirect:/usuarios/login";
 
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar usuario: " + e.getMessage());
-            return "presentation/registro_usuario"; // Volver al formulario en caso de error
+            model.addAttribute("roles", getRolesDisponibles());
+            return "presentation/registro_usuario";
         }
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

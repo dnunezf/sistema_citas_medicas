@@ -205,6 +205,22 @@ public class CitaServiceImpl implements CitaService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public CitaDto obtenerCitaPorId(Long idCita) {
+        CitaEntity cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + idCita));
+
+        return new CitaDto(
+                cita.getId(),
+                cita.getPaciente().getId(),
+                cita.getPaciente().getNombre(),
+                cita.getMedico().getId(),
+                cita.getMedico().getNombre(),
+                cita.getFechaHora(),
+                cita.getEstado().name(),
+                cita.getNotas()
+        );
+    }
 
 
 

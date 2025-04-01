@@ -35,24 +35,23 @@ public class PacienteController {
 
     // Procesar la actualización de datos del paciente
     @PostMapping("/actualizar")
-
-    public String actualizarPaciente(@ModelAttribute("paciente") PacienteEntity paciente, RedirectAttributes redirectAttributes) {
-        System.out.println("📥 Actualizando paciente:");
-        System.out.println("ID: " + paciente.getId());
-        System.out.println("Nombre: " + paciente.getNombre());
-        System.out.println("Clave: " + paciente.getClave());
-        System.out.println("Fecha Nacimiento: " + paciente.getFechaNacimiento());
-        System.out.println("Teléfono: " + paciente.getTelefono());
-        System.out.println("Dirección: " + paciente.getDireccion());
-        System.out.println("Rol: " + paciente.getRol());
-
+    public String actualizarPaciente(@ModelAttribute("paciente") PacienteEntity paciente,
+                                     @RequestParam("confirmarClave") String confirmarClave,
+                                     RedirectAttributes redirectAttributes,
+                                     Model model) {
         try {
+            if (!paciente.getClave().equals(confirmarClave)) {
+                model.addAttribute("errorClave", "Las contraseñas no coinciden.");
+                model.addAttribute("paciente", paciente); // Necesario para que Thymeleaf mantenga los datos
+                return "presentation/registro_paciente";
+            }
 
             pacienteService.actualizarPaciente(paciente);
             redirectAttributes.addFlashAttribute("mensaje", "Datos actualizados correctamente.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al actualizar datos: " + e.getMessage());
         }
-        return "redirect:/";
+        return "redirect:/pacientes/editar/" + paciente.getId();
     }
+
 }

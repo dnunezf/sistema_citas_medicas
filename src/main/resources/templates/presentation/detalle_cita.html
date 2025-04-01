@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/detalle_cita.css}">
+</head>
+
+<body>
+
+<header th:insert="fragments/header :: header"></header>
+
+<div class="detalle-container">
+  <h2 class="title">Detalles de la Cita</h2>
+
+  <div class="detalle-cita-box">
+    <table class="detalle-tabla">
+      <tr>
+        <th>Médico:</th>
+        <td th:text="${cita.nombreMedico}"></td>
+      </tr>
+      <tr>
+        <th>Especialidad:</th>
+        <td th:text="${medico.especialidad}">N/A</td>
+      </tr>
+      <tr>
+        <th>Localidad:</th>
+        <td th:text="${medico.localidad}">N/A</td>
+      </tr>
+      <tr>
+        <th>Fecha y Hora:</th>
+        <td th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+      </tr>
+      <tr>
+        <th>Estado:</th>
+        <td th:text="${cita.estado}"></td>
+      </tr>
+      <tr>
+        <th>Notas:</th>
+        <td th:text="${cita.notas != null ? cita.notas : 'Sin notas'}"></td>
+      </tr>
+    </table>
+  </div>
+
+
+  <a th:href="@{/citas/paciente/historico}" class="btn volver">⬅ Volver al historial</a>
+</div>
+
+<footer th:insert="fragments/footer :: footer"></footer>
+
+</body>
+</html>

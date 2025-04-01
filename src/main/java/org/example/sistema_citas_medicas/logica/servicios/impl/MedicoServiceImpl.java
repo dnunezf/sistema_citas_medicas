@@ -66,9 +66,20 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Override
     public List<MedicoDto> buscarPorEspecialidadYUbicacion(String especialidad, String ubicacion) {
-        List<MedicoEntity> medicos = medicoRepository.findByEspecialidadAndLocalidad(especialidad, ubicacion);
-        return medicos.stream().map(medicoMapper::mapTo).collect(Collectors.toList());
+        // Limpiar valores vacíos o en blanco
+        String esp = (especialidad != null && !especialidad.trim().isEmpty()) ? especialidad : null;
+        String loc = (ubicacion != null && !ubicacion.trim().isEmpty()) ? ubicacion : null;
+
+        // Llamar al repositorio con los valores procesados
+        List<MedicoEntity> medicos = medicoRepository.findByEspecialidadAndLocalidad(esp, loc);
+
+        // Mapear a DTO
+        return medicos.stream()
+                .map(medicoMapper::mapTo)
+                .collect(Collectors.toList());
     }
+
+
 
 
     // ✅ Obtener todas las especialidades únicas de los médicos
