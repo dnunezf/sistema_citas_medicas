@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.example.sistema_citas_medicas.datos.entidades.MedicoEntity;
 import org.example.sistema_citas_medicas.datos.entidades.UsuarioEntity;
 import org.example.sistema_citas_medicas.logica.servicios.UsuarioService;
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
-
 
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
@@ -43,17 +43,27 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
             if (rol.contains("ADMINISTRADOR")) {
                 response.sendRedirect("/admin/lista");
+
             } else if (rol.contains("MEDICO")) {
-                response.sendRedirect("/medicos/perfil/" + usuario.getId());
+                // 🔍 Verificar si el perfil del médico está completo
+                MedicoEntity medico = (MedicoEntity) usuario;
+                boolean perfilIncompleto =
+                        medico.getEspecialidad().equals("Especialidad no definida") ||
+                                medico.getPresentacion().equals("Presentación no disponible");
+
+                if (perfilIncompleto) {
+                    response.sendRedirect("/medicos/perfil/" + medico.getId());
+                } else {
+                    response.sendRedirect("/citas/medico/" + medico.getId());
+                }
+
             } else {
                 response.sendRedirect("/"); // o tu dashboard de paciente
             }
+
         } else {
             // Fallback por si el usuario no existe
             response.sendRedirect("/usuarios/login?error=true");
         }
     }
 }
-
-
-
