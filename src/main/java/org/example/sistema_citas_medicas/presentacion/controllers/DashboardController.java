@@ -6,6 +6,8 @@ import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
 import org.example.sistema_citas_medicas.logica.servicios.CitaService;
 import org.example.sistema_citas_medicas.logica.servicios.HorarioMedicoService;
 import org.example.sistema_citas_medicas.logica.servicios.MedicoService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,19 +36,35 @@ public class DashboardController {
     @GetMapping("/")
     public String mostrarDashboard(Model model,
                                    @RequestParam(required = false) String especialidad,
-                                   @RequestParam(required = false) String localidad) {
+                                   @RequestParam(required = false) String localidad,
+                                   Authentication authentication) {
 
+        // 🔒 Si el usuario está autenticado y NO es PACIENTE, redirigir
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            boolean esPaciente = authorities.stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_PACIENTE"));
+
+            if (!esPaciente) {
+                // Redireccionar según rol
+                if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_MEDICO"))) {
+                    Long idMedico = Long.parseLong(authentication.getName());
+                    return "redirect:/citas/medico/" + idMedico;
+                }
+                if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMINISTRADOR"))) {
+                    return "redirect:/admin/lista";
+                }
+            }
+        }
+
+        // Código actual del dashboard (para pacientes o anónimos)
         List<MedicoDto> medicos;
 
-        // 🔍 Búsqueda flexible: por especialidad, localidad, ambos o ninguno
         if ((especialidad == null || especialidad.isBlank()) &&
                 (localidad == null || localidad.isBlank())) {
-
-            // ✅ Filtrar solo médicos aprobados
             medicos = medicoService.obtenerMedicos().stream()
                     .filter(m -> "aprobado".equalsIgnoreCase(m.getEstadoAprobacion()))
                     .collect(Collectors.toList());
-
         } else {
             medicos = medicoService.buscarPorEspecialidadYUbicacion(especialidad, localidad).stream()
                     .filter(m -> "aprobado".equalsIgnoreCase(m.getEstadoAprobacion()))
@@ -71,9 +89,6 @@ public class DashboardController {
                     .collect(Collectors.toSet());
 
             horasOcupadasPorMedico.put(medico.getId(), horasOcupadas);
-
-            System.out.println("👨‍⚕️ Médico: " + medico.getNombre());
-            System.out.println("📸 Ruta Foto: " + medico.getRutaFotoPerfil());
         }
 
         model.addAttribute("medicos", medicos);
