@@ -19,6 +19,7 @@ import org.example.sistema_citas_medicas.logica.servicios.PacienteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -131,11 +132,10 @@ public class CitaServiceImpl implements CitaService {
         // 🔹 Iterar los próximos 3 días
         for (int i = 0; i < 3; i++) {
             LocalDate fecha = fechaActual.plusDays(i);
-            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // 🔹 Obtener el día en español (ej: "lunes")
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // lunes, martes, miércoles...
 
             for (HorarioMedicoDto horario : horarios) {
-                if (diaSemana.equalsIgnoreCase(horario.getDiaSemana())) { // 🔹 Comparar correctamente
-
+                if (normalizar(diaSemana).equals(horario.getDiaSemana().toLowerCase())) {
                     LocalTime horaInicio = LocalTime.parse(horario.getHoraInicio());
                     LocalTime horaFin = LocalTime.parse(horario.getHoraFin());
                     int duracion = horario.getTiempoCita();
@@ -151,6 +151,7 @@ public class CitaServiceImpl implements CitaService {
                 }
             }
         }
+
         return espaciosDisponibles;
     }
 
@@ -248,5 +249,10 @@ public class CitaServiceImpl implements CitaService {
         }).collect(Collectors.toList());
     }
 
+     public String normalizar(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+                .toLowerCase();
+    }
 
 }

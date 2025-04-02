@@ -42,4 +42,6 @@ public interface CitaService {
 
     List<CitaDto> filtrarCitasPorEstadoYNombre(Long idMedico, CitaEntity.EstadoCita estado, String nombrePaciente);
 
+    String normalizar(String texto);
+
 }
