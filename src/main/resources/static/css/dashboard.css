@@ -93,6 +93,11 @@ body {
     font-weight: 500;
 }
 
+.costoConsulta {
+    color: #007bff;
+    font-weight: 500;
+}
+
 .ubicacion {
     color: #555;
     font-size: 14px;
@@ -144,4 +149,21 @@ body {
 
 .schedule-button a:hover {
     background-color: #0056b3;
+}
+
+.form-busqueda select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex: 1;
+    min-width: 250px;
+    font-size: 15px;
+    background-color: white;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
 }

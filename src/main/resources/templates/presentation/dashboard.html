@@ -19,7 +19,15 @@
 
     <!-- Formulario de búsqueda -->
     <form method="get" th:action="@{/}" class="form-busqueda">
-        <input type="text" name="especialidad" placeholder="Especialidad" th:value="${param.especialidad}">
+        <select name="especialidad">
+            <option value="">-- Todas las especialidades --</option>
+            <option th:each="esp : ${especialidades}"
+                    th:value="${esp}"
+                    th:text="${esp}"
+                    th:selected="${esp == especialidad}">
+            </option>
+        </select>
+
         <input type="text" name="localidad" placeholder="Ciudad o zona" th:value="${param.localidad}">
         <button type="submit">Buscar</button>
     </form>
@@ -31,6 +39,10 @@
             <div class="doctor-text">
                 <strong th:text="${medico.nombre}">Nombre del médico</strong>
                 <div class="especialidad" th:text="${medico.especialidad}">Especialidad</div>
+                <div class="costoConsulta"
+                     th:text="'Precio de consulta en dólares: ' + ${medico.costoConsulta}">
+                    Costo Consulta
+                </div>
                 <div class="ubicacion" th:text="${medico.localidad}">Ubicación</div>
             </div>
         </div>

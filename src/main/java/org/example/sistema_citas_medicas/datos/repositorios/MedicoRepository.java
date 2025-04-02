@@ -21,4 +21,10 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Long> {
     @Query("SELECT DISTINCT m.especialidad FROM MedicoEntity m")
     List<String> findDistinctEspecialidades();
 
+    @Query("SELECT m FROM MedicoEntity m " +
+            "WHERE (:especialidad IS NULL OR LOWER(m.especialidad) = LOWER(:especialidad)) " +
+            "AND (:localidad IS NULL OR LOWER(m.localidad) LIKE %:localidad%)")
+    List<MedicoEntity> buscarPorEspecialidadYLocalidad(@Param("especialidad") String especialidad,
+                                                       @Param("localidad") String localidad);
+
 }

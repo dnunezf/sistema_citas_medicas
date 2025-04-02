@@ -63,8 +63,9 @@
                 <label for="localidad">Localidad</label>
                 <input type="text" id="localidad" th:field="*{localidad}"
                        placeholder="Ciudad o zona de consulta"
-                       pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" required>
+                       pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ,.\-]+$" required>
             </div>
+
 
             <div class="form-group">
                 <label for="frecuenciaCitas">Frecuencia de Citas (minutos)</label>

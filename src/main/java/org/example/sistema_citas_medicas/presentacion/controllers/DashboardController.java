@@ -61,6 +61,7 @@ public class DashboardController {
         model.addAttribute("espaciosAgrupados", espaciosAgrupadosPorFecha);
         model.addAttribute("especialidad", especialidad); // Para mantener los filtros en el formulario
         model.addAttribute("localidad", localidad);
+        model.addAttribute("especialidades", medicoService.obtenerEspecialidades());
 
         return "presentation/dashboard";
     }

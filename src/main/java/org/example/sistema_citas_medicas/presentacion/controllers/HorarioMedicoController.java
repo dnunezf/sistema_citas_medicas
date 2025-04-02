@@ -58,8 +58,10 @@ public class HorarioMedicoController {
     public String mostrarFormularioEdicion(@PathVariable Long idHorario, Model model) {
         HorarioMedicoDto horario = horarioMedicoService.obtenerHorarioPorId(idHorario);
         model.addAttribute("horario", horario);
+        model.addAttribute("idMedico", horario.getIdMedico()); // 👈 Agregar esto
         return "presentation/form_horario";
     }
+
 
     // Actualizar un horario existente
     @PostMapping("/actualizar/{idHorario}")

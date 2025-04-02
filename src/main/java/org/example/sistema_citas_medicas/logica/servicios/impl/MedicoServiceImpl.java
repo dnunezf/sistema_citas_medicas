@@ -70,14 +70,14 @@ public class MedicoServiceImpl implements MedicoService {
         String esp = (especialidad != null && !especialidad.trim().isEmpty()) ? especialidad : null;
         String loc = (ubicacion != null && !ubicacion.trim().isEmpty()) ? ubicacion : null;
 
-        // Llamar al repositorio con los valores procesados
-        List<MedicoEntity> medicos = medicoRepository.findByEspecialidadAndLocalidad(esp, loc);
+        // Usar método flexible con LIKE
+        List<MedicoEntity> medicos = medicoRepository.buscarPorEspecialidadYLocalidad(esp, loc);
 
-        // Mapear a DTO
         return medicos.stream()
                 .map(medicoMapper::mapTo)
                 .collect(Collectors.toList());
     }
+
 
 
 
