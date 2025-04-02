@@ -11,19 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
 import org.example.sistema_citas_medicas.logica.dto.CitaDto;
 import org.example.sistema_citas_medicas.logica.servicios.CitaService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -141,32 +136,46 @@ public class CitaController {
 
     @GetMapping("/horarios/{idMedico}")
     public String mostrarHorarios(@PathVariable Long idMedico, Model model) {
-        // 🔹 Buscar el médico en la base de datos
         Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(idMedico);
 
         if (medicoOpt.isEmpty()) {
             model.addAttribute("error", "No se encontró el médico.");
-            return "error"; // Redirige a una página de error si el médico no existe
+            return "error";
         }
 
-        MedicoEntity medico = medicoOpt.get(); // 🔹 Obtener el objeto MedicoEntity
-
-        // 🔹 Obtener los horarios y espacios disponibles
+        MedicoEntity medico = medicoOpt.get();
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
         List<LocalDateTime> espaciosDisponibles = citaService.obtenerEspaciosDisponibles(idMedico, horarios);
 
-        // 🔹 Agrupar los espacios disponibles por fecha
-        Map<LocalDate, List<LocalDateTime>> espaciosPorFecha = espaciosDisponibles.stream()
-                .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
+        // Filtrar: hoy y los próximos 3 días
+        LocalDateTime inicio = LocalDateTime.now().withHour(0).withMinute(0);
+        LocalDateTime fin = inicio.plusDays(3).withHour(23).withMinute(59);
 
-        // 🔹 Agregar datos al modelo para Thymeleaf
-        model.addAttribute("medico", medico);  // ⚠️ Aquí se envía el médico con su nombre
+        List<LocalDateTime> filtrados = espaciosDisponibles.stream()
+                .filter(e -> !e.isBefore(inicio) && !e.isAfter(fin))
+                .toList();
+
+        // ❗ Agrupar por String (no LocalDate) para Thymeleaf
+        Map<String, List<String>> espaciosPorFecha = new TreeMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        for (LocalDateTime espacio : filtrados) {
+            String clave = espacio.toLocalDate().toString(); // yyyy-MM-dd
+            String horaFormateada = espacio.format(formatter);
+            espaciosPorFecha.computeIfAbsent(clave, k -> new ArrayList<>()).add(horaFormateada);
+        }
+
+        model.addAttribute("medico", medico);
         model.addAttribute("horarios", horarios);
         model.addAttribute("espaciosPorFecha", espaciosPorFecha);
         model.addAttribute("idMedico", idMedico);
 
         return "presentation/seleccionar_horario";
     }
+
+
+
+
 
 
 
@@ -355,32 +364,7 @@ public class CitaController {
         return "presentation/detalle_cita";
     }
 
-    @GetMapping("/horarios/{idMedico}/extendido")
-    public String mostrarHorarioExtendido(@PathVariable Long idMedico,
-                                          @RequestParam(defaultValue = "0") int offset,
-                                          Model model) {
-        Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(idMedico);
-        if (medicoOpt.isEmpty()) {
-            model.addAttribute("error", "No se encontró el médico.");
-            return "redirect:/citas/ver";
-        }
 
-        MedicoEntity medico = medicoOpt.get();
-        List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
-
-        LocalDate fechaBase = LocalDate.now().plusDays(offset);
-        List<LocalDateTime> espacios = citaService.generarEspaciosDesdeFecha(idMedico, horarios, fechaBase, 14);
-
-        Map<LocalDate, List<LocalDateTime>> espaciosPorFecha = espacios.stream()
-                .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
-
-        model.addAttribute("medico", medico);
-        model.addAttribute("espaciosPorFecha", espaciosPorFecha);
-        model.addAttribute("idMedico", idMedico);
-        model.addAttribute("offset", offset); // 👈 ¡AQUÍ ESTÁ LA CLAVE!
-
-        return "presentation/horario_extendido";
-    }
 
 
 

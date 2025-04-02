@@ -25,10 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,10 +126,9 @@ public class CitaServiceImpl implements CitaService {
         List<LocalDateTime> espaciosDisponibles = new ArrayList<>();
         LocalDate fechaActual = LocalDate.now();
 
-        // 🔹 Iterar los próximos 3 días
         for (int i = 0; i < 3; i++) {
             LocalDate fecha = fechaActual.plusDays(i);
-            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // lunes, martes, miércoles...
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // lunes, martes...
 
             for (HorarioMedicoDto horario : horarios) {
                 if (normalizar(diaSemana).equals(horario.getDiaSemana().toLowerCase())) {
@@ -142,12 +138,14 @@ public class CitaServiceImpl implements CitaService {
 
                     LocalDateTime espacio = LocalDateTime.of(fecha, horaInicio);
                     while (!espacio.toLocalTime().isAfter(horaFin.minusMinutes(duracion))) {
-                        CitaEntity cita = citaRepository.findByMedicoAndFechaHora(medicoRepository.getReferenceById(idMedico), espacio);
-                        boolean ocupado = cita != null && cita.getEstado() == CitaEntity.EstadoCita.confirmada;
+                        // Validar si ya existe una cita en este espacio, sin importar estado
+                        boolean ocupado = citaRepository.existsByMedicoAndFechaHora(
+                                medicoRepository.getReferenceById(idMedico), espacio);
 
                         if (!ocupado) {
                             espaciosDisponibles.add(espacio);
                         }
+
                         espacio = espacio.plusMinutes(duracion);
                     }
                 }
@@ -156,6 +154,9 @@ public class CitaServiceImpl implements CitaService {
 
         return espaciosDisponibles;
     }
+
+
+
 
 
     // ✅ Agendar cita validando disponibilidad

@@ -35,9 +35,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .requestCache(cache -> cache.requestCache(requestCache)) // 🔥 Aquí se aplica la magia
+                .requestCache(cache -> cache.requestCache(requestCache))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/usuarios/**", "/citas/ver", "/citas/buscar", "/citas/horarios/**").permitAll()
+                        .requestMatchers(
+                                "/", "/css/**", "/js/**", "/images/**",
+                                "/usuarios/**",
+                                "/citas/ver", "/citas/buscar",
+                                "/citas/horarios/**",         // ✅ horarios normales
+                                "/citas/horarios/*/extendido" // ✅ horarios extendidos públicos
+                        ).permitAll()
                         .requestMatchers("/pacientes/editar/**", "/pacientes/actualizar").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/citas/medico/**", "/horarios/**", "/medicos/**").hasRole("MEDICO")
@@ -59,6 +65,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }
 
 

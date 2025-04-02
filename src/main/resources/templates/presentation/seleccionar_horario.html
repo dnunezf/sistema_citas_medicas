@@ -1,56 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Horario Extendido</title>
-    <link rel="stylesheet" th:href="@{/css/seleccionar_horario.css}">
-    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <title>Seleccionar Horario</title>
+    <link rel="stylesheet" href="/css/seleccionar_horario.css"/>
 </head>
 <body>
-
-<header th:replace="~{fragments/header :: header}"></header>
-
 <div class="container">
-    <h2 class="title">Horario Extendido del Médico</h2>
+    <a href="/" class="btn btn-secondary" style="margin-top: 20px;">← Volver al Dashboard</a>
 
-    <!-- Info del médico -->
-    <div class="medico-info">
-        <p><strong>Médico:</strong> <span th:text="${medico.nombre}"></span></p>
-        <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
-        <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
+    <h2 style="margin-top: 20px;">Seleccionar horario para el Dr. [[${medico.nombre}]]</h2>
+
+    <div th:if="${#lists.isEmpty(espaciosPorFecha)}">
+        <p>No hay horarios disponibles en los próximos días.</p>
     </div>
 
-    <!-- Todos los horarios disponibles agrupados por fecha -->
-    <h3 class="horarios-titulo">Fechas con espacios disponibles</h3>
-    <div class="horario-section" th:each="fecha : ${espaciosPorFecha.keySet()}">
-        <h4 class="horario-fecha" th:text="${#temporals.format(fecha, 'EEEE dd/MM/yyyy')}"></h4>
-        <table>
-            <thead>
-            <tr>
-                <th>Hora</th>
-                <th>Acción</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="hora : ${espaciosPorFecha[fecha]}">
-                <td th:text="${#temporals.format(hora, 'HH:mm')}"></td>
-                <td>
-                    <a th:href="@{/citas/confirmar(idMedico=${medico.id}, fechaHora=${hora})}" class="btn btn-success">
-                        Agendar Cita
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <div th:unless="${#lists.isEmpty(espaciosPorFecha)}">
+        <div th:each="entry : ${espaciosPorFecha}">
+            <h3 th:text="${entry.key}">Fecha</h3>
 
-    <!-- Botón para volver -->
-    <div class="botones">
-        <a th:href="@{/}" class="btn btn-danger">Volver al Dashboard</a>
+            <table>
+                <thead>
+                <tr>
+                    <th>Hora disponible</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hora : ${entry.value}">
+                    <td th:text="${#strings.substring(hora, 11, 16)}">HH:mm</td>
+                    <td>
+                        <a th:href="@{/citas/confirmar(idMedico=${idMedico}, fechaHora=${hora})}" class="btn btn-primary">Agendar</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+        </div>
     </div>
 </div>
-
-<footer th:replace="~{fragments/footer :: footer}"></footer>
-
 </body>
 </html>
