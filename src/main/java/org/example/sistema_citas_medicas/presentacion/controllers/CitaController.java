@@ -243,7 +243,6 @@ public class CitaController {
         model.addAttribute("citas", citas);
         return "presentation/historico_citas"; // Página aún por crear
     }
-
     @GetMapping("/confirmar")
     public String confirmarCita(@RequestParam Long idMedico,
                                 @RequestParam String fechaHora,
@@ -261,12 +260,19 @@ public class CitaController {
             return "redirect:/usuarios/login";
         }
 
+        // 🛡️ Validar que sea paciente
+        if (usuario.getRol() != RolUsuario.PACIENTE) {
+            System.out.println("⚠️ El usuario no es paciente. Redirigiendo.");
+            return "redirect:/";
+        }
+
         System.out.println("👤 Usuario autenticado: " + usuario.getId());
 
         try {
             PacienteEntity paciente = pacienteService.obtenerPorId(usuario.getId());
             if (paciente == null) {
-                System.out.println("❌ Paciente no encontrado");
+                System.out.println("❌ Paciente no encontrado en base");
+                model.addAttribute("error", "No se encontraron datos de paciente.");
                 return "redirect:/citas/ver";
             }
 
@@ -285,7 +291,7 @@ public class CitaController {
 
             model.addAttribute("medico", medico);
             model.addAttribute("paciente", paciente);
-            model.addAttribute("fechaHora", fechaConvertida); // ✅ LocalDateTime directamente
+            model.addAttribute("fechaHora", fechaConvertida);
 
             return "presentation/confirmar_cita";
 
@@ -295,6 +301,7 @@ public class CitaController {
             return "redirect:/error";
         }
     }
+
 
     @PostMapping("/confirmar")
     public String procesarConfirmacion(@RequestParam Long idMedico,

@@ -41,6 +41,8 @@ public class UsuarioController {
 
 
 
+
+
     @GetMapping("/registro")
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new UsuarioEntity());

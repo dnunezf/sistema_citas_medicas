@@ -44,4 +44,6 @@ public interface CitaService {
 
     String normalizar(String texto);
 
+    List<LocalDateTime> generarTodosLosEspacios(Long idMedico, List<HorarioMedicoDto> horarios);
+
 }

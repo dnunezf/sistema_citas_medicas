@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import org.springframework.security.web.savedrequest.RequestCache;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -18,27 +20,30 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final CustomFailureHandler authFailureHandler;
     private final CustomSuccessHandler successHandler;
+    private final CustomRequestCache requestCache;
 
     public SecurityConfig(CustomUserDetailsService userDetailsService,
                           CustomFailureHandler authFailureHandler,
-                          CustomSuccessHandler successHandler) {
+                          CustomSuccessHandler successHandler,
+                          CustomRequestCache requestCache) {
         this.userDetailsService = userDetailsService;
         this.authFailureHandler = authFailureHandler;
         this.successHandler = successHandler;
+        this.requestCache = requestCache;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .requestCache(cache -> cache.requestCache(requestCache)) // 🔥 Aquí se aplica la magia
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/usuarios/**", "/citas/ver", "/citas/buscar", "/citas/horarios/**").permitAll()
-                        .requestMatchers("/pacientes/editar/**","/pacientes/actualizar").permitAll() // <-- necesario para redirigir tras registro
+                        .requestMatchers("/pacientes/editar/**", "/pacientes/actualizar").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/citas/medico/**", "/horarios/**", "/medicos/**").hasRole("MEDICO")
                         .requestMatchers("/citas/paciente/**", "/pacientes/**").hasRole("PACIENTE")
                         .anyRequest().authenticated()
                 )
-
                 .formLogin(form -> form
                         .loginPage("/usuarios/login")
                         .loginProcessingUrl("/usuarios/login")
@@ -54,13 +59,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-
 }
+
 

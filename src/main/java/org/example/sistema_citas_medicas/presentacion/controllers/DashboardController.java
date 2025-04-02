@@ -1,5 +1,6 @@
 package org.example.sistema_citas_medicas.presentacion.controllers;
 
+import org.example.sistema_citas_medicas.logica.dto.CitaDto;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 import org.example.sistema_citas_medicas.logica.dto.MedicoDto;
 import org.example.sistema_citas_medicas.logica.servicios.CitaService;
@@ -46,19 +47,31 @@ public class DashboardController {
         }
 
         Map<Long, Map<LocalDate, List<LocalDateTime>>> espaciosAgrupadosPorFecha = new HashMap<>();
+        Map<Long, Set<LocalDateTime>> horasOcupadasPorMedico = new HashMap<>();
 
         for (MedicoDto medico : medicos) {
             List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(medico.getId());
-            List<LocalDateTime> espacios = citaService.obtenerEspaciosDisponibles(medico.getId(), horarios);
+            List<LocalDateTime> espacios = citaService.generarTodosLosEspacios(medico.getId(), horarios);
+
 
             Map<LocalDate, List<LocalDateTime>> agrupados = espacios.stream()
                     .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
 
             espaciosAgrupadosPorFecha.put(medico.getId(), agrupados);
+
+            // ✅ Obtener las horas ocupadas de este médico
+            List<CitaDto> citasAgendadas = citaService.obtenerCitasPorMedico(medico.getId());
+            Set<LocalDateTime> horasOcupadas = citasAgendadas.stream()
+                    .map(CitaDto::getFechaHora)
+                    .collect(Collectors.toSet());
+
+            horasOcupadasPorMedico.put(medico.getId(), horasOcupadas);
         }
 
+        // 🔹 Datos para el dashboard
         model.addAttribute("medicos", medicos);
         model.addAttribute("espaciosAgrupados", espaciosAgrupadosPorFecha);
+        model.addAttribute("horasOcupadas", horasOcupadasPorMedico);
         model.addAttribute("especialidad", especialidad); // Para mantener los filtros en el formulario
         model.addAttribute("localidad", localidad);
         model.addAttribute("especialidades", medicoService.obtenerEspecialidades());

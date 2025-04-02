@@ -120,16 +120,31 @@ body {
 .horas {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .hora {
-    background-color: #e1f0ff;
-    color: #007bff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
+
+.hora:hover {
+    background-color: #00a8e8;
+}
+
+.hora.ocupada {
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 
 /* ========== Botón Agendar ========== */
 .schedule-button {

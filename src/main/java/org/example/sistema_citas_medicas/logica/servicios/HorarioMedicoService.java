@@ -3,6 +3,7 @@ package org.example.sistema_citas_medicas.logica.servicios;
 import org.example.sistema_citas_medicas.datos.entidades.HorarioMedicoEntity;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HorarioMedicoService {
@@ -21,6 +22,8 @@ public interface HorarioMedicoService {
 
     // Eliminar un horario por su ID
     void eliminarHorario(Long idHorario);
+
+    //List<LocalDateTime> generarEspacios(Long idMedico, List<HorarioMedicoDto> horarios);
 
 }
 

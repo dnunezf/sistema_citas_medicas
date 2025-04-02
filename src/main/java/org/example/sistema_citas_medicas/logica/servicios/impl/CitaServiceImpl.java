@@ -142,7 +142,9 @@ public class CitaServiceImpl implements CitaService {
 
                     LocalDateTime espacio = LocalDateTime.of(fecha, horaInicio);
                     while (!espacio.toLocalTime().isAfter(horaFin.minusMinutes(duracion))) {
-                        boolean ocupado = citaRepository.existsByMedicoAndFechaHora(medicoRepository.getReferenceById(idMedico), espacio);
+                        CitaEntity cita = citaRepository.findByMedicoAndFechaHora(medicoRepository.getReferenceById(idMedico), espacio);
+                        boolean ocupado = cita != null && cita.getEstado() == CitaEntity.EstadoCita.confirmada;
+
                         if (!ocupado) {
                             espaciosDisponibles.add(espacio);
                         }
@@ -254,5 +256,32 @@ public class CitaServiceImpl implements CitaService {
                 .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
                 .toLowerCase();
     }
+
+    public List<LocalDateTime> generarTodosLosEspacios(Long idMedico, List<HorarioMedicoDto> horarios) {
+        List<LocalDateTime> espacios = new ArrayList<>();
+        LocalDate fechaActual = LocalDate.now();
+
+        for (int i = 0; i < 3; i++) {
+            LocalDate fecha = fechaActual.plusDays(i);
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR"));
+            String diaNormalizado = normalizar(diaSemana);
+
+            for (HorarioMedicoDto horario : horarios) {
+                if (diaNormalizado.equals(horario.getDiaSemana().toLowerCase())) {
+                    LocalTime inicio = LocalTime.parse(horario.getHoraInicio());
+                    LocalTime fin = LocalTime.parse(horario.getHoraFin());
+                    int duracion = horario.getTiempoCita();
+
+                    LocalDateTime current = LocalDateTime.of(fecha, inicio);
+                    while (!current.toLocalTime().isAfter(fin.minusMinutes(duracion))) {
+                        espacios.add(current);
+                        current = current.plusMinutes(duracion);
+                    }
+                }
+            }
+        }
+        return espacios;
+    }
+
 
 }

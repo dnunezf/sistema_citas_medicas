@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Appointments</title>
+    <title>Citas Médicas</title>
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
@@ -52,17 +52,18 @@
             <div th:each="entry : ${espaciosAgrupados[medico.id]}">
                 <div class="fecha" th:text="${#temporals.format(entry.key, 'dd/MM/yyyy')}"></div>
                 <div class="horas">
-                    <span th:each="hora : ${entry.value}"
-                          th:text="${#temporals.format(hora, 'HH:mm')}"
-                          class="hora">
-                    </span>
+                    <a th:each="hora : ${entry.value}"
+                       th:href="@{'/citas/confirmar?idMedico=' + ${medico.id} + '&fechaHora=' + ${#temporals.format(hora, 'yyyy-MM-dd')} + 'T' + ${#temporals.format(hora, 'HH:mm:ss')}}"
+                       th:text="${#temporals.format(hora, 'HH:mm')}"
+                       th:class="'hora ' + (${horasOcupadas[medico.id]?.contains(hora)} ? 'ocupada' : '')">
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Botón de agendar -->
         <div class="schedule-button">
-            <a th:href="@{'/citas/horarios/' + ${medico.id}}">Agendar Cita →</a>
+            <a th:href="@{'/citas/horarios/' + ${medico.id}}">Horario Extendido→</a>
         </div>
     </div>
 
