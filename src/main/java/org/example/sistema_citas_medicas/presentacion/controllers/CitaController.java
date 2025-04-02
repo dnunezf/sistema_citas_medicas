@@ -147,21 +147,22 @@ public class CitaController {
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
         List<LocalDateTime> espaciosDisponibles = citaService.obtenerEspaciosDisponibles(idMedico, horarios);
 
-        // Filtrar: hoy y los próximos 3 días
+        // 🔄 Mostrar hoy + próximos 7 días
         LocalDateTime inicio = LocalDateTime.now().withHour(0).withMinute(0);
-        LocalDateTime fin = inicio.plusDays(3).withHour(23).withMinute(59);
+        LocalDateTime fin = inicio.plusDays(7).withHour(23).withMinute(59);
 
         List<LocalDateTime> filtrados = espaciosDisponibles.stream()
                 .filter(e -> !e.isBefore(inicio) && !e.isAfter(fin))
                 .toList();
 
-        // ❗ Agrupar por String (no LocalDate) para Thymeleaf
-        Map<String, List<String>> espaciosPorFecha = new TreeMap<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        // 📆 Agrupar por fecha en formato amigable
+        Map<String, List<String>> espaciosPorFecha = new LinkedHashMap<>();
+        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter diaFormatter = DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy", new Locale("es", "ES"));
 
         for (LocalDateTime espacio : filtrados) {
-            String clave = espacio.toLocalDate().toString(); // yyyy-MM-dd
-            String horaFormateada = espacio.format(formatter);
+            String clave = espacio.toLocalDate().format(diaFormatter); // ej: "miércoles 03/04/2025"
+            String horaFormateada = espacio.format(formatterHora);
             espaciosPorFecha.computeIfAbsent(clave, k -> new ArrayList<>()).add(horaFormateada);
         }
 
@@ -172,6 +173,7 @@ public class CitaController {
 
         return "presentation/seleccionar_horario";
     }
+
 
 
 

@@ -126,9 +126,9 @@ public class CitaServiceImpl implements CitaService {
         List<LocalDateTime> espaciosDisponibles = new ArrayList<>();
         LocalDate fechaActual = LocalDate.now();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 7; i++) {  // 🔥 Mostrar espacios de los próximos 7 días
             LocalDate fecha = fechaActual.plusDays(i);
-            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR")); // lunes, martes...
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR"));
 
             for (HorarioMedicoDto horario : horarios) {
                 if (normalizar(diaSemana).equals(horario.getDiaSemana().toLowerCase())) {
@@ -138,7 +138,6 @@ public class CitaServiceImpl implements CitaService {
 
                     LocalDateTime espacio = LocalDateTime.of(fecha, horaInicio);
                     while (!espacio.toLocalTime().isAfter(horaFin.minusMinutes(duracion))) {
-                        // Validar si ya existe una cita en este espacio, sin importar estado
                         boolean ocupado = citaRepository.existsByMedicoAndFechaHora(
                                 medicoRepository.getReferenceById(idMedico), espacio);
 
@@ -154,6 +153,7 @@ public class CitaServiceImpl implements CitaService {
 
         return espaciosDisponibles;
     }
+
 
 
 
