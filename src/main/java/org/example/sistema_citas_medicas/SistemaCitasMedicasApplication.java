@@ -1,3 +1,12 @@
+/*
+* PROYECTO PROGRAMADO 01
+* PROGRAMACIÓN IV
+* ESTUDIANTES:
+* Gabriel Herrera Solís
+* María Araya Campos
+* David Núñez Franco
+* */
+
 package org.example.sistema_citas_medicas;
 
 import org.springframework.boot.SpringApplication;
