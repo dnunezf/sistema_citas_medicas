@@ -355,6 +355,35 @@ public class CitaController {
         return "presentation/detalle_cita";
     }
 
+    @GetMapping("/horarios/{idMedico}/extendido")
+    public String mostrarHorarioExtendido(@PathVariable Long idMedico,
+                                          @RequestParam(defaultValue = "0") int offset,
+                                          Model model) {
+        Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(idMedico);
+        if (medicoOpt.isEmpty()) {
+            model.addAttribute("error", "No se encontró el médico.");
+            return "redirect:/citas/ver";
+        }
+
+        MedicoEntity medico = medicoOpt.get();
+        List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
+
+        LocalDate fechaBase = LocalDate.now().plusDays(offset);
+        List<LocalDateTime> espacios = citaService.generarEspaciosDesdeFecha(idMedico, horarios, fechaBase, 14);
+
+        Map<LocalDate, List<LocalDateTime>> espaciosPorFecha = espacios.stream()
+                .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
+
+        model.addAttribute("medico", medico);
+        model.addAttribute("espaciosPorFecha", espaciosPorFecha);
+        model.addAttribute("idMedico", idMedico);
+        model.addAttribute("offset", offset); // 👈 ¡AQUÍ ESTÁ LA CLAVE!
+
+        return "presentation/horario_extendido";
+    }
+
+
+
 
 }
 

@@ -2,31 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Seleccionar Horario</title>
+    <title>Horario Extendido</title>
     <link rel="stylesheet" th:href="@{/css/seleccionar_horario.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
 
-<header th:insert="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <div class="container">
-    <h2 class="title">Seleccionar Horario para la Cita</h2>
+    <h2 class="title">Horario Extendido del Médico</h2>
 
-    <!-- Información del Médico -->
+    <!-- Info del médico -->
     <div class="medico-info">
-        <p><strong>Médico:</strong> <span th:text="${medico.nombre}" class="medico-nombre"></span></p>
+        <p><strong>Médico:</strong> <span th:text="${medico.nombre}"></span></p>
         <p><strong>Especialidad:</strong> <span th:text="${medico.especialidad}"></span></p>
         <p><strong>Ubicación:</strong> <span th:text="${medico.localidad}"></span></p>
     </div>
 
-    <h3 class="horarios-titulo">Horarios Disponibles</h3>
-
-    <!-- Tabla de horarios -->
-    <div class="horario-section" th:each="entry : ${espaciosPorFecha}">
-        <h4 class="horario-fecha" th:text="${#temporals.format(entry.key, 'EEEE dd/MM/yyyy')}"></h4>
-
+    <!-- Todos los horarios disponibles agrupados por fecha -->
+    <h3 class="horarios-titulo">Fechas con espacios disponibles</h3>
+    <div class="horario-section" th:each="fecha : ${espaciosPorFecha.keySet()}">
+        <h4 class="horario-fecha" th:text="${#temporals.format(fecha, 'EEEE dd/MM/yyyy')}"></h4>
         <table>
             <thead>
             <tr>
@@ -35,11 +32,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="espacio : ${entry.value}">
-                <td th:text="${#temporals.format(espacio, 'HH:mm')}"></td>
+            <tr th:each="hora : ${espaciosPorFecha[fecha]}">
+                <td th:text="${#temporals.format(hora, 'HH:mm')}"></td>
                 <td>
-                    <a th:href="@{/citas/confirmar(idMedico=${medico.id}, fechaHora=${espacio})}"
-                       class="btn btn-success">
+                    <a th:href="@{/citas/confirmar(idMedico=${medico.id}, fechaHora=${hora})}" class="btn btn-success">
                         Agendar Cita
                     </a>
                 </td>
@@ -48,13 +44,13 @@
         </table>
     </div>
 
-    <!-- Botón Cancelar -->
+    <!-- Botón para volver -->
     <div class="botones">
-        <a th:href="@{/citas/ver}" class="btn btn-danger">Cancelar</a>
+        <a th:href="@{/}" class="btn btn-danger">Volver al Dashboard</a>
     </div>
 </div>
 
-<footer th:insert="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ import org.example.sistema_citas_medicas.datos.entidades.CitaEntity;
 import org.example.sistema_citas_medicas.logica.dto.CitaDto;
 import org.example.sistema_citas_medicas.logica.dto.HorarioMedicoDto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,5 +46,7 @@ public interface CitaService {
     String normalizar(String texto);
 
     List<LocalDateTime> generarTodosLosEspacios(Long idMedico, List<HorarioMedicoDto> horarios);
+
+    List<LocalDateTime> generarEspaciosDesdeFecha(Long idMedico, List<HorarioMedicoDto> horarios, LocalDate fechaInicio, int dias);
 
 }

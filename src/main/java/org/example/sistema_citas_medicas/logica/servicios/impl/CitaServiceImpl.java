@@ -283,5 +283,35 @@ public class CitaServiceImpl implements CitaService {
         return espacios;
     }
 
+    public List<LocalDateTime> generarEspaciosDesdeFecha(Long idMedico, List<HorarioMedicoDto> horarios, LocalDate fechaInicio, int dias) {
+        List<LocalDateTime> espacios = new ArrayList<>();
+
+        for (int i = 0; i < dias; i++) {
+            LocalDate fecha = fechaInicio.plusDays(i);
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR"));
+            String diaNormalizado = normalizar(diaSemana);
+
+            for (HorarioMedicoDto horario : horarios) {
+                if (diaNormalizado.equals(horario.getDiaSemana().toLowerCase())) {
+                    LocalTime inicio = LocalTime.parse(horario.getHoraInicio());
+                    LocalTime fin = LocalTime.parse(horario.getHoraFin());
+                    int duracion = horario.getTiempoCita();
+
+                    LocalDateTime current = LocalDateTime.of(fecha, inicio);
+                    while (!current.toLocalTime().isAfter(fin.minusMinutes(duracion))) {
+                        boolean ocupado = citaRepository.existsByMedicoAndFechaHora(medicoRepository.getReferenceById(idMedico), current);
+                        if (!ocupado) {
+                            espacios.add(current);
+                        }
+                        current = current.plusMinutes(duracion);
+                    }
+                }
+            }
+        }
+
+        return espacios;
+    }
+
+
 
 }
