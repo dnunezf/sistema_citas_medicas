@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Appointment History</title>
+    <title>Historial de Citas</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/gestion_citas.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
@@ -17,35 +17,44 @@
     </div>
 
     <h2>
-        Patient - <span class="doctor-name" th:text="${session.usuario.nombre}"></span> - appointment history
+        Paciente - <span class="doctor-name" th:text="${session.usuario.nombre}"></span> - Historial de Citas
     </h2>
 
     <div class="filters">
-        <form th:action="@{/citas/paciente/historico/filtrar/estado}" method="get">
-            <label for="estado">Status:</label>
+        <form th:action="@{/citas/paciente/historico/filtrar}" method="get">
+        <label for="estado">Estado:</label>
             <select id="estado" name="estado">
-                <option value="pendiente">Pending</option>
-                <option value="confirmada">Confirmed</option>
-                <option value="cancelada">Canceled</option>
-                <option value="completada">Attended</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="cancelada">Cancelada</option>
+                <option value="completada">Completada</option>
             </select>
 
             <label for="nombreMedico">Doctor:</label>
-            <input type="text" id="nombreMedico" name="nombreMedico" placeholder="Doctor's name">
+            <input type="text" id="nombreMedico" name="nombreMedico" placeholder="Nombre del médico">
 
-            <button type="submit">Search</button>
+            <button type="submit">Buscar</button>
         </form>
     </div>
 
     <div class="appointments">
         <div class="appointment" th:each="cita : ${citas}">
             <div class="patient-info">
-                <img src="/images/avatar.png" alt="Doctor">
+                <img th:if="${medicosPorId[cita.idMedico]?.rutaFotoPerfil != null and !medicosPorId[cita.idMedico]?.rutaFotoPerfil.isEmpty()}"
+                     th:src="@{${medicosPorId[cita.idMedico]?.rutaFotoPerfil}}"
+                     alt="Foto del Doctor" class="foto-doctor"
+                     onerror="this.onerror=null; this.src='/images/avatar.png';">
+
+                <img th:if="${medicosPorId[cita.idMedico]?.rutaFotoPerfil == null or medicosPorId[cita.idMedico]?.rutaFotoPerfil.isEmpty()}"
+                     th:src="@{/images/avatar.png}" alt="Avatar por defecto" class="foto-doctor">
+
+
                 <div>
                     <span th:text="${cita.nombreMedico}" style="font-weight: bold; font-size: 1.1em;"></span><br>
                     <span th:text="'ID: ' + ${cita.idMedico}"></span><br>
-                    <span>Specialty Placeholder</span><br>
-                    <span>Location Placeholder</span>
+                    <span th:text="${medicosPorId[cita.idMedico]?.especialidad}">Especialidad</span><br>
+                    <span th:text="${medicosPorId[cita.idMedico]?.localidad}">Localidad</span>
+
                 </div>
             </div>
 
@@ -62,7 +71,7 @@
 
             <div class="actions">
                 <a th:href="@{'/citas/paciente/detalle/' + ${cita.id}}" title="View">
-                    <img src="/images/view_icon.png" alt="View" style="height: 25px;">
+                    <img src="/images/binoculares.png" alt="View" class="icono-ver">
                 </a>
             </div>
         </div>

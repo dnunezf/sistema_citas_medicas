@@ -26,9 +26,11 @@ public class PacienteController {
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
         PacienteEntity paciente = pacienteService.obtenerPorId(id);
         if (paciente == null) {
-            model.addAttribute("error", "Paciente no encontrado");
-            return "redirect:/pacientes/lista"; // Redirigir si no existe el paciente
+            model.addAttribute("error", "Paciente no encontrado.");
+            return "redirect:/";
         }
+
+        paciente.setClave(""); // 🔐 Borrar la clave para que no aparezca
         model.addAttribute("paciente", paciente);
         return "presentation/registro_paciente";
     }

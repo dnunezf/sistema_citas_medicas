@@ -16,9 +16,16 @@
     <div class="card-confirmacion">
 
         <!-- Foto del médico -->
+        <!-- Foto del médico -->
         <div class="medico-imagen">
-            <img th:src="@{/images/avatar-medico.png}" alt="Foto del médico">
+            <img th:if="${medico.rutaFotoPerfil != null and !medico.rutaFotoPerfil.isEmpty()}"
+                 th:src="@{|/uploads/fotos_perfil/${medico.rutaFotoPerfil}|}"
+                 alt="Foto del médico" class="foto-doctor">
+
+            <img th:if="${medico.rutaFotoPerfil == null or medico.rutaFotoPerfil.isEmpty()}"
+                 th:src="@{/images/avatar-medico.png}" alt="Avatar por defecto" class="foto-doctor">
         </div>
+
 
         <!-- Info del médico -->
         <div class="info">
@@ -43,7 +50,7 @@
                 <button type="submit" class="btn btn-confirmar">
                     <i class="fas fa-check-circle"></i> Confirmar
                 </button>
-                <a th:href="@{/citas/horarios/{id}(id=${medico.id})}" class="btn btn-cancelar">
+                <a th:href="@{/}" class="btn btn-cancelar">
                     <i class="fas fa-times-circle"></i> Cancelar
                 </a>
             </div>

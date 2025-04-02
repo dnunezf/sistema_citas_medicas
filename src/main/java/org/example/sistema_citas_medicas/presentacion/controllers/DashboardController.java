@@ -41,9 +41,16 @@ public class DashboardController {
         // 🔍 Búsqueda flexible: por especialidad, localidad, ambos o ninguno
         if ((especialidad == null || especialidad.isBlank()) &&
                 (localidad == null || localidad.isBlank())) {
-            medicos = medicoService.obtenerMedicos();
+
+            // ✅ Filtrar solo médicos aprobados
+            medicos = medicoService.obtenerMedicos().stream()
+                    .filter(m -> "aprobado".equalsIgnoreCase(m.getEstadoAprobacion()))
+                    .collect(Collectors.toList());
+
         } else {
-            medicos = medicoService.buscarPorEspecialidadYUbicacion(especialidad, localidad);
+            medicos = medicoService.buscarPorEspecialidadYUbicacion(especialidad, localidad).stream()
+                    .filter(m -> "aprobado".equalsIgnoreCase(m.getEstadoAprobacion()))
+                    .collect(Collectors.toList());
         }
 
         Map<Long, Map<LocalDate, List<LocalDateTime>>> espaciosAgrupadosPorFecha = new HashMap<>();
@@ -53,29 +60,30 @@ public class DashboardController {
             List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(medico.getId());
             List<LocalDateTime> espacios = citaService.generarTodosLosEspacios(medico.getId(), horarios);
 
-
             Map<LocalDate, List<LocalDateTime>> agrupados = espacios.stream()
                     .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
 
             espaciosAgrupadosPorFecha.put(medico.getId(), agrupados);
 
-            // ✅ Obtener las horas ocupadas de este médico
             List<CitaDto> citasAgendadas = citaService.obtenerCitasPorMedico(medico.getId());
             Set<LocalDateTime> horasOcupadas = citasAgendadas.stream()
                     .map(CitaDto::getFechaHora)
                     .collect(Collectors.toSet());
 
             horasOcupadasPorMedico.put(medico.getId(), horasOcupadas);
+
+            System.out.println("👨‍⚕️ Médico: " + medico.getNombre());
+            System.out.println("📸 Ruta Foto: " + medico.getRutaFotoPerfil());
         }
 
-        // 🔹 Datos para el dashboard
         model.addAttribute("medicos", medicos);
         model.addAttribute("espaciosAgrupados", espaciosAgrupadosPorFecha);
         model.addAttribute("horasOcupadas", horasOcupadasPorMedico);
-        model.addAttribute("especialidad", especialidad); // Para mantener los filtros en el formulario
+        model.addAttribute("especialidad", especialidad);
         model.addAttribute("localidad", localidad);
         model.addAttribute("especialidades", medicoService.obtenerEspecialidades());
 
         return "presentation/dashboard";
     }
+
 }

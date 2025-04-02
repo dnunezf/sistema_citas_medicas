@@ -254,4 +254,16 @@ main h2 {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .foto-doctor {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+}
+
+.icono-ver {
+    height: 25px;
 }

@@ -313,6 +313,31 @@ public class CitaServiceImpl implements CitaService {
         return espacios;
     }
 
+    @Override
+    public List<CitaDto> filtrarCitasPorEstadoYNombreMedico(Long idPaciente, String estado, String nombreMedico) {
+        CitaEntity.EstadoCita estadoEnum = CitaEntity.EstadoCita.valueOf(estado.toLowerCase());
+
+        List<CitaEntity> citas = citaRepository.findByPacienteId(idPaciente).stream()
+                .filter(cita ->
+                        cita.getEstado().equals(estadoEnum) &&
+                                cita.getMedico().getNombre().toLowerCase().contains(nombreMedico.toLowerCase())
+                )
+                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora()))
+                .collect(Collectors.toList());
+
+        return citas.stream()
+                .map(cita -> new CitaDto(
+                        cita.getId(),
+                        cita.getPaciente().getId(),
+                        cita.getPaciente().getNombre(),
+                        cita.getMedico().getId(),
+                        cita.getMedico().getNombre(),
+                        cita.getFechaHora(),
+                        cita.getEstado().name(),
+                        cita.getNotas()
+                ))
+                .collect(Collectors.toList());
+    }
 
 
 }

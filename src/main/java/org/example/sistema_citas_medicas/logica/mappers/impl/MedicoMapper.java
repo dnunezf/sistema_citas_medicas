@@ -13,6 +13,10 @@ public class MedicoMapper implements Mapper<MedicoEntity, MedicoDto> {
     public MedicoMapper(ModelMapper modelMapper)
     {
         this.modelMapper = modelMapper;
+
+        // 👇 Aseguramos que se copie el campo rutaFotoPerfil manualmente
+        this.modelMapper.typeMap(MedicoEntity.class, MedicoDto.class)
+                .addMappings(mapper -> mapper.map(MedicoEntity::getRutaFotoPerfil, MedicoDto::setRutaFotoPerfil));
     }
 
     @Override

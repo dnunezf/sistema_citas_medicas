@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 "/usuarios/**",
                                 "/citas/ver", "/citas/buscar",
                                 "/citas/horarios/**",         // ✅ horarios normales
-                                "/citas/horarios/*/extendido" // ✅ horarios extendidos públicos
+                                "/citas/horarios/*/extendido", // ✅ horarios extendidos públicos
+                                "/uploads/**"
                         ).permitAll()
                         .requestMatchers("/pacientes/editar/**", "/pacientes/actualizar").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")

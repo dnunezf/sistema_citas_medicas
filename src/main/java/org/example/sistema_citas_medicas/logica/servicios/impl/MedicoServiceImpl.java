@@ -38,6 +38,7 @@ public class MedicoServiceImpl implements MedicoService {
             medicoExistente.setFrecuenciaCitas(medico.getFrecuenciaCitas());
             medicoExistente.setPresentacion(medico.getPresentacion());
             medicoExistente.setEstadoAprobacion(medico.getEstadoAprobacion());
+            medicoExistente.setRutaFotoPerfil(medico.getRutaFotoPerfil());
             return medicoRepository.save(medicoExistente);
         }).orElse(null);
     }

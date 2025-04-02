@@ -23,30 +23,32 @@
         <!-- Campo ID (oculto) -->
         <input type="hidden" th:field="*{id}">
 
-        <!-- Campo ROL (oculto, necesario para mantener el tipo de usuario) -->
+        <!-- Campo ROL (oculto) -->
         <input type="hidden" th:field="*{rol}">
 
         <!-- Nombre -->
         <div class="input-group">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" th:field="*{nombre}" required>
+            <input type="text" id="nombre" th:field="*{nombre}" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+"
+                   title="Solo letras permitidas">
         </div>
 
         <!-- Contraseña -->
         <div class="input-group">
             <label for="clave">Contraseña:</label>
-            <input type="password" id="clave" th:field="*{clave}" required>
+            <input type="password" id="clave" th:field="*{clave}" required minlength="8"
+                   title="Debe tener al menos 8 caracteres">
         </div>
 
         <!-- Confirmar contraseña -->
         <div class="input-group">
             <label for="confirmarClave">Confirmar contraseña:</label>
-            <input type="password" id="confirmarClave" name="confirmarClave" required>
+            <input type="password" id="confirmarClave" name="confirmarClave" required minlength="8"
+                   title="Debe tener al menos 8 caracteres">
         </div>
 
-        <!-- Mostrar error de confirmación -->
+        <!-- Error de confirmación -->
         <div th:if="${errorClave}" class="message error" th:text="${errorClave}"></div>
-
 
         <!-- Fecha de nacimiento -->
         <div class="input-group">
@@ -57,7 +59,8 @@
         <!-- Teléfono -->
         <div class="input-group">
             <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" th:field="*{telefono}" required>
+            <input type="text" id="telefono" th:field="*{telefono}" required pattern="[0-9]+"
+                   title="Solo números permitidos">
         </div>
 
         <!-- Dirección -->
@@ -68,6 +71,7 @@
 
         <button type="submit">Guardar Cambios</button>
     </form>
+
 </div>
 
 <footer th:insert="fragments/footer :: footer"></footer>

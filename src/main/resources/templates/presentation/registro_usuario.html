@@ -29,7 +29,7 @@
       <!-- Campo ID -->
       <div class="input-container">
         <i class="fas fa-user"></i>
-        <input type="number" id="id" th:field="*{id}" min="1" max="999999999999"
+        <input type="number" id="id" th:field="*{id}" min="9" max="999999999999"
                placeholder="ID de usuario" required
                oninput="this.value = this.value.slice(0, 12)">
         <p class="error-text" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
@@ -47,7 +47,9 @@
       <!-- Campo Clave -->
       <div class="input-container">
         <i class="fas fa-key"></i>
-        <input type="password" id="clave" th:field="*{clave}" placeholder="Contraseña" required maxlength="100">
+        <input type="password" id="clave" th:field="*{clave}" placeholder="Contraseña"
+               required minlength="8" maxlength="100"
+               title="Debe tener al menos 8 caracteres">
       </div>
 
       <!-- Campo Confirmar Clave -->
@@ -55,6 +57,7 @@
         <i class="fas fa-key"></i>
         <input type="password" name="confirmarClave" placeholder="Confirmar contraseña" required maxlength="100">
       </div>
+
 
       <!-- Mostrar mensaje si hay error -->
       <div th:if="${errorClave}" class="error-text" th:text="${errorClave}"></div>

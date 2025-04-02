@@ -219,9 +219,21 @@ public class CitaController {
         }
 
         List<CitaDto> citas = citaService.obtenerCitasPorPaciente(usuario.getId());
+
+        // 🔍 Obtener datos de cada médico y armar un mapa por ID
+        Map<Long, MedicoEntity> medicosPorId = new HashMap<>();
+        for (CitaDto cita : citas) {
+            medicoService.obtenerPorId(cita.getIdMedico()).ifPresent(medico -> {
+                medicosPorId.put(cita.getIdMedico(), medico);
+            });
+        }
+
         model.addAttribute("citas", citas);
+        model.addAttribute("medicosPorId", medicosPorId);
+
         return "presentation/historico_citas";
     }
+
 
     // Filtrar por estado
     @GetMapping("/paciente/historico/filtrar/estado")
@@ -253,8 +265,7 @@ public class CitaController {
         List<CitaDto> citas = citaService.filtrarCitasPorNombreMedico(usuario.getId(), nombreMedico);
         model.addAttribute("citas", citas);
         return "presentation/historico_citas"; // Página aún por crear
-    }
-    @GetMapping("/confirmar")
+    } @GetMapping("/confirmar")
     public String confirmarCita(@RequestParam Long idMedico,
                                 @RequestParam String fechaHora,
                                 HttpSession session,
@@ -300,6 +311,12 @@ public class CitaController {
                 return "redirect:/citas/ver";
             }
 
+            if (medico.getRutaFotoPerfil() != null && medico.getRutaFotoPerfil().startsWith("/uploads/fotos_perfil/")) {
+                // Elimina la parte duplicada para que solo quede el nombre del archivo
+                String nombreArchivo = medico.getRutaFotoPerfil().replace("/uploads/fotos_perfil/", "");
+                medico.setRutaFotoPerfil(nombreArchivo);
+            }
+
             model.addAttribute("medico", medico);
             model.addAttribute("paciente", paciente);
             model.addAttribute("fechaHora", fechaConvertida);
@@ -312,6 +329,7 @@ public class CitaController {
             return "redirect:/error";
         }
     }
+
 
 
     @PostMapping("/confirmar")
@@ -335,7 +353,7 @@ public class CitaController {
                 session.setAttribute("usuario", paciente); // solo si no se ha guardado aún
             }
 
-            return "redirect:/citas/paciente/historico";
+            return "redirect:/"; // Volver al dashboard después de confirmar
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -365,6 +383,47 @@ public class CitaController {
         model.addAttribute("medico", medico);
         return "presentation/detalle_cita";
     }
+
+    @GetMapping("/paciente/historico/filtrar")
+    public String filtrarHistorico(@RequestParam(required = false) String estado,
+                                   @RequestParam(required = false) String nombreMedico,
+                                   HttpSession session,
+                                   Model model) {
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        if (usuario == null || usuario.getRol() != RolUsuario.PACIENTE) {
+            return "redirect:/usuarios/login";
+        }
+
+        List<CitaDto> citas;
+
+        boolean tieneEstado = estado != null && !estado.isBlank();
+        boolean tieneNombre = nombreMedico != null && !nombreMedico.isBlank();
+
+        if (tieneEstado && tieneNombre) {
+            citas = citaService.filtrarCitasPorEstadoYNombreMedico(usuario.getId(), estado, nombreMedico);
+        } else if (tieneEstado) {
+            citas = citaService.filtrarCitasPorEstadoPaciente(usuario.getId(), CitaEntity.EstadoCita.valueOf(estado));
+        } else if (tieneNombre) {
+            citas = citaService.filtrarCitasPorNombreMedico(usuario.getId(), nombreMedico);
+        } else {
+            citas = citaService.obtenerCitasPorPaciente(usuario.getId());
+        }
+
+        // Armar el mapa de médicos
+        Map<Long, MedicoEntity> medicosPorId = new HashMap<>();
+        for (CitaDto cita : citas) {
+            medicoService.obtenerPorId(cita.getIdMedico()).ifPresent(medico -> {
+                medicosPorId.put(cita.getIdMedico(), medico);
+            });
+        }
+
+        model.addAttribute("citas", citas);
+        model.addAttribute("medicosPorId", medicosPorId);
+
+        return "presentation/historico_citas";
+    }
+
 
 
 

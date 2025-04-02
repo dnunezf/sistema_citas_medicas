@@ -35,7 +35,12 @@
     <!-- Tarjetas de médicos -->
     <div th:each="medico : ${medicos}" class="doctor-card">
         <div class="doctor-info">
-            <img src="/images/avatar.png" alt="Doctor Avatar">
+            <img th:if="${medico.rutaFotoPerfil != null and !medico.rutaFotoPerfil.isEmpty()}"
+                 th:src="@{${medico.rutaFotoPerfil}}"
+                 alt="Foto del Doctor" class="foto-doctor"
+                 onerror="this.onerror=null; this.src='/images/avatar.png';">
+
+
             <div class="doctor-text">
                 <strong th:text="${medico.nombre}">Nombre del médico</strong>
                 <div class="especialidad" th:text="${medico.especialidad}">Especialidad</div>

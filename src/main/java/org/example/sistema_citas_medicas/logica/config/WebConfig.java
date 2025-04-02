@@ -13,7 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Ruta absoluta hacia la carpeta donde están tus fotos
         Path uploadDir = Paths.get("uploads/fotos_perfil");
         String uploadPath = uploadDir.toFile().getAbsolutePath();
 

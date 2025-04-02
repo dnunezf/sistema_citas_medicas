@@ -49,5 +49,6 @@ public interface CitaService {
 
     List<LocalDateTime> generarEspaciosDesdeFecha(Long idMedico, List<HorarioMedicoDto> horarios, LocalDate fechaInicio, int dias);
 
+    List<CitaDto> filtrarCitasPorEstadoYNombreMedico(Long idPaciente, String estado, String nombreMedico);
 
 }
