@@ -323,7 +323,7 @@ public class CitaController {
             return "redirect:/";
 
         } catch (RuntimeException e) {
-            // 👈 Captura el mensaje de la excepción personalizada
+
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/citas/horarios/" + idMedico;
 
