@@ -312,7 +312,7 @@ public class CitaController {
             citaService.agendarCita(idPaciente, idMedico, fecha);
 
             String mensaje = "🩺 Cita confirmada exitosamente para el " +
-                    fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ".";
+                    fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ".";
             redirectAttributes.addFlashAttribute("mensaje", mensaje);
 
             if (session.getAttribute("usuario") == null) {
@@ -322,12 +322,18 @@ public class CitaController {
 
             return "redirect:/";
 
+        } catch (RuntimeException e) {
+            // 👈 Captura el mensaje de la excepción personalizada
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/citas/horarios/" + idMedico;
+
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "❌ Ocurrió un error al confirmar la cita.");
+            redirectAttributes.addFlashAttribute("error", "❌ Error inesperado al confirmar la cita.");
             return "redirect:/citas/ver";
         }
     }
+
 
     @GetMapping("/paciente/detalle/{idCita}")
     public String verDetalleCita(@PathVariable Long idCita, HttpSession session, Model model) {

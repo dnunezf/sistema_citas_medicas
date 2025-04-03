@@ -18,6 +18,7 @@ public interface HorarioMedicoService {
 
     void eliminarHorario(Long idHorario);
 
+    Long obtenerIdMedicoPorHorario(Long idHorario);
 
 }
 

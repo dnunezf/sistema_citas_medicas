@@ -11,5 +11,9 @@ public interface HorarioMedicoRepository extends JpaRepository<HorarioMedicoEnti
 
     @Query("SELECT h FROM HorarioMedicoEntity h WHERE h.medico.id = :idMedico")
     List<HorarioMedicoEntity> findByMedicoId(@Param("idMedico") Long idMedico);
+
+    @Query("SELECT h.medico.id FROM HorarioMedicoEntity h WHERE h.id = :idHorario")
+    Long findIdMedicoByHorario(@Param("idHorario") Long idHorario);
+
 }
 

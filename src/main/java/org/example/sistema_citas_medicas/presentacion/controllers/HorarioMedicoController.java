@@ -65,8 +65,10 @@ public class HorarioMedicoController {
 
     @PostMapping("/eliminar/{idHorario}")
     public String eliminarHorario(@PathVariable Long idHorario) {
+        Long idMedico = horarioMedicoService.obtenerIdMedicoPorHorario(idHorario); // suponiendo que lo podés obtener
         horarioMedicoService.eliminarHorario(idHorario);
-        return "redirect:/horarios";
+        return "redirect:/horarios/medico/" + idMedico;
     }
+
 }
 

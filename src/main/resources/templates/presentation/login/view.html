@@ -27,11 +27,16 @@
 
 
         <div class="input-group">
-            <span class="icon">
-                <i class="fas fa-id-card"></i>
-            </span>
-            <input type="number" name="username" id="username" min="1" required placeholder="ID de Usuario">
+    <span class="icon">
+        <i class="fas fa-id-card"></i>
+    </span>
+            <input type="text" name="username" id="username"
+                   placeholder="ID de Usuario" required
+                   pattern="\d{9,15}"
+                   title="El ID debe contener minimo 9 dígitos numéricos"
+                   oninput="this.value = this.value.replace(/\D/g, '').slice(0, 12)">
         </div>
+
 
         <div class="input-group">
             <span class="icon">
