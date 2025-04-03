@@ -39,14 +39,12 @@ public class DashboardController {
                                    @RequestParam(required = false) String localidad,
                                    Authentication authentication) {
 
-        // 🔒 Si el usuario está autenticado y NO es PACIENTE, redirigir
         if (authentication != null && authentication.isAuthenticated()) {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             boolean esPaciente = authorities.stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ROLE_PACIENTE"));
 
             if (!esPaciente) {
-                // Redireccionar según rol
                 if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_MEDICO"))) {
                     Long idMedico = Long.parseLong(authentication.getName());
                     return "redirect:/citas/medico/" + idMedico;
@@ -57,7 +55,6 @@ public class DashboardController {
             }
         }
 
-        // Código actual del dashboard (para pacientes o anónimos)
         List<MedicoDto> medicos;
 
         if ((especialidad == null || especialidad.isBlank()) &&

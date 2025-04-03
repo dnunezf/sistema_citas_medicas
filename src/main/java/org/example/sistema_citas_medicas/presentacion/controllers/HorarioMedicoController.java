@@ -19,7 +19,6 @@ public class HorarioMedicoController {
         this.horarioMedicoService = horarioMedicoService;
     }
 
-    // Listar horarios de un médico
     @GetMapping("/medico/{idMedico}")
     public String listarHorarios(@PathVariable Long idMedico, Model model) {
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
@@ -28,7 +27,6 @@ public class HorarioMedicoController {
         return "presentation/gestion_horarios";
     }
 
-    // Mostrar formulario para agregar un nuevo horario
     @GetMapping("/nuevo/{idMedico}")
     public String mostrarFormularioNuevo(@PathVariable Long idMedico, Model model) {
         HorarioMedicoDto horarioDto = new HorarioMedicoDto();
@@ -39,7 +37,6 @@ public class HorarioMedicoController {
 
     @PostMapping("/guardar/{idMedico}")
     public String guardarHorario(@PathVariable Long idMedico, @ModelAttribute HorarioMedicoDto horarioDto, RedirectAttributes redirectAttributes) {
-        // Verificar que los valores no sean nulos
         if (horarioDto.getHoraInicio() == null || horarioDto.getHoraFin() == null) {
             redirectAttributes.addFlashAttribute("error", "Las horas de inicio y fin son obligatorias.");
             return "redirect:/horarios/nuevo/" + idMedico;
@@ -52,25 +49,20 @@ public class HorarioMedicoController {
         return "redirect:/horarios/medico/" + idMedico;
     }
 
-
-    // Mostrar formulario para editar un horario
     @GetMapping("/editar/{idHorario}")
     public String mostrarFormularioEdicion(@PathVariable Long idHorario, Model model) {
         HorarioMedicoDto horario = horarioMedicoService.obtenerHorarioPorId(idHorario);
         model.addAttribute("horario", horario);
-        model.addAttribute("idMedico", horario.getIdMedico()); // 👈 Agregar esto
+        model.addAttribute("idMedico", horario.getIdMedico());
         return "presentation/form_horario";
     }
 
-
-    // Actualizar un horario existente
     @PostMapping("/actualizar/{idHorario}")
     public String actualizarHorario(@PathVariable Long idHorario, @ModelAttribute HorarioMedicoDto horarioDto) {
         horarioMedicoService.actualizarHorario(idHorario, horarioDto);
         return "redirect:/horarios/medico/" + horarioDto.getIdMedico();
     }
 
-    // Eliminar un horario
     @PostMapping("/eliminar/{idHorario}")
     public String eliminarHorario(@PathVariable Long idHorario) {
         horarioMedicoService.eliminarHorario(idHorario);

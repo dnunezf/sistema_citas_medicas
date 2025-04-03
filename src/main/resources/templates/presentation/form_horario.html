@@ -13,11 +13,9 @@
 <div class="container">
   <h2 th:text="${horario.id} != null ? 'Editar Horario' : 'Nuevo Horario'"></h2>
 
-  <!-- ✅ FORMULARIO -->
   <form th:action="@{|/horarios/guardar/${idMedico}|}"
         th:object="${horario}" method="post">
 
-    <!-- ✅ Campo oculto para que se envíe el id del médico -->
     <input type="hidden" th:field="*{idMedico}"/>
 
     <label for="diaSemana">Día de la Semana:</label>
@@ -43,7 +41,6 @@
     <button type="submit" class="btn guardar">💾 Guardar</button>
   </form>
 
-  <!-- ✅ Botón de cancelar -->
   <a th:href="@{'/horarios/medico/' + ${idMedico}}" class="btn cancelar">❌ Cancelar</a>
 </div>
 

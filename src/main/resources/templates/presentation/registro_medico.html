@@ -15,11 +15,9 @@
     <div class="container">
         <h2 class="title">Actualizar Información del Médico</h2>
 
-        <!-- Mensajes de éxito o error -->
         <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
         <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-        <!-- Mostrar siempre una foto de perfil -->
         <div class="foto-circular">
             <img th:if="${medico != null and medico.rutaFotoPerfil != null}"
                  th:src="@{${medico.rutaFotoPerfil}}"
@@ -30,7 +28,6 @@
                  alt="Foto de perfil"/>
         </div>
 
-        <!-- Formulario de edición del médico -->
         <form th:action="@{/medicos/actualizar}" th:object="${medico}" method="post"
               class="form-container" th:if="${medico}" enctype="multipart/form-data">
 
@@ -80,8 +77,6 @@
                           required></textarea>
             </div>
 
-            <!-- Validar si ya hay foto para decidir si es obligatoria -->
-            <!-- Foto de Perfil: obligatoria solo si no hay foto existente -->
             <div class="form-group full-width">
                 <label for="fotoPerfil">Subir Nueva Foto de Perfil</label>
                 <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*"

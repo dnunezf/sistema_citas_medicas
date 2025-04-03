@@ -37,7 +37,6 @@ public class CitaController {
         this.pacienteService = pacienteService;
     }
 
-    // ✅ Listar todas las citas de un médico
     @GetMapping("/medico/{idMedico}")
     public String listarCitas(@PathVariable Long idMedico, Model model) {
         MedicoEntity medico = medicoService.obtenerPorId(idMedico)
@@ -54,7 +53,6 @@ public class CitaController {
         return "presentation/gestion_citas";
     }
 
-    // ✅ Filtrar citas por estado
     @GetMapping("/medico/{idMedico}/filtrar/estado")
     public String filtrarPorEstado(@PathVariable Long idMedico,
                                    @RequestParam("estado") String estado,
@@ -65,7 +63,6 @@ public class CitaController {
 
         List<CitaDto> citas;
 
-        // Manejo de filtro "ALL"
         if (estado.equalsIgnoreCase("ALL")) {
             citas = citaService.obtenerCitasPorMedico(idMedico);
         } else {
@@ -109,7 +106,6 @@ public class CitaController {
     }
 
 
-    // ✅ Actualizar estado de la cita y agregar notas
     @PostMapping("/actualizar")
     public String actualizarCita(@RequestParam Long idCita, @RequestParam String estado, @RequestParam(required = false) String notas) {
         Long idMedico = citaService.obtenerIdMedicoPorCita(idCita);
@@ -118,14 +114,12 @@ public class CitaController {
     }
 
 
-    // ✅ Mostrar formulario de búsqueda de médicos
     @GetMapping("/ver")
     public String mostrarFormularioAgendar(Model model) {
         model.addAttribute("especialidades", medicoService.obtenerEspecialidades());
         return "presentation/agendar_cita";
     }
 
-    // ✅ Buscar médicos por especialidad y ubicación
     @GetMapping("/buscar")
     public String buscarMedicos(@RequestParam String especialidad, @RequestParam String ubicacion, Model model) {
         List<MedicoDto> medicos = medicoService.buscarPorEspecialidadYUbicacion(especialidad, ubicacion);
@@ -147,7 +141,6 @@ public class CitaController {
         List<HorarioMedicoDto> horarios = horarioMedicoService.obtenerHorariosPorMedico(idMedico);
         List<LocalDateTime> espaciosDisponibles = citaService.obtenerEspaciosDisponibles(idMedico, horarios);
 
-        // 🔄 Mostrar hoy + próximos 7 días
         LocalDateTime inicio = LocalDateTime.now().withHour(0).withMinute(0);
         LocalDateTime fin = inicio.plusDays(7).withHour(23).withMinute(59);
 
@@ -155,13 +148,12 @@ public class CitaController {
                 .filter(e -> !e.isBefore(inicio) && !e.isAfter(fin))
                 .toList();
 
-        // 📆 Agrupar por fecha en formato amigable
         Map<String, List<String>> espaciosPorFecha = new LinkedHashMap<>();
         DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         DateTimeFormatter diaFormatter = DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy", new Locale("es", "ES"));
 
         for (LocalDateTime espacio : filtrados) {
-            String clave = espacio.toLocalDate().format(diaFormatter); // ej: "miércoles 03/04/2025"
+            String clave = espacio.toLocalDate().format(diaFormatter);
             String horaFormateada = espacio.format(formatterHora);
             espaciosPorFecha.computeIfAbsent(clave, k -> new ArrayList<>()).add(horaFormateada);
         }
@@ -174,15 +166,6 @@ public class CitaController {
         return "presentation/seleccionar_horario";
     }
 
-
-
-
-
-
-
-
-
-    // ✅ Agendar cita
     @GetMapping("/agendar")
     public String agendarCita(@RequestParam Long idMedico,
                               @RequestParam String fechaHora,
@@ -195,7 +178,7 @@ public class CitaController {
             CitaEntity cita = new CitaEntity();
             cita.setMedico(medicoOpt.get());
             cita.setPaciente(pacienteOpt.get());
-            cita.setFechaHora(LocalDateTime.parse(fechaHora)); // Convertir String a LocalDateTime
+            cita.setFechaHora(LocalDateTime.parse(fechaHora));
             cita.setEstado(CitaEntity.EstadoCita.valueOf("pendiente"));
 
             citaService.guardarCita(cita);
@@ -207,9 +190,7 @@ public class CitaController {
         return "redirect:/citas/mis_citas?idPaciente=" + idPaciente;
     }
 
-    /*PUNTO 9*/
 
-    // Mostrar el historial de citas del paciente
     @GetMapping("/paciente/historico")
     public String verHistoricoCitas(HttpSession session, Model model) {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
@@ -220,7 +201,6 @@ public class CitaController {
 
         List<CitaDto> citas = citaService.obtenerCitasPorPaciente(usuario.getId());
 
-        // 🔍 Obtener datos de cada médico y armar un mapa por ID
         Map<Long, MedicoEntity> medicosPorId = new HashMap<>();
         for (CitaDto cita : citas) {
             medicoService.obtenerPorId(cita.getIdMedico()).ifPresent(medico -> {
@@ -234,8 +214,6 @@ public class CitaController {
         return "presentation/historico_citas";
     }
 
-
-    // Filtrar por estado
     @GetMapping("/paciente/historico/filtrar/estado")
     public String filtrarHistoricoPorEstado(HttpSession session,
                                             @RequestParam("estado") String estado,
@@ -251,7 +229,6 @@ public class CitaController {
         return "presentation/historico_citas";
     }
 
-    // Filtrar por nombre del médico
     @GetMapping("/paciente/historico/filtrar/medico")
     public String filtrarHistoricoPorMedico(HttpSession session,
                                             @RequestParam("nombreMedico") String nombreMedico,
@@ -264,25 +241,20 @@ public class CitaController {
 
         List<CitaDto> citas = citaService.filtrarCitasPorNombreMedico(usuario.getId(), nombreMedico);
         model.addAttribute("citas", citas);
-        return "presentation/historico_citas"; // Página aún por crear
+        return "presentation/historico_citas";
     } @GetMapping("/confirmar")
     public String confirmarCita(@RequestParam Long idMedico,
                                 @RequestParam String fechaHora,
                                 HttpSession session,
                                 Model model) {
-        System.out.println("📥 Entrando a /citas/confirmar");
-        System.out.println("➡️ idMedico = " + idMedico);
-        System.out.println("➡️ fechaHora = " + fechaHora);
 
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
         if (usuario == null) {
-            // 🟢 Guardar la URL exacta para retornar luego del login
             session.setAttribute("urlPendiente", "/citas/confirmar?idMedico=" + idMedico + "&fechaHora=" + fechaHora);
             return "redirect:/usuarios/login";
         }
 
-        // 🛡️ Validar que sea paciente
         if (usuario.getRol() != RolUsuario.PACIENTE) {
             System.out.println("⚠️ El usuario no es paciente. Redirigiendo.");
             return "redirect:/";
@@ -312,7 +284,6 @@ public class CitaController {
             }
 
             if (medico.getRutaFotoPerfil() != null && medico.getRutaFotoPerfil().startsWith("/uploads/fotos_perfil/")) {
-                // Elimina la parte duplicada para que solo quede el nombre del archivo
                 String nombreArchivo = medico.getRutaFotoPerfil().replace("/uploads/fotos_perfil/", "");
                 medico.setRutaFotoPerfil(nombreArchivo);
             }
@@ -330,8 +301,6 @@ public class CitaController {
         }
     }
 
-
-
     @PostMapping("/confirmar")
     public String procesarConfirmacion(@RequestParam Long idMedico,
                                        @RequestParam Long idPaciente,
@@ -342,18 +311,16 @@ public class CitaController {
             LocalDateTime fecha = LocalDateTime.parse(fechaHora);
             citaService.agendarCita(idPaciente, idMedico, fecha);
 
-            // Mensaje para mostrar en la siguiente vista
             String mensaje = "🩺 Cita confirmada exitosamente para el " +
                     fecha.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ".";
             redirectAttributes.addFlashAttribute("mensaje", mensaje);
 
-            // Guardar al paciente en sesión si no estuviera
             if (session.getAttribute("usuario") == null) {
                 PacienteEntity paciente = pacienteService.obtenerPorId(idPaciente);
-                session.setAttribute("usuario", paciente); // solo si no se ha guardado aún
+                session.setAttribute("usuario", paciente);
             }
 
-            return "redirect:/"; // Volver al dashboard después de confirmar
+            return "redirect:/";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -410,7 +377,6 @@ public class CitaController {
             citas = citaService.obtenerCitasPorPaciente(usuario.getId());
         }
 
-        // Armar el mapa de médicos
         Map<Long, MedicoEntity> medicosPorId = new HashMap<>();
         for (CitaDto cita : citas) {
             medicoService.obtenerPorId(cita.getIdMedico()).ifPresent(medico -> {

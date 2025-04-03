@@ -42,7 +42,6 @@ public class PacienteServiceImpl implements PacienteService {
 
         pacienteExistente.setNombre(paciente.getNombre());
 
-        // 🔐 Solo encriptar si la contraseña cambió
         if (!passwordEncoder.matches(paciente.getClave(), pacienteExistente.getClave())) {
             pacienteExistente.setClave(passwordEncoder.encode(paciente.getClave()));
         }

@@ -38,12 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con ID: " + id));
 
-        // Verificación personalizada: si es médico y está pendiente, no dejarlo entrar
         if (usuario instanceof MedicoEntity medico && medico.getEstadoAprobacion() == MedicoEntity.EstadoAprobacion.pendiente) {
             throw new BadCredentialsException("MEDICO_PENDIENTE");
 
         }
-
 
         return new User(
                 usuario.getId().toString(),

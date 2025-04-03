@@ -38,7 +38,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             UsuarioEntity usuario = usuarioOpt.get();
             request.getSession().setAttribute("usuario", usuario);
 
-            // ✅ Intentar recuperar URL previa desde SavedRequest
             SavedRequest savedRequest = requestCache.getRequest(request, response);
 
             if (savedRequest != null) {
@@ -47,7 +46,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                 return;
             }
 
-            // 🔁 Si no hay URL previa, redirigir según rol
             String rol = authentication.getAuthorities().iterator().next().getAuthority();
 
             if (rol.contains("ADMINISTRADOR")) {

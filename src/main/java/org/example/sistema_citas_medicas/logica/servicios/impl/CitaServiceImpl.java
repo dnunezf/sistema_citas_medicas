@@ -45,7 +45,6 @@ public class CitaServiceImpl implements CitaService {
         this.modelMapper = modelMapper;
     }
 
-    // ✅ Obtener todas las citas de un médico ordenadas de más recientes a más antiguas
     @Override
     public List<CitaDto> obtenerCitasPorMedico(Long idMedico) {
         List<CitaEntity> citas = citaRepository.findByMedicoOrdenadas(idMedico);
@@ -53,7 +52,6 @@ public class CitaServiceImpl implements CitaService {
         return citas.stream().map(cita -> {
             CitaDto citaDto = modelMapper.map(cita, CitaDto.class);
 
-            // ✅ Asignar manualmente el nombre del paciente y médico
             if (cita.getPaciente() != null) {
                 citaDto.setIdPaciente(cita.getPaciente().getId());
                 citaDto.setNombrePaciente(cita.getPaciente().getNombre());
@@ -69,14 +67,12 @@ public class CitaServiceImpl implements CitaService {
     }
 
 
-    // ✅ Filtrar citas por estado
     @Override
     public List<CitaDto> filtrarCitasPorEstado(Long idMedico, CitaEntity.EstadoCita estado) {
         List<CitaEntity> citas = citaRepository.findByMedicoAndEstado(idMedico, estado);
         return citas.stream().map(cita -> modelMapper.map(cita, CitaDto.class)).collect(Collectors.toList());
     }
 
-    // ✅ Filtrar citas por paciente
     @Override
     public List<CitaDto> filtrarCitasPorPaciente(Long idMedico, String nombrePaciente) {
         List<CitaEntity> citas = citaRepository.buscarPorNombrePaciente(idMedico, nombrePaciente);
@@ -95,7 +91,6 @@ public class CitaServiceImpl implements CitaService {
     }
 
 
-    // ✅ Actualizar estado y notas de la cita
     @Override
     public CitaDto actualizarCita(Long idCita, CitaEntity.EstadoCita estado, String notas) {
         CitaEntity cita = citaRepository.findById(idCita)
@@ -109,7 +104,6 @@ public class CitaServiceImpl implements CitaService {
     }
 
 
-    // ✅ Obtener ID del médico desde una cita
     @Override
     public Long obtenerIdMedicoPorCita(Long idCita) {
         return citaRepository.findById(idCita)
@@ -118,15 +112,12 @@ public class CitaServiceImpl implements CitaService {
     }
 
 
-
-
-
     @Override
     public List<LocalDateTime> obtenerEspaciosDisponibles(Long idMedico, List<HorarioMedicoDto> horarios) {
         List<LocalDateTime> espaciosDisponibles = new ArrayList<>();
         LocalDate fechaActual = LocalDate.now();
 
-        for (int i = 0; i < 7; i++) {  // 🔥 Mostrar espacios de los próximos 7 días
+        for (int i = 0; i < 7; i++) {
             LocalDate fecha = fechaActual.plusDays(i);
             String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "CR"));
 
@@ -157,9 +148,6 @@ public class CitaServiceImpl implements CitaService {
 
 
 
-
-
-    // ✅ Agendar cita validando disponibilidad
     @Override
     @Transactional
     public CitaDto agendarCita(Long idPaciente, Long idMedico, LocalDateTime fechaHora) {
@@ -168,31 +156,34 @@ public class CitaServiceImpl implements CitaService {
         MedicoEntity medico = medicoRepository.findById(idMedico)
                 .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
 
-        // Validar que el horario no esté ocupado
-        boolean existeCita = citaRepository.existsByMedicoAndFechaHora(medico, fechaHora);
-        if (existeCita) {
-            throw new RuntimeException("El horario seleccionado ya está ocupado.");
+        boolean existeCitaMedico = citaRepository.existsByMedicoAndFechaHora(medico, fechaHora);
+        if (existeCitaMedico) {
+            throw new RuntimeException("El horario seleccionado ya está ocupado por el médico.");
         }
 
-        // Crear y guardar la cita
+        boolean existeCitaPaciente = citaRepository.existsByPacienteAndFechaHora(paciente, fechaHora);
+        if (existeCitaPaciente) {
+            throw new RuntimeException("Ya tienes una cita agendada a esa hora.");
+        }
+
         CitaEntity nuevaCita = new CitaEntity(paciente, medico, fechaHora, CitaEntity.EstadoCita.pendiente, "");
         nuevaCita = citaRepository.save(nuevaCita);
 
         return modelMapper.map(nuevaCita, CitaDto.class);
     }
 
+
     @Override
     public void guardarCita(CitaEntity cita) {
         citaRepository.save(cita);
     }
 
-    /*PUNTO 9*/
 
     @Override
     public List<CitaDto> obtenerCitasPorPaciente(Long idPaciente) {
         List<CitaEntity> citas = citaRepository.findByPacienteId(idPaciente);
         return citas.stream()
-                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora())) // más recientes primero
+                .sorted((c1, c2) -> c2.getFechaHora().compareTo(c1.getFechaHora()))
                 .map(cita -> modelMapper.map(cita, CitaDto.class))
                 .collect(Collectors.toList());
     }

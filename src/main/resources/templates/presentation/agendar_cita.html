@@ -15,11 +15,9 @@
 <div class="agendar-container">
     <h2 class="title">Agendar Cita</h2>
 
-    <!-- Mensajes de éxito o error -->
     <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
     <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-    <!-- Formulario de búsqueda -->
     <form th:action="@{/citas/buscar}" method="get" class="form-busqueda">
         <select id="especialidad" name="especialidad" class="select-input">
             <option value="">Especialidad...</option>
@@ -31,7 +29,6 @@
         <button type="submit" class="btn-buscar">Buscar Médicos</button>
     </form>
 
-    <!-- Lista de médicos -->
     <div th:if="${medicos}">
         <h3>Médicos disponibles</h3>
         <table class="tabla-medicos">

@@ -21,7 +21,7 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
 
     private final HorarioMedicoRepository horarioMedicoRepository;
     private final MedicoRepository medicoRepository;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm"); // ⏰ Formato 24 horas
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
 
     @Autowired
@@ -38,7 +38,7 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
         List<HorarioMedicoEntity> horarios = horarioMedicoRepository.findByMedicoId(idMedico);
 
         if (horarios == null || horarios.isEmpty()) {
-            return new ArrayList<>(); // Retorna lista vacía en vez de `null`
+            return new ArrayList<>();
         }
 
         return horarios.stream()
@@ -57,20 +57,20 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
     public HorarioMedicoEntity guardarHorario(HorarioMedicoDto horarioDto) {
         HorarioMedicoEntity horario = new HorarioMedicoEntity();
 
-        horario.setDiaSemana(HorarioMedicoEntity.DiaSemana.valueOf(horarioDto.getDiaSemana().toLowerCase())); // ✅ Convierte String a ENUM
+        horario.setDiaSemana(HorarioMedicoEntity.DiaSemana.valueOf(horarioDto.getDiaSemana().toLowerCase()));
 
         // Formato de 24 horas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        horario.setHoraInicio(LocalTime.parse(horarioDto.getHoraInicio(), formatter)); // ✅ Convierte String a LocalTime
-        horario.setHoraFin(LocalTime.parse(horarioDto.getHoraFin(), formatter)); // ✅ Convierte String a LocalTime
+        horario.setHoraInicio(LocalTime.parse(horarioDto.getHoraInicio(), formatter));
+        horario.setHoraFin(LocalTime.parse(horarioDto.getHoraFin(), formatter));
 
-        horario.setTiempoCita(horarioDto.getTiempoCita()); // ✅ Convierte String a int
+        horario.setTiempoCita(horarioDto.getTiempoCita());
 
 
         MedicoEntity medico = medicoRepository.findById(horarioDto.getIdMedico())
                 .orElseThrow(() -> new RuntimeException("Error: Médico no encontrado con ID " + horarioDto.getIdMedico()));
 
-        horario.setMedico(medico); // Ahora sí se guarda correctamente
+        horario.setMedico(medico);
         return horarioMedicoRepository.save(horario);
     }
 
@@ -79,7 +79,6 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
     public HorarioMedicoDto actualizarHorario(Long idHorario, HorarioMedicoDto horarioDto) {
         return horarioMedicoRepository.findById(idHorario).map(horarioExistente -> {
             try {
-                // Convertimos el valor del DTO a ENUM
                 HorarioMedicoEntity.DiaSemana diaSemanaEnum = HorarioMedicoEntity.DiaSemana.valueOf(horarioDto.getDiaSemana().toUpperCase());
                 horarioExistente.setDiaSemana(diaSemanaEnum);
             } catch (IllegalArgumentException e) {
@@ -101,10 +100,6 @@ public class HorarioMedicoServiceImpl implements HorarioMedicoService {
         }
         horarioMedicoRepository.deleteById(idHorario);
     }
-
-
-
-
 
 }
 

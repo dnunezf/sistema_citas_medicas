@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String idRaw = authentication.getName(); // ID como string
+        String idRaw = authentication.getName();
         String clave = authentication.getCredentials().toString();
 
         Long id;
@@ -47,7 +47,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Clave incorrecta");
         }
 
-        // ✅ Validar estado médico
         if (usuario instanceof MedicoEntity medico) {
             switch (medico.getEstadoAprobacion()) {
                 case pendiente -> throw new BadCredentialsException("MEDICO_PENDIENTE");

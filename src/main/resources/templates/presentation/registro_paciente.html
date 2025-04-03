@@ -14,56 +14,46 @@
 <div class="container">
     <h2 class="title">Editar Datos del Paciente</h2>
 
-    <!-- Mensajes de éxito o error -->
     <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
     <div th:if="${error}" class="message error" th:text="${error}"></div>
 
     <form th:action="@{/pacientes/actualizar}" th:object="${paciente}" method="post">
 
-        <!-- Campo ID (oculto) -->
         <input type="hidden" th:field="*{id}">
 
-        <!-- Campo ROL (oculto) -->
         <input type="hidden" th:field="*{rol}">
 
-        <!-- Nombre -->
         <div class="input-group">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" th:field="*{nombre}" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+"
                    title="Solo letras permitidas">
         </div>
 
-        <!-- Contraseña -->
         <div class="input-group">
             <label for="clave">Contraseña:</label>
             <input type="password" id="clave" th:field="*{clave}" required minlength="8"
                    title="Debe tener al menos 8 caracteres">
         </div>
 
-        <!-- Confirmar contraseña -->
         <div class="input-group">
             <label for="confirmarClave">Confirmar contraseña:</label>
             <input type="password" id="confirmarClave" name="confirmarClave" required minlength="8"
                    title="Debe tener al menos 8 caracteres">
         </div>
 
-        <!-- Error de confirmación -->
         <div th:if="${errorClave}" class="message error" th:text="${errorClave}"></div>
 
-        <!-- Fecha de nacimiento -->
         <div class="input-group">
             <label for="fechaNacimiento">Fecha de Nacimiento:</label>
             <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" required>
         </div>
 
-        <!-- Teléfono -->
         <div class="input-group">
             <label for="telefono">Teléfono:</label>
             <input type="text" id="telefono" th:field="*{telefono}" required pattern="[0-9]+"
                    title="Solo números permitidos">
         </div>
 
-        <!-- Dirección -->
         <div class="input-group">
             <label for="direccion">Dirección:</label>
             <textarea id="direccion" th:field="*{direccion}" required></textarea>

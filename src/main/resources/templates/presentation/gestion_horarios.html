@@ -13,14 +13,11 @@
 <div class="container">
   <h2>Gestión de Horarios</h2>
 
-  <!-- Mensajes de éxito o error -->
   <div th:if="${mensaje}" class="message success" th:text="${mensaje}"></div>
   <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-  <!-- Botón para agregar nuevo horario -->
   <a th:href="@{/horarios/nuevo/{idMedico}(idMedico=${idMedico})}" class="btn agregar">➕ Agregar Nuevo Horario</a>
 
-  <!-- Tabla de horarios -->
   <table class="horarios-table">
     <thead>
     <tr>
@@ -35,7 +32,6 @@
     <tr th:each="horario : ${horarios}">
       <td th:text="${horario.diaSemana}"></td>
 
-      <!-- Mantener formato de 24 horas sin AM/PM -->
       <td th:text="${horario.horaInicio}"></td>
       <td th:text="${horario.horaFin}"></td>
 
@@ -53,7 +49,6 @@
     </tbody>
   </table>
 
-  <!-- Botón para volver -->
   <a th:href="@{'/citas/medico/' + ${idMedico}}" class="btn volver">⬅ Volver</a>
 
 

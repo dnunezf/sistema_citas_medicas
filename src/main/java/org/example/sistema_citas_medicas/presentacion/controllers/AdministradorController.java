@@ -23,15 +23,13 @@ public class AdministradorController {
         this.medicoService = medicoService;
     }
 
-    // Página de gestión de médicos
     @GetMapping("/lista")
     public String listarMedicos(Model model) {
         List<MedicoEntity> medicos = medicoService.obtenerTodosMedicos();
         model.addAttribute("medicos", medicos);
-        return "presentation/gestion_medicos"; // Nombre del template Thymeleaf
+        return "presentation/gestion_medicos";
     }
 
-    // Cambiar el estado de aprobación de un médico
     @PostMapping("/actualizarEstado")
     public String actualizarEstado(@RequestParam Long id, @RequestParam String estadoAprobacion, RedirectAttributes redirectAttributes) {
         try {

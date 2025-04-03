@@ -56,7 +56,6 @@ public class MedicoServiceImpl implements MedicoService {
     }
 
 
-    // Actualizar estado de aprobación
     @Transactional
     public void actualizarEstadoAprobacion(Long id, MedicoEntity.EstadoAprobacion estado) {
         MedicoEntity medico = medicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Médico no encontrado"));
@@ -67,11 +66,9 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Override
     public List<MedicoDto> buscarPorEspecialidadYUbicacion(String especialidad, String ubicacion) {
-        // Limpiar valores vacíos o en blanco
         String esp = (especialidad != null && !especialidad.trim().isEmpty()) ? especialidad : null;
         String loc = (ubicacion != null && !ubicacion.trim().isEmpty()) ? ubicacion : null;
 
-        // Usar método flexible con LIKE
         List<MedicoEntity> medicos = medicoRepository.buscarPorEspecialidadYLocalidad(esp, loc);
 
         return medicos.stream()
@@ -80,10 +77,6 @@ public class MedicoServiceImpl implements MedicoService {
     }
 
 
-
-
-
-    // ✅ Obtener todas las especialidades únicas de los médicos
     @Override
     public List<String> obtenerEspecialidades() {
         return medicoRepository.findDistinctEspecialidades();

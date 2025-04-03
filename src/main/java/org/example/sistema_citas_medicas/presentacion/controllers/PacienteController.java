@@ -21,7 +21,6 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    // Cargar formulario de edición con los datos del paciente
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
         PacienteEntity paciente = pacienteService.obtenerPorId(id);
@@ -30,12 +29,11 @@ public class PacienteController {
             return "redirect:/";
         }
 
-        paciente.setClave(""); // 🔐 Borrar la clave para que no aparezca
+        paciente.setClave("");
         model.addAttribute("paciente", paciente);
         return "presentation/registro_paciente";
     }
 
-    // Procesar la actualización de datos del paciente
     @PostMapping("/actualizar")
     public String actualizarPaciente(@ModelAttribute("paciente") PacienteEntity paciente,
                                      @RequestParam("confirmarClave") String confirmarClave,
@@ -44,7 +42,7 @@ public class PacienteController {
         try {
             if (!paciente.getClave().equals(confirmarClave)) {
                 model.addAttribute("errorClave", "Las contraseñas no coinciden.");
-                model.addAttribute("paciente", paciente); // Necesario para que Thymeleaf mantenga los datos
+                model.addAttribute("paciente", paciente);
                 return "presentation/registro_paciente";
             }
 

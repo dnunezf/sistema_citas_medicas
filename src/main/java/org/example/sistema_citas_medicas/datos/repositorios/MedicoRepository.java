@@ -17,7 +17,6 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Long> {
                                                       @Param("ubicacion") String ubicacion);
 
 
-    // Obtener todas las especialidades únicas
     @Query("SELECT DISTINCT m.especialidad FROM MedicoEntity m")
     List<String> findDistinctEspecialidades();
 

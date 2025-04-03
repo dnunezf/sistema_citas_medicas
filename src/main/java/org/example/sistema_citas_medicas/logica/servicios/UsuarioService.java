@@ -6,19 +6,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioService {
-    UsuarioEntity save(UsuarioEntity usuario); // Guardar un usuario
+    UsuarioEntity save(UsuarioEntity usuario);
 
-    List<UsuarioEntity> findAll(); // Obtener todos los usuarios
+    List<UsuarioEntity> findAll();
 
-    Optional<UsuarioEntity> findOne(Long id); // Buscar usuario por ID
+    Optional<UsuarioEntity> findOne(Long id);
 
-    boolean isExists(Long id); // Verificar si un usuario existe
+    boolean isExists(Long id);
 
-    UsuarioEntity partialUpdate(Long id, UsuarioEntity usuario); // Actualizar parcialmente un usuario
+    UsuarioEntity partialUpdate(Long id, UsuarioEntity usuario);
 
-    void delete(Long id); // Eliminar usuario por ID
+    void delete(Long id);
 
-    Optional<UsuarioEntity> login(Long id, String clave); // Login
+    Optional<UsuarioEntity> login(Long id, String clave);
+
     Optional<UsuarioEntity> findById(Long id);
 
 }

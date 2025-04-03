@@ -19,7 +19,6 @@
             <p>Inicie sesión para acceder a su cuenta</p>
         </div>
 
-        <!-- Mensaje de error de Spring Security -->
         <div th:if="${param.error}" class="error-message">
             <p th:if="${param.error[0] == 'true'}">⚠️ Usuario o contraseña incorrectos.</p>
             <p th:if="${param.error[0] == 'pendiente'}">⚠️ Su cuenta de médico está pendiente de aprobación.</p>

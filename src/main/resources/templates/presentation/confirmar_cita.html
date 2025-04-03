@@ -15,8 +15,6 @@
 <div class="container-confirmacion">
     <div class="card-confirmacion">
 
-        <!-- Foto del médico -->
-        <!-- Foto del médico -->
         <div class="medico-imagen">
             <img th:if="${medico.rutaFotoPerfil != null and !medico.rutaFotoPerfil.isEmpty()}"
                  th:src="@{|/uploads/fotos_perfil/${medico.rutaFotoPerfil}|}"
@@ -27,7 +25,6 @@
         </div>
 
 
-        <!-- Info del médico -->
         <div class="info">
             <p class="nombre-medico" th:text="${medico.nombre}">Nombre del médico</p>
             <p>
@@ -40,7 +37,6 @@
             </p>
         </div>
 
-        <!-- Formulario de confirmación -->
         <form th:action="@{/citas/confirmar}" method="post" class="formulario-confirmar">
             <input type="hidden" name="idMedico" th:value="${medico.id}">
             <input type="hidden" name="idPaciente" th:value="${paciente.id}">

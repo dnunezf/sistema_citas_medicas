@@ -17,7 +17,6 @@
 
     <h2 class="dashboard-title">Buscar Médicos</h2>
 
-    <!-- Formulario de búsqueda -->
     <form method="get" th:action="@{/}" class="form-busqueda">
         <select name="especialidad">
             <option value="">-- Todas las especialidades --</option>
@@ -32,7 +31,6 @@
         <button type="submit">Buscar</button>
     </form>
 
-    <!-- Tarjetas de médicos -->
     <div th:each="medico : ${medicos}" class="doctor-card">
         <div class="doctor-info">
             <img th:if="${medico.rutaFotoPerfil != null and !medico.rutaFotoPerfil.isEmpty()}"
@@ -52,7 +50,6 @@
             </div>
         </div>
 
-        <!-- Espacios disponibles por fecha -->
         <div class="horarios">
             <div th:each="entry : ${espaciosAgrupados[medico.id]}">
                 <div class="fecha" th:text="${#temporals.format(entry.key, 'dd/MM/yyyy')}"></div>
@@ -66,7 +63,6 @@
             </div>
         </div>
 
-        <!-- Botón de agendar -->
         <div class="schedule-button">
             <a th:href="@{'/citas/horarios/' + ${medico.id}}">Horario Extendido→</a>
         </div>

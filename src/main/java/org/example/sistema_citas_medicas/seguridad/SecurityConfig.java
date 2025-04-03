@@ -41,8 +41,8 @@ public class SecurityConfig {
                                 "/", "/css/**", "/js/**", "/images/**",
                                 "/usuarios/**",
                                 "/citas/ver", "/citas/buscar",
-                                "/citas/horarios/**",         // ✅ horarios normales
-                                "/citas/horarios/*/extendido", // ✅ horarios extendidos públicos
+                                "/citas/horarios/**",
+                                "/citas/horarios/*/extendido",
                                 "/uploads/**"
                         ).permitAll()
                         .requestMatchers("/pacientes/editar/**", "/pacientes/actualizar").permitAll()

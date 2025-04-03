@@ -26,7 +26,6 @@ public class MedicoController {
         this.medicoService = medicoService;
     }
 
-    // MOSTRAR PERFIL DEL MÉDICO por ID
     @GetMapping("/perfil/{id}")
     public String mostrarFormularioRegistro(@PathVariable Long id, Model model) {
         Optional<MedicoEntity> medicoOpt = medicoService.obtenerPorId(id);
@@ -34,7 +33,6 @@ public class MedicoController {
         if (medicoOpt.isPresent()) {
             MedicoEntity medico = medicoOpt.get();
 
-            // ⚠️ Verificamos si ya ha completado sus datos (incluyendo la foto)
             boolean datosCompletados = medico.getEspecialidad() != null && !medico.getEspecialidad().equals("Especialidad no definida")
                     && medico.getCostoConsulta() != null && medico.getCostoConsulta() > 0
                     && medico.getLocalidad() != null && !medico.getLocalidad().equals("Localidad no especificada")
@@ -43,7 +41,6 @@ public class MedicoController {
 
 
             if (!datosCompletados) {
-                // Limpiar los campos (menos nombre y ID)
                 medico.setEspecialidad(null);
                 medico.setCostoConsulta(null);
                 medico.setLocalidad(null);
@@ -62,7 +59,7 @@ public class MedicoController {
     }
 
 
-    // ACTUALIZAR MÉDICO
+
     @PostMapping("/actualizar")
     public String actualizarMedico(@ModelAttribute("medico") MedicoEntity medico,
                                    @RequestParam(value = "fotoPerfil", required = false) MultipartFile file,
@@ -85,7 +82,6 @@ public class MedicoController {
             medicoActual.setFrecuenciaCitas(medico.getFrecuenciaCitas());
             medicoActual.setPresentacion(medico.getPresentacion());
 
-            // Guardar imagen si se subió
             if (file != null && !file.isEmpty()) {
                 try {
                     String nombreArchivo = "medico_" + medico.getId() + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -114,7 +110,6 @@ public class MedicoController {
         return "presentation/registro_medico";
     }
 
-    // OPCIONAL: CARGAR MÉDICO POR ID DESDE FORMULARIO
     @GetMapping("/cargar")
     public String cargarMedico(@RequestParam("id") Long id, Model model) {
         Optional<MedicoEntity> medico = medicoService.obtenerPorId(id);

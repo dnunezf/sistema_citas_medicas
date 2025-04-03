@@ -3,12 +3,12 @@ package org.example.sistema_citas_medicas.datos.entidades;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED) // Ahora usa JOINED en vez de SINGLE_TABLE
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "usuarios")
 public class UsuarioEntity {
 
     @Id
-    @Column(name = "id", nullable = false) // ID ingresado por el usuario
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 100)
@@ -21,10 +21,8 @@ public class UsuarioEntity {
     @Column(name = "rol", nullable = false)
     private RolUsuario rol;
 
-    // Constructor vacío (necesario para JPA)
     public UsuarioEntity() {}
 
-    // Constructor con parámetros
     public UsuarioEntity(Long id, String nombre, String clave, RolUsuario rol) {
         this.id = id;
         this.nombre = nombre;
@@ -32,7 +30,6 @@ public class UsuarioEntity {
         this.rol = rol;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -65,7 +62,6 @@ public class UsuarioEntity {
         this.rol = rol;
     }
 
-    // Método toString() para depuración
     @Override
     public String toString() {
         return "Usuario{" +
@@ -76,7 +72,6 @@ public class UsuarioEntity {
                 '}';
     }
 
-    // Equals y HashCode (para comparación en colecciones)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

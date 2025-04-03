@@ -15,7 +15,6 @@
         Doctor - <span class="doctor-name" th:text="${medico.nombre}"></span> - Citas
     </h2>
 
-    <!-- Filtro por estado y paciente -->
     <div class="filters">
         <form th:action="@{/citas/medico/{idMedico}/filtrar(idMedico=${medico.id})}" method="get">
         <label for="estado">Estado:</label>
@@ -34,7 +33,6 @@
         </form>
     </div>
 
-    <!-- Listado de citas -->
     <div class="appointments">
         <div class="appointment" th:each="cita : ${citas}">
             <div class="patient-info">

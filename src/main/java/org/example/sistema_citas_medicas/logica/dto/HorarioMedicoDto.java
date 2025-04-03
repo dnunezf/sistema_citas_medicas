@@ -8,10 +8,8 @@ public class HorarioMedicoDto {
     private String horaFin;
     private int tiempoCita;
 
-    // Constructor vacío
     public HorarioMedicoDto() {}
 
-    // Constructor con parámetros
     public HorarioMedicoDto(Long id, Long idMedico, String diaSemana, String horaInicio, String horaFin, int tiempoCita) {
         this.id = id;
         this.idMedico = idMedico;
@@ -21,7 +19,6 @@ public class HorarioMedicoDto {
         this.tiempoCita = tiempoCita;
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

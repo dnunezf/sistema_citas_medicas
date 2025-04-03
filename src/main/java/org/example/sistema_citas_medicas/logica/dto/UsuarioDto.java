@@ -7,10 +7,8 @@ public class UsuarioDto
     private String clave;
     private String rol;
 
-    // Constructor vacío
     public UsuarioDto() {}
 
-    // Constructor con parámetros
     public UsuarioDto(Long id, String nombre, String clave, String rol) {
         this.id = id;
         this.nombre = nombre;
@@ -21,7 +19,6 @@ public class UsuarioDto
     public UsuarioDto(Long id, String nombre, String rol) {
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -54,7 +51,6 @@ public class UsuarioDto
         this.rol = rol;
     }
 
-    // Método toString para imprimir el objeto
     @Override
     public String toString() {
         return "UsuarioDto{" +

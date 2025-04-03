@@ -33,7 +33,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public UsuarioEntity save(UsuarioEntity usuario) {
-        // Encriptar la clave antes de guardar
         String claveEncriptada = passwordEncoder.encode(usuario.getClave());
         usuario.setClave(claveEncriptada);
 
@@ -85,13 +84,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioOpt.isPresent()) {
             UsuarioEntity usuario = usuarioOpt.get();
 
-            // Compara clave enviada con la encriptada
             if (passwordEncoder.matches(claveNoEncriptada, usuario.getClave())) {
                 return Optional.of(usuario);
             }
         }
 
-        return Optional.empty(); // Si no coincide la clave
+        return Optional.empty();
     }
 
     @Override

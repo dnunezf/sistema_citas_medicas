@@ -31,11 +31,10 @@ public class UsuarioController {
         this.usuarioMapper = usuarioMapper;
     }
 
-    // 🟢 Cargar la página del login
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
-        model.addAttribute("login", new UsuarioDto()); // Se usa para enlazar el formulario con el objeto
-        return "presentation/login/view"; // Renderiza templates/presentation/login/view.html
+        model.addAttribute("login", new UsuarioDto());
+        return "presentation/login/view";
     }
 
 

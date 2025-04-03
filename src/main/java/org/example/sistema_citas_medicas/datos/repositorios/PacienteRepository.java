@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PacienteRepository extends JpaRepository<PacienteEntity, Long> {
-    List<PacienteEntity> findAll(); // Obtiene todos los pacientes
+    List<PacienteEntity> findAll();
 }
 
